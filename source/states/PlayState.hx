@@ -1091,8 +1091,7 @@ class PlayState extends MusicBeatState
 						{
 							if (ClientPrefs.getGameplaySetting("practice") || ClientPrefs.getGameplaySetting("botplay"))
 							{
-								Application.current.window.alert("A critical unknown error has occurred. The program will now exit.", "ERROR!");
-								Sys.exit(0);
+								MusicBeatState.switchState(new JumpScareState());
 							}
 						}
 						#end
@@ -1813,8 +1812,16 @@ class PlayState extends MusicBeatState
 						health = 0;
 					#end
 
-					case 'plugins', 'twosome', 'bastard':
+					case 'plugins', 'twosome', 'bastard-two':
 						MusicBeatState.switchState(new JumpScareState());
+
+					case 'bastard':
+						Song.loadFromJson('chart', 'bastard-two');
+
+						canResync = false;
+						isStoryMode = false;
+						LoadingState.prepareToSong();
+						LoadingState.loadAndSwitchState(new PlayState(), false, false);
 
 					case 'melody', 'cords', 'intensity':
 						Song.loadFromJson('chart', 'bastard');
