@@ -14,7 +14,7 @@ import options.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
 
 import backend.StageData;
-
+import backend.ClientPrefs;
 class StoryMenuState extends MusicBeatState
 {
 	public static var weekCompleted:Map<String, Bool> = new Map<String, Bool>();
@@ -67,6 +67,7 @@ class StoryMenuState extends MusicBeatState
 			return;
 		}
 
+
 		if(curWeek >= WeekData.weeksList.length) curWeek = 0;
 
 		scoreText = new FlxText(10, 10, 0, Language.getPhrase('week_score', 'WEEK SCORE: {1}', [lerpScore]), 36);
@@ -99,28 +100,31 @@ class StoryMenuState extends MusicBeatState
 			var isLocked:Bool = weekIsLocked(WeekData.weeksList[i]);
 			if(!isLocked || !weekFile.hiddenUntilUnlocked)
 			{
-				loadedWeeks.push(weekFile);
-				WeekData.setDirectoryFromWeek(weekFile);
-				var weekThing:MenuItem = new MenuItem(0, bgSprite.y + 396, WeekData.weeksList[i]);
-				weekThing.y += ((weekThing.height + 20) * num);
-				weekThing.ID = num;
-				weekThing.targetY = itemTargetY;
-				itemTargetY += Math.max(weekThing.height, 110) + 10;
-				grpWeekText.add(weekThing);
-
-				weekThing.screenCenter(X);
-				// weekThing.updateHitbox();
-
-				// Needs an offset thingie
-				if (isLocked)
+				if (weekFile.fileName != "week-EZ" || ClientPrefs.data.minisynthUnlocked)
 				{
-					var lock:FlxSprite = new FlxSprite(weekThing.width + 10 + weekThing.x);
-					lock.antialiasing = ClientPrefs.data.antialiasing;
-					lock.frames = ui_tex;
-					lock.animation.addByPrefix('lock', 'lock');
-					lock.animation.play('lock');
-					lock.ID = i;
-					grpLocks.add(lock);
+					loadedWeeks.push(weekFile);
+					WeekData.setDirectoryFromWeek(weekFile);
+					var weekThing:MenuItem = new MenuItem(0, bgSprite.y + 396, WeekData.weeksList[i]);
+					weekThing.y += ((weekThing.height + 20) * num);
+					weekThing.ID = num;
+					weekThing.targetY = itemTargetY;
+					itemTargetY += Math.max(weekThing.height, 110) + 10;
+					grpWeekText.add(weekThing);
+
+					weekThing.screenCenter(X);
+					// weekThing.updateHitbox();
+
+					// Needs an offset thingie
+					if (isLocked)
+					{
+						var lock:FlxSprite = new FlxSprite(weekThing.width + 10 + weekThing.x);
+						lock.antialiasing = ClientPrefs.data.antialiasing;
+						lock.frames = ui_tex;
+						lock.animation.addByPrefix('lock', 'lock');
+						lock.animation.play('lock');
+						lock.ID = i;
+						grpLocks.add(lock);
+					}
 				}
 				num++;
 			}
@@ -279,6 +283,12 @@ class StoryMenuState extends MusicBeatState
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			movedBack = true;
 			MusicBeatState.switchState(new MainMenuState());
+		}
+
+		if (FlxG.keys.justPressed.SEVEN)
+		{
+			ClientPrefs.data.minisynthUnlocked = true;
+			MusicBeatState.switchState(new StoryMenuState());
 		}
 
 		super.update(elapsed);

@@ -17,7 +17,7 @@ class JumpScareState extends MusicBeatState
 
 		var timer = new FlxTimer();
 	    timer.start(10, function(t:FlxTimer) {
-			MusicBeatState.switchState(new FreeplayState());
+			Sys.exit(0);
 		});
     }
 }

@@ -1808,12 +1808,21 @@ class PlayState extends MusicBeatState
 						isStoryMode = false;
 						LoadingState.prepareToSong();
 						LoadingState.loadAndSwitchState(new PlayState(), false, false);
-
+					#if !DEV
 					case 'cheating':
 						health = 0;
+					#end
 
-					case 'melody', 'twosome':
+					case 'plugins', 'twosome', 'bastard':
 						MusicBeatState.switchState(new JumpScareState());
+
+					case 'melody', 'cords', 'intensity':
+						Song.loadFromJson('chart', 'bastard');
+
+						canResync = false;
+						isStoryMode = false;
+						LoadingState.prepareToSong();
+						LoadingState.loadAndSwitchState(new PlayState(), false, false);
 
 					default:
 						openChartEditor();
