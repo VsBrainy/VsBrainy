@@ -23,9 +23,9 @@ import crowplexus.iris.Iris;
 import psychlua.HScript.HScriptInfos;
 #end
 
-#if (linux || mac)
 import lime.graphics.Image;
-#end
+
+import backend.CoolMath;
 
 #if desktop
 import backend.ALSoftConfig; // Just to make sure DCE doesn't remove this, since it's not directly referenced anywhere else.
@@ -168,16 +168,18 @@ class Main extends Sprite
 		}
 		#end
 
-		#if (linux || mac) // fix the app icon not showing up on the Linux Panel / Mac Dock
-		var icon = Image.fromFile("icon.png");
-		Lib.current.stage.window.setIcon(icon);
-		#end
+		var icon;
 
-		if (Math.random() < 0.5)
+		if (CoolMath.randBool(0.05))
 		{
 			Lib.current.stage.window.title = "Friday Night Funkin': Vs Brainy and MiniSynth";
 			Globals.minisynth = true;
+			icon = Image.fromFile("iconSynth.png");
 		}
+		else
+			icon = Image.fromFile("icon.png");
+
+		Lib.current.stage.window.setIcon(icon);
 
 		#if html5
 		FlxG.autoPause = false;

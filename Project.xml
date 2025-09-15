@@ -183,7 +183,8 @@
 
 	<!-- _________________________________ Custom _______________________________ -->
 
-	<assets path='art/icons/iconOG.png' rename='icon.png' if="linux || mac" />
+	<assets path='art/icons/iconOG.png' rename='icon.png'/>
+	<assets path='art/icons/iconSynth.png' rename='iconSynth.png'/>
 	
 	<icon path="art/icons/icon16.png" size='16'/>
 	<icon path="art/icons/icon32.png" size='32'/>
