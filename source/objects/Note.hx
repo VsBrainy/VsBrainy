@@ -289,6 +289,8 @@ class Note extends FlxSprite
 			}
 		}
 
+		rgbShader.enabled = false;
+		
 		// trace(prevNote);
 
 		if(prevNote != null)

@@ -3,12 +3,14 @@ package states;
 import backend.WeekData;
 import backend.Highscore;
 import backend.Song;
+import backend.Sounds;
 
 import flixel.group.FlxGroup;
 import flixel.graphics.FlxGraphic;
 
 import objects.MenuItem;
 import objects.MenuCharacter;
+import objects.FadingOverlay;
 
 import options.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
@@ -287,8 +289,14 @@ class StoryMenuState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.SEVEN)
 		{
-			ClientPrefs.data.minisynthUnlocked = true;
-			MusicBeatState.switchState(new StoryMenuState());
+			var coolFade = new FadingOverlay();
+			add(coolFade);
+			new FadingOverlay().fade(1, 2.5, function(tween)
+				{
+					Sounds.play("assets/shared/sounds/vineboom.ogg");
+					ClientPrefs.data.minisynthUnlocked = true;
+					MusicBeatState.switchState(new StoryMenuState());
+				});
 		}
 
 		super.update(elapsed);

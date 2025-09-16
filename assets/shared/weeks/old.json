@@ -13,7 +13,34 @@
 	"hideStoryMode": true,
 	"songs": [
 		[
-			"Cheating",
+			"Old Brainy",
+			"brainy",
+			[
+				186,
+				113,
+				0
+			]
+		],
+		[
+			"Older Brainy",
+			"brainy",
+			[
+				186,
+				113,
+				0
+			]
+		],
+		[
+			"Oldest Brainy",
+			"brainy",
+			[
+				186,
+				113,
+				0
+			]
+		],
+		[
+			"Old irritated",
 			"brainy-mad",
 			[
 				230,
