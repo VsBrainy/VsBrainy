@@ -44,7 +44,7 @@ import flixel.input.gamepad.FlxGamepadInputID;
 import haxe.Json;
 
 #if SECRETS
-import hxBrainfunk.Brainfunk
+import hxBrainfuck.Brainfuck;
 #end
 
 class FunkinLua {
@@ -1592,6 +1592,7 @@ class FunkinLua {
 			if(func != null)
 				Lua_helper.add_callback(lua, name, func);
 		}
+
 
 		try{
 			var isString:Bool = !FileSystem.exists(scriptName);
