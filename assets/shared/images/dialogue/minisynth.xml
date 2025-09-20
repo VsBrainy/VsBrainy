@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="minisynth.png">
+	<!-- Created using the Spritesheet and XML generator -->
+	<!-- https://uncertainprod.github.io/FNF-Spritesheet-XML-generator-Web -->
+	<SubTexture name="idle0000" x="1408" y="0" width="704" height="704" frameX="2" frameY="2" frameWidth="700" frameHeight="700"/>
+	<SubTexture name="what0000" x="0" y="704" width="704" height="704" frameX="2" frameY="2" frameWidth="700" frameHeight="700"/>
+	<SubTexture name="huh0000" x="2112" y="704" width="704" height="704" frameX="2" frameY="2" frameWidth="700" frameHeight="700"/>
+	<SubTexture name="up0000" x="1408" y="704" width="704" height="704" frameX="2" frameY="2" frameWidth="700" frameHeight="700"/>
+	<SubTexture name="right0000" x="704" y="704" width="704" height="704" frameX="2" frameY="2" frameWidth="700" frameHeight="700"/>
+	<SubTexture name="angry0000" x="0" y="0" width="704" height="704" frameX="2" frameY="2" frameWidth="700" frameHeight="700"/>
+	<SubTexture name="angry20000" x="704" y="0" width="704" height="704" frameX="2" frameY="2" frameWidth="700" frameHeight="700"/>
+	<SubTexture name="angry30000" x="2112" y="0" width="704" height="704" frameX="2" frameY="2" frameWidth="700" frameHeight="700"/>
+	<SubTexture name="3d20000" x="0" y="1408" width="644" height="540" frameX="-295" frameY="-150" frameWidth="957" frameHeight="688"/>
+	<SubTexture name="3d0000" x="644" y="1408" width="436" height="528" frameX="-74" frameY="-147" frameWidth="532" frameHeight="688"/>
+</TextureAtlas>

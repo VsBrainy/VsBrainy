@@ -17,6 +17,9 @@ import substates.ResetScoreSubState;
 
 import backend.StageData;
 import backend.ClientPrefs;
+
+import backend.Achievements;
+
 class StoryMenuState extends MusicBeatState
 {
 	public static var weekCompleted:Map<String, Bool> = new Map<String, Bool>();
@@ -190,6 +193,10 @@ class StoryMenuState extends MusicBeatState
 		changeWeek();
 		changeDifficulty();
 
+		#if MINISYNTH_TEST
+		ClientPrefs.data.minisynthUnlocked = false;
+		#end
+
 		super.create();
 	}
 
@@ -287,16 +294,19 @@ class StoryMenuState extends MusicBeatState
 			MusicBeatState.switchState(new MainMenuState());
 		}
 
-		if (FlxG.keys.justPressed.SEVEN)
+		if (FlxG.keys.justPressed.SEVEN && !ClientPrefs.data.minisynthUnlocked)
 		{
+			Sounds.play("assets/shared/sounds/minisynthriser.ogg");
 			var coolFade = new FadingOverlay();
 			add(coolFade);
-			new FadingOverlay().fade(1, 2.5, function(tween)
+			coolFade.fade(1, 2.5, function()
 				{
 					Sounds.play("assets/shared/sounds/vineboom.ogg");
 					ClientPrefs.data.minisynthUnlocked = true;
 					MusicBeatState.switchState(new StoryMenuState());
-				});
+					trace("kinda crazy that you just unlocked a cool secret week. have fun...");
+					Achievements.unlock("minisynth");
+				}, 0.5);
 		}
 
 		super.update(elapsed);

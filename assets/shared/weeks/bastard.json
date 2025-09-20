@@ -1,0 +1,27 @@
+{
+	"storyName": "bastard",
+	"difficulties": "Normal",
+	"hideFreeplay": false,
+	"weekBackground": "",
+	"weekBefore": "week1",
+	"startUnlocked": true,
+	"weekCharacters": [
+		"",
+		"",
+		""
+	],
+	"hideStoryMode": true,
+	"songs": [
+		[
+			"bastard",
+			"guy",
+			[
+				255,
+				255,
+				255
+			]
+        ]
+    ],
+	"weekName": "Bastard",
+	"hiddenUntilUnlocked": false
+}

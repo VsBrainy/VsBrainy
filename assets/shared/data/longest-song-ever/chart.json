@@ -1,0 +1,30 @@
+{
+	"programmer": "nobody haha",
+	"composer": "nobody",
+	"charter": "Brainy7890 who placed down 2 notes ",
+	"speed": 1,
+	"stage": "brainysland",
+	"player1": "bf",
+	"player2": "brainy",
+	"events": [],
+	"notes": [
+		{
+			"gfSection": false,
+			"altAnim": false,
+			"sectionNotes": [
+				[0, 5, 0],
+				[0, 1, 0]
+			],
+			"bpm": 150,
+			"sectionBeats": 4,
+			"changeBPM": false,
+			"mustHitSection": true
+		}
+	],
+	"gfVersion": "gf",
+	"format": "psych_v1",
+	"bpm": 150,
+	"needsVoices": true,
+	"song": "Longest Song Ever",
+	"offset": 0
+}

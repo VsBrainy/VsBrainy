@@ -1,0 +1,55 @@
+{
+	"animations": [
+		{
+			"offsets": [0, 0],
+			"loop": false,
+			"fps": 24,
+			"anim": "idle",
+			"indices": [],
+			"name": "minisynth-3d idle"
+		},
+		{
+			"offsets": [130, -40],
+			"loop": false,
+			"fps": 24,
+			"anim": "singLEFT",
+			"indices": [],
+			"name": "minisynth-3d left"
+		},
+		{
+			"offsets": [-10, -100],
+			"loop": false,
+			"fps": 24,
+			"anim": "singDOWN",
+			"indices": [],
+			"name": "minisynth-3d down"
+		},
+		{
+			"offsets": [0, 0],
+			"loop": false,
+			"fps": 24,
+			"anim": "singUP",
+			"indices": [],
+			"name": "minisynth-3d up"
+		},
+		{
+			"offsets": [150, -40],
+			"loop": false,
+			"fps": 24,
+			"anim": "singRIGHT",
+			"indices": [],
+			"name": "minisynth-3d right"
+		}
+	],
+	"vocals_file": "",
+	"no_antialiasing": false,
+	"image": "characters/minisynth-3d",
+	"position": [40, 0],
+	"healthicon": "guy",
+	"flip_x": false,
+	"healthbar_colors": [161, 161, 161],
+	"camera_position": [-60, 90],
+	"sing_duration": 6.1,
+	"scale": 1,
+	"_editor_isPlayer": false
+}

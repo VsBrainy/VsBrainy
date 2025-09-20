@@ -173,6 +173,11 @@ class ClientPrefs {
 		save.data.keyboard = keyBinds;
 		save.data.gamepad = gamepadBinds;
 		save.flush();
+
+		var save:FlxSave = new FlxSave();
+		save.bind('persistentVars', CoolUtil.getSavePath());
+		save.data.minisynthUnlocked = data.minisynthUnlocked;
+		save.flush();
 		FlxG.log.add("Settings saved!");
 	}
 
@@ -239,6 +244,16 @@ class ClientPrefs {
 					if(gamepadBinds.exists(control)) gamepadBinds.set(control, keys);
 			}
 			reloadVolumeKeys();
+		}
+
+		var save:FlxSave = new FlxSave();
+		save.bind('persistentVars', CoolUtil.getSavePath());
+		if(save != null)
+		{
+			if(save.data.minisynthUnlocked != null)
+			{
+				data.minisynthUnlocked = false;
+			}
 		}
 	}
 

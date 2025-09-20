@@ -80,6 +80,14 @@ class FreeplayState extends MusicBeatState
 		{
 			if(weekIsLocked(WeekData.weeksList[i])) continue;
 
+			if (!ClientPrefs.data.minisynthUnlocked)
+			{
+				for (coolWeek in ["week-EZ", "joke"])
+				{
+					if (WeekData.weeksList[i] == coolWeek) continue;
+				}
+			}
+
 			var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[i]);
 			var leSongs:Array<String> = [];
 			var leChars:Array<String> = [];

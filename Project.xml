@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin': Vs Brainy and SKiD03" file="VsBrainy" packageName="com.brainy7890.vsbrainy" package="com.brainy7890.vsbrainy" main="Main" version="0.2.8" company="Brainy7890" />
+	<app title="Friday Night Funkin': Vs Brainy and SKiD03" file="VsBrainy" packageName="com.brainy7890.vsbrainy" package="com.brainy7890.vsbrainy" main="Main" version="0.2.8" company="balls" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -20,6 +20,7 @@
 	
 	<!-- ______________________ PSYCH ENGINE CUSTOMIZATION ______________________ -->
 
+	<define name="ACHIEVEMENTS_ALLOWED"/>
 
 	<define name="DISCORD_ALLOWED" if="desktop"/>
 	<define name="IRIS_DEBUG"/>
@@ -29,6 +30,8 @@
 	
 	<define name="MULTITHREADED_LOADING" if="desktop"/> <!-- UNCOMMENTING THIS LINE WILL ENABLE MULTITHREADED LOADING, WHICH IMPROVES LOADING TIMES, BUT APPARENTLY CAN FREEZE THE GAME ON SONG LOAD IN OLDER PCs? -->
 	<define name="SHOW_LOADING_SCREEN" />
+
+	<define name="MINISYNTH_TEST"/>
 
 	<define name="DEV"/>
 

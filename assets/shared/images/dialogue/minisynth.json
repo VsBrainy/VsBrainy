@@ -1,0 +1,155 @@
+{
+	"dialogue_pos": "left",
+	"position": [
+		0,
+		-100
+	],
+	"no_antialiasing": false,
+	"scale": 0.8,
+	"animations": [
+		{
+			"loop_name": "idle",
+			"idle_offsets": [
+				0,
+				0
+			],
+			"idle_name": "idle",
+			"anim": "idle",
+			"loop_offsets": [
+				0,
+				0
+			]
+		},
+		{
+			"loop_name": "what",
+			"idle_offsets": [
+				0,
+				0
+			],
+			"idle_name": "what",
+			"anim": "what",
+			"loop_offsets": [
+				0,
+				0
+			]
+		},
+		{
+			"loop_name": "huh",
+			"idle_offsets": [
+				0,
+				0
+			],
+			"idle_name": "huh",
+			"anim": "huh",
+			"loop_offsets": [
+				0,
+				0
+			]
+		},
+		{
+			"loop_name": "up",
+			"idle_offsets": [
+				0,
+				0
+			],
+			"idle_name": "up",
+			"anim": "up",
+			"loop_offsets": [
+				0,
+				0
+			]
+		},
+		{
+			"loop_name": "right",
+			"idle_offsets": [
+				0,
+				0
+			],
+			"idle_name": "right",
+			"anim": "right",
+			"loop_offsets": [
+				0,
+				0
+			]
+		},
+		{
+			"loop_name": "angry0",
+			"idle_offsets": [
+				0,
+				0
+			],
+			"idle_name": "angry0",
+			"anim": "angry",
+			"loop_offsets": [
+				0,
+				0
+			]
+		},
+		{
+			"loop_name": "angry2",
+			"idle_offsets": [
+				0,
+				0
+			],
+			"idle_name": "angry2",
+			"anim": "angry2",
+			"loop_offsets": [
+				0,
+				0
+			]
+		},
+		{
+			"loop_name": "angry3",
+			"idle_offsets": [
+				0,
+				0
+			],
+			"idle_name": "angry3",
+			"anim": "angry3",
+			"loop_offsets": [
+				0,
+				0
+			]
+		},
+		{
+			"loop_name": "angry",
+			"idle_offsets": [
+				0,
+				0
+			],
+			"idle_name": "angry",
+			"anim": "angryall",
+			"loop_offsets": [
+				0,
+				0
+			]
+		},
+		{
+			"loop_name": "3d0",
+			"idle_offsets": [
+				0,
+				1
+			],
+			"idle_name": "3d0",
+			"anim": "3d",
+			"loop_offsets": [
+				0,
+				1
+			]
+		},
+		{
+			"loop_name": "3d2",
+			"idle_offsets": [
+				230,
+				0
+			],
+			"idle_name": "3d2",
+			"anim": "3d2",
+			"loop_offsets": [
+				230,
+				0
+			]
+		}
+	],
+	"image": "minisynth"
+}

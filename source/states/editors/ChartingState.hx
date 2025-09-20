@@ -383,7 +383,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		infoBox.getTab('Information').menu.add(infoText);
 		add(infoBox);
 
-		mainBox = new PsychUIBox(mainBoxPosition.x, mainBoxPosition.y, 300, 280, ['Charting', 'Data', 'Events', 'Note', 'Section', 'Song']);
+		mainBox = new PsychUIBox(mainBoxPosition.x, mainBoxPosition.y, 300, 280, ['Charting', 'Data', 'Credits', 'Events', 'Note', 'Section', 'Song']);
 		mainBox.selectedName = 'Song';
 		mainBox.scrollFactor.set();
 		mainBox.cameras = [camUI];
@@ -435,6 +435,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		addNoteTab();
 		addSectionTab();
 		addSongTab();
+		addCreditsTab();
 		
 		////// for upper box
 		addFileTab();
@@ -3198,6 +3199,41 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		}
 		addUndoAction(ADD_NOTE, {notes: nts, events: evs});
 		return pushedNotes;
+	}
+
+	var composerInputText:PsychUIInputText;
+	var charterInputText:PsychUIInputText;
+	var programmerInputText:PsychUIInputText;
+
+	function addCreditsTab() {
+		var tab_group = mainBox.getTab('Credits').menu;
+
+		var objX = 10;
+		var objY = 25;
+
+		composerInputText = new PsychUIInputText(objX, objY, 100, 'Brainy7890', 8);
+		composerInputText.text = PlayState.SONG.composer;
+		composerInputText.onChange = function(old:String, cur:String) PlayState.SONG.composer = cur;
+
+		objY += 30;
+
+		charterInputText = new PsychUIInputText(objX, objY, 100, 'Brainy7890', 8);
+		charterInputText.text = PlayState.SONG.charter;
+		charterInputText.onChange = function(old:String, cur:String) PlayState.SONG.charter = cur;
+
+		objY += 30;
+
+		programmerInputText = new PsychUIInputText(objX, objY, 100, 'Brainy7890', 8);
+		programmerInputText.text = PlayState.SONG.programmer;
+		programmerInputText.onChange = function(old:String, cur:String) PlayState.SONG.programmer = cur;
+
+		tab_group.add(new FlxText(composerInputText.x, composerInputText.y - 15, 80, 'Composer:'));
+		tab_group.add(new FlxText(charterInputText.x, charterInputText.y - 15, 80, 'Charter:'));
+		tab_group.add(new FlxText(programmerInputText.x, programmerInputText.y - 15, 80, 'Programmer:'));
+
+		tab_group.add(composerInputText);
+		tab_group.add(charterInputText);
+		tab_group.add(programmerInputText);
 	}
 
 	var songNameInputText:PsychUIInputText;

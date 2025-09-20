@@ -3338,12 +3338,10 @@
 			"mustHitSection": false
 		}
 	],
-	"disableNoteRGB": true,
 	"event7Value": null,
-	"splashSkin": "noteSplashes_minisynth",
 	"song": "melody",
 	"validScore": false,
-	"arrowSkin": "noteSkins/NOTE_assets_minisynth",
+	"arrowSkin": "noteSkins/NOTE_assets",
 	"programmer": "Brainy7890",
 	"speed": 3,
 	"songCreditIcon": "",

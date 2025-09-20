@@ -577,7 +577,7 @@ class PlayState extends MusicBeatState
 		if (SONG.programmer == null) SONG.programmer = "Brainy7890";
 
 		creditsTxt = new FlxText(50, 0, FlxG.width, 'Composer: ${SONG.composer}\nCharter: ${SONG.charter}\nProgrammer: ${SONG.programmer}', 30);
-		creditsTxt.setFormat(Paths.font("vcr.ttf"), 30, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		creditsTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		creditsTxt.scrollFactor.set();
 		creditsTxt.screenCenter(Y);
 		creditsTxt.visible = !ClientPrefs.data.hideHud;
@@ -1003,7 +1003,7 @@ class PlayState extends MusicBeatState
 
 		var cutsceneFile:DialogueFile;
 
-		if (!didDialogue) {
+		if (!didDialogue && isStoryMode) {
 			if (FileSystem.exists(sPath)) {
 				startDialogue(DialogueBoxPsych.parseDialogue(Paths.json(songName + '/dialogue')));
 				didDialogue = true;
@@ -1812,7 +1812,7 @@ class PlayState extends MusicBeatState
 						health = 0;
 					#end
 
-					case 'plugins', 'twosome', 'bastard-two':
+					case 'plugins', 'twosome', 'bastard-two', 'bastard two': //lol i don't know whats correct
 						MusicBeatState.switchState(new JumpScareState());
 
 					case 'bastard':
@@ -3750,11 +3750,20 @@ class PlayState extends MusicBeatState
 					case 'debugger':
 						unlock = (songName == 'test' && !usedPractice);
 					#end
+
+					case 'brainy':
+						unlock = (songName.toLowerCase() == 'irritated' && !usedPractice && isStoryMode);
+
+					case 'skid03':
+						unlock = (songName.toLowerCase() == 'rage03' && !usedPractice && isStoryMode);
+
+					case 'perfect':
+						unlock = (!usedPractice && !cpuControlled && songMisses < 1);
 				}
 			}
 			else // any FC achievements, name should be "weekFileName_nomiss", e.g: "week3_nomiss";
 			{
-				if(isStoryMode && campaignMisses + songMisses < 1 && Difficulty.getString().toUpperCase() == 'HARD'
+				if(isStoryMode && campaignMisses + songMisses < 1 && Difficulty.getString().toUpperCase() == 'NORMAL'
 					&& storyPlaylist.length <= 1 && !changedDifficulty && !usedPractice)
 					unlock = true;
 			}
