@@ -1,0 +1,92 @@
+{
+	"dialogue": [
+		{
+			"sound": "skid03",
+			"speed": 0.05,
+			"portrait": "skid03",
+			"boxState": "normal",
+			"expression": "huh",
+			"text": "I think I'm done..."
+		},
+		{
+			"sound": "",
+			"speed": 0.05,
+			"portrait": "nobody",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "Suddenly, Brainy appeared."
+		},
+		{
+			"sound": "brainy_talk",
+			"speed": 0.05,
+			"portrait": "brainy",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "Sorry about that! I got a bit late.\\nYour place is a little hard to get to."
+		},
+		{
+			"sound": "skid03",
+			"speed": 0.05,
+			"portrait": "skid03",
+			"boxState": "normal",
+			"expression": "idle",
+			"text": "Wait...I just...did this all for nothing? You really did invite this weird short guy."
+		},
+		{
+			"sound": "bf_dialogue",
+			"speed": 0.05,
+			"portrait": "bf",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "Bap!"
+		},
+		{
+			"sound": "skid03",
+			"speed": 0.05,
+			"portrait": "skid03",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "Well, now I feel stupid. Well, why did you bring them here?"
+		},
+		{
+			"sound": "brainy_talk",
+			"speed": 0.05,
+			"portrait": "brainy",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "I just thought you might like a few new friends. That's all."
+		},
+		{
+			"sound": "skid03",
+			"speed": 0.05,
+			"portrait": "skid03",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "Well...sorry. Uhh see ya."
+		},
+		{
+			"sound": "brainy_talk",
+			"speed": 0.05,
+			"portrait": "brainy",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "Wait! You might as well stay a bit! I just got here!"
+		},
+		{
+			"sound": "skid03",
+			"speed": 0.05,
+			"portrait": "skid03",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "Fine. We can hang out a bit."
+		},
+		{
+			"sound": "",
+			"speed": 0.05,
+			"portrait": "nobody",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "To be continued..."
+		}
+	]
+}

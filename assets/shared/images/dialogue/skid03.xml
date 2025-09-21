@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="skid03.png">
+	<!-- Created using the Spritesheet and XML generator -->
+	<!-- https://uncertainprod.github.io/FNF-Spritesheet-XML-generator-Web -->
+	<SubTexture name="idle0000" x="952" y="0" width="307" height="623" frameX="-487" frameY="-49" frameWidth="1280" frameHeight="720"/>
+	<SubTexture name="huh0000" x="1259" y="0" width="297" height="625" frameX="2" frameY="2" frameWidth="293" frameHeight="621"/>
+	<SubTexture name="angry10000" x="952" y="623" width="297" height="625" frameX="2" frameY="2" frameWidth="293" frameHeight="621"/>
+	<SubTexture name="angry20000" x="567" y="628" width="340" height="631" frameX="2" frameY="2" frameWidth="336" frameHeight="627"/>
+	<SubTexture name="angry30000" x="567" y="0" width="385" height="628" frameX="2" frameY="2" frameWidth="381" frameHeight="624"/>
+	<SubTexture name="angry40000" x="1259" y="625" width="297" height="601" frameX="2" frameY="2" frameWidth="293" frameHeight="597"/>
+	<SubTexture name="angry50000" x="0" y="0" width="567" height="618" frameX="-357" frameY="-51" frameWidth="1280" frameHeight="720"/>
+	<SubTexture name="angry60000" x="0" y="618" width="381" height="643" frameX="-449" frameY="2" frameWidth="1280" frameHeight="720"/>
+</TextureAtlas>

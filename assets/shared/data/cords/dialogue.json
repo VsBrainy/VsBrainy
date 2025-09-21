@@ -1,0 +1,28 @@
+{
+	"dialogue": [
+		{
+			"sound": "minisynth",
+			"speed": 0.05,
+			"portrait": "minisynth",
+			"boxState": "normal",
+			"expression": "up",
+			"text": "woweee\\nyou won"
+		},
+		{
+			"sound": "bf_dialogue",
+			"speed": 0.05,
+			"portrait": "bf",
+			"boxState": "normal",
+			"expression": "excited",
+			"text": "BAP!\\nijdifjdifjdifjidfjidfjidfjidfjidfjifjdifj\\nfdijdifjdifjdifjdifjdifjdifjnvisnoivnosvdv"
+		},
+		{
+			"sound": "minisynth",
+			"speed": 0.5,
+			"portrait": "minisynth",
+			"boxState": "normal",
+			"expression": "up",
+			"text": "chez"
+		}
+	]
+}

@@ -310,8 +310,17 @@ class PlayState extends MusicBeatState
 			FlxG.sound.music.stop();
 
 		// Gameplay settings
-		healthGain = ClientPrefs.getGameplaySetting('healthgain');
-		healthLoss = ClientPrefs.getGameplaySetting('healthloss');
+		switch (SONG.song.toLowerCase())
+		{
+			case "intensity", "bastard", "bastard two":
+				healthGain = 3;
+				healthLoss = 0.5;
+
+			default:
+				healthGain = ClientPrefs.getGameplaySetting('healthgain');
+				healthLoss = ClientPrefs.getGameplaySetting('healthloss');
+		}
+		
 		instakillOnMiss = ClientPrefs.getGameplaySetting('instakill');
 		practiceMode = ClientPrefs.getGameplaySetting('practice');
 		cpuControlled = ClientPrefs.getGameplaySetting('botplay');
@@ -675,9 +684,9 @@ class PlayState extends MusicBeatState
 	{
 		FlxG.sound.play(Paths.sound("hey"));
 		if(boyfriend.hasAnimation('hey'))
-			boyfriend.playAnim("hey");
+			boyfriend.playAnim("hey", true);
 		else
-			boyfriend.playAnim("singUP");
+			boyfriend.playAnim("singUP", true);
 	}
 
 	function set_songSpeed(value:Float):Float
@@ -2585,6 +2594,9 @@ class PlayState extends MusicBeatState
 
 
 	public var transitioning = false;
+
+	public var didDialogueEnd:Bool = false;
+
 	public function endSong()
 	{
 		//Should kill you if you tried to cheat
@@ -2622,6 +2634,22 @@ class PlayState extends MusicBeatState
 		checkForAchievement([weekNoMiss, 'ur_bad', 'ur_good', 'hype', 'two_keys', 'toastie' #if BASE_GAME_FILES, 'debugger' #end]);
 		#end
 
+		var s:String = StringTools.replace(songName.toLowerCase(), " ", "-");
+		var sPath:String = "assets/shared/data/" + s + "/dialogue.json";
+
+		var cutsceneFile:DialogueFile;
+
+		if (!didDialogueEnd && isStoryMode) {
+			if (FileSystem.exists(sPath)) {
+				startDialogue(DialogueBoxPsych.parseDialogue(Paths.json(songName + '/dialogue')));
+				didDialogueEnd = true;
+				return false;
+			}
+			else {
+				didDialogueEnd = true;
+			}
+		}
+
 		var ret:Dynamic = callOnScripts('onEndSong', null, true);
 		if(ret != LuaUtils.Function_Stop && !transitioning)
 		{
@@ -2652,7 +2680,7 @@ class PlayState extends MusicBeatState
 					#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
 
 					canResync = false;
-					MusicBeatState.switchState(new MainMenuState());
+					MusicBeatState.switchState(new StoryMenuState());
 
 					// if ()
 					if(!ClientPrefs.getGameplaySetting('practice') && !ClientPrefs.getGameplaySetting('botplay')) {

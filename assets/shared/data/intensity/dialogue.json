@@ -1,0 +1,84 @@
+{
+	"dialogue": [
+		{
+			"expression": "angryall",
+			"text": "BROOO!\\nWHY DID YOU DO THAT!!!!!!",
+			"boxState": "angry",
+			"sound": "minisynth",
+			"speed": 0.05,
+			"portrait": "minisynth"
+		},
+		{
+			"expression": "pissed",
+			"text": "get fucked i'm better",
+			"boxState": "normal",
+			"sound": "bf_dialogue",
+			"speed": 0.05,
+			"portrait": "bf"
+		},
+		{
+			"expression": "angry",
+			"text": "why did you d o that\\ni don 't understand",
+			"boxState": "angry",
+			"sound": "minisynth",
+			"speed": 0.05,
+			"portrait": "minisynth"
+		},
+		{
+			"expression": "pissed",
+			"text": "you just suck at this game i don't know what to tell you",
+			"boxState": "normal",
+			"sound": "bf_dialogue",
+			"speed": 0.05,
+			"portrait": "bf"
+		},
+		{
+			"expression": "angryall",
+			"text": "NOOOOOOOOOOO\\nTHIS WASSUPPOSED TO BE IMPOSSIBLE!!!!",
+			"boxState": "angry",
+			"sound": "minisynth",
+			"speed": 0.05,
+			"portrait": "minisynth"
+		},
+		{
+			"expression": "pissed",
+			"text": "i'm just better\\nget fucked haha hahahahahahhahahahahahahaha\\nsjdisjdisjdisjisdjisdjisdjsid\\nodsijdijsdijsidsdjsidjidjsidjsidsid",
+			"boxState": "normal",
+			"sound": "bf_dialogue",
+			"speed": 0.05,
+			"portrait": "bf"
+		},
+		{
+			"expression": "angry3",
+			"text": "YOU WON'T BE ABLE TO GET PAST THIS ONE!!!!!!!!!!!!!!!!!!!!!!!!!!",
+			"boxState": "angry",
+			"sound": "minisynth",
+			"speed": 0.05,
+			"portrait": "minisynth"
+		},
+		{
+			"expression": "pissed",
+			"text": "i truly doubt it. you really think any song you sing is going to be really that hard? the last two songs were easy. how hard",
+			"boxState": "normal",
+			"sound": "bf_dialogue",
+			"speed": 0.05,
+			"portrait": "bf"
+		},
+		{
+			"expression": "pissed",
+			"text": "could it be?",
+			"boxState": "normal",
+			"sound": "bf_dialogue",
+			"speed": 0.05,
+			"portrait": "bf"
+		},
+		{
+			"expression": "angryall",
+			"text": "AAAAAAAAAAAAAAAAAAAAAAAAAAAA\\nAAAAAAAAAAAAAAAAA\\nAAAAAAAAAAAAAAAAAAAAAAAAAA\\nAAAAAAAAAAAAAAAAAAAAAA\\nAAAAAAAAAAAAAAAA\\nAAAAAAAAAA\\nAAAAAAAAA\\nAAAAAAA\\nok i'm done now my throat hurts. let's just get on with the song.",
+			"boxState": "angry",
+			"sound": "minisynth",
+			"speed": 0.05,
+			"portrait": "minisynth"
+		}
+	]
+}

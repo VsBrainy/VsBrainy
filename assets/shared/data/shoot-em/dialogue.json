@@ -1,0 +1,28 @@
+{
+	"dialogue": [
+		{
+			"sound": "skid03",
+			"speed": 0.05,
+			"portrait": "skid03",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "Brainy's still not here..."
+		},
+		{
+			"sound": "BF_Dialogue",
+			"speed": 0.05,
+			"portrait": "bf",
+			"boxState": "normal",
+			"expression": "confused",
+			"text": "...bep..."
+		},
+		{
+			"sound": "skid03",
+			"speed": 0.05,
+			"portrait": "skid03",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "Well...let's go again. I guess."
+		}
+	]
+}

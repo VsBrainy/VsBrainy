@@ -1,0 +1,52 @@
+{
+	"dialogue": [
+		{
+			"sound": "skid03",
+			"speed": 0.05,
+			"portrait": "skid03",
+			"boxState": "normal",
+			"expression": "idle",
+			"text": "What are you doing here?"
+		},
+		{
+			"sound": "BF_Dialogue",
+			"speed": 0.05,
+			"portrait": "bf",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "Beep bob Brainy skidoo bep"
+		},
+		{
+			"sound": "skid03",
+			"speed": 0.05,
+			"portrait": "skid03",
+			"boxState": "normal",
+			"expression": "idle",
+			"text": "Brainy sent you? Why did Brainy send you?"
+		},
+		{
+			"sound": "bf_dialogue",
+			"speed": 0.05,
+			"portrait": "bf",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "Beep skep bap boop"
+		},
+		{
+			"sound": "skid03",
+			"speed": 0.05,
+			"portrait": "skid03",
+			"boxState": "normal",
+			"expression": "idle",
+			"text": "Well, Brainy's not here.\\nDo you want to do something in the meantime?"
+		},
+		{
+			"sound": "BF_Dialogue",
+			"speed": 0.05,
+			"portrait": "bf",
+			"boxState": "normal",
+			"expression": "excited",
+			"text": "Yeah!!!!"
+		}
+	]
+}

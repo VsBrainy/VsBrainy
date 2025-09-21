@@ -1,0 +1,36 @@
+{
+	"dialogue": [
+		{
+			"sound": "skid03",
+			"speed": 0.05,
+			"portrait": "skid03",
+			"boxState": "angry",
+			"expression": "angry1",
+			"text": "SERIOUSLY??? WHERE IS BRAINY????\\nIF HE TRULY WANTED YOU TWO TO MEET ME HE WOULD BE HERE BY NOW!!!!!"
+		},
+		{
+			"sound": "bf_dialogue",
+			"speed": 0.05,
+			"portrait": "bf",
+			"boxState": "normal",
+			"expression": "shocked",
+			"text": "Beep!"
+		},
+		{
+			"sound": "skid03",
+			"speed": 0.05,
+			"portrait": "skid03",
+			"boxState": "angry",
+			"expression": "angry4",
+			"text": "WELL, I DON'T TRUST THIS ANYMORE!!!\\nYOU'RE GOING DOWN!!!!!!!!!!!"
+		},
+		{
+			"sound": "bf_dialogue",
+			"speed": 0.05,
+			"portrait": "bf",
+			"boxState": "normal",
+			"expression": "pissed",
+			"text": "Bap, bep, beep!"
+		}
+	]
+}
