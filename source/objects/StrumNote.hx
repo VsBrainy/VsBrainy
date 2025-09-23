@@ -15,11 +15,14 @@ class StrumNote extends FlxSprite
 	public var sustainReduce:Bool = true;
 	private var player:Int;
 
+	public var xScale(get, set):Float;
+	public var yScale(get, set):Float;
+
 	public function get_xScale():Float return scale.x;
 	public function set_xScale(v:Float):Float { scale.x = v; return v; }
 
 	public function get_yScale():Float return scale.y;
-	public function set_yScale(v:Float):Float { scale.x = y; return v; }
+	public function set_yScale(v:Float):Float { scale.y = v; return v; }
 	
 	public var texture(default, set):String = null;
 	private function set_texture(value:String):String {

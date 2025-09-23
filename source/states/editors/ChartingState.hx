@@ -85,7 +85,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		['Play Sound', "Value 1: Sound file name\nValue 2: Volume (Default: 1), ranges from 0 to 1"],
 		['Set Camera Zoom', "Value 1: Zoom value\n\nLeave blank to use default stage zoom."],
 		['Set Camera Offsets', "Value 1: Target (bf/gf/dad), not case sensitive\nValue 2: New x/y values, seperated by commas.\n\nDefaults to (0, 0)\n\nTip: This won't effect anything if the camera isn't pointed at the target, so it's a good idea activate this when it's not pointed at the target."],
-		['Set Camera Target', "Value 1: Character to point to (bf, gf, dad)"]
+		['Set Camera Target', "Value 1: Character to point to (bf, gf, dad)"],
+		["Crash Game", "crash crash kaboom the game"]
 	];
 	
 	public static var keysArray:Array<FlxKey> = [ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT]; //Used for Vortex Editor

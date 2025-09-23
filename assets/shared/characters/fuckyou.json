@@ -1,0 +1,23 @@
+{
+	"animations": [
+		{
+			"offsets": [23, -38],
+			"indices": [],
+			"fps": 24,
+			"anim": "idle",
+			"loop": false,
+			"name": "idle"
+		}
+	],
+	"vocals_file": "",
+	"no_antialiasing": false,
+	"image": "characters/fuckyou",
+	"position": [-210, 0],
+	"healthicon": "guy",
+	"flip_x": false,
+	"healthbar_colors": [255, 255, 255],
+	"camera_position": [-10, 190],
+	"sing_duration": 6.1,
+	"scale": 0.8,
+	"_editor_isPlayer": false
+}

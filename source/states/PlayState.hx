@@ -320,7 +320,7 @@ class PlayState extends MusicBeatState
 				healthGain = ClientPrefs.getGameplaySetting('healthgain');
 				healthLoss = ClientPrefs.getGameplaySetting('healthloss');
 		}
-		
+
 		instakillOnMiss = ClientPrefs.getGameplaySetting('instakill');
 		practiceMode = ClientPrefs.getGameplaySetting('practice');
 		cpuControlled = ClientPrefs.getGameplaySetting('botplay');
@@ -1639,11 +1639,14 @@ class PlayState extends MusicBeatState
 
 			var babyArrow:StrumNote = new StrumNote(strumLineX, strumLineY, i, player);
 			babyArrow.downScroll = ClientPrefs.data.downScroll;
+			babyArrow.scale.set(0.1, 0.1);
 			if (!isStoryMode && !skipArrowStartTween)
 			{
 				//babyArrow.y -= 10;
 				babyArrow.alpha = 0;
 				FlxTween.tween(babyArrow, {/*y: babyArrow.y + 10,*/ alpha: targetAlpha}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
+				FlxTween.tween(babyArrow.scale, {/*y: babyArrow.y + 10,*/ x: 1}, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
+				FlxTween.tween(babyArrow.scale, {/*y: babyArrow.y + 10,*/ y: 1}, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
 			}
 			else babyArrow.alpha = targetAlpha;
 
@@ -2498,6 +2501,9 @@ class PlayState extends MusicBeatState
 					case 'dad':
 						moveCamera(true);
 				}
+
+			case 'Crash Game':
+				Sys.exit(0);
 		}
 
 		stagesFunc(function(stage:BaseStage) stage.eventCalled(eventName, value1, value2, flValue1, flValue2, strumTime));
