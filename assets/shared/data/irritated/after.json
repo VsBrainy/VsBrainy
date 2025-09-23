@@ -1,0 +1,76 @@
+{
+	"dialogue": [
+		{
+			"sound": "brainy_talk",
+			"speed": 0.05,
+			"portrait": "brainy",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "Ooh....I'm sorry about that. I got a little bit mad."
+		},
+		{
+			"sound": "GF_1",
+			"speed": 0.05,
+			"portrait": "gf",
+			"boxState": "normal",
+			"expression": "confused",
+			"text": "What was that even about?"
+		},
+		{
+			"sound": "brainy_talk",
+			"speed": 0.085,
+			"portrait": "brainy",
+			"boxState": "normal",
+			"expression": "smile3",
+			"text": "Uhhhhhhh..."
+		},
+		{
+			"sound": "brainy_talk",
+			"speed": 0.05,
+			"portrait": "brainy",
+			"boxState": "normal",
+			"expression": "smile2",
+			"text": "We can just ignore that....\\nAnyways..."
+		},
+		{
+			"sound": "brainy_talk",
+			"speed": 0.05,
+			"portrait": "brainy",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "Uhhh...I'm out of ideas...\\nUh...you can visit my friend SKiD03 as an apology...? I'm fresh out of ideas."
+		},
+		{
+			"sound": "BF_Dialogue",
+			"speed": 0.05,
+			"portrait": "bf",
+			"boxState": "normal",
+			"expression": "confused",
+			"text": "Uhhhh..."
+		},
+		{
+			"sound": "GF_1",
+			"speed": 0.05,
+			"portrait": "gf",
+			"boxState": "normal",
+			"expression": "confused",
+			"text": "Yeah...that's a pretty shitty apology..."
+		},
+		{
+			"sound": "brainy_talk",
+			"speed": 0.05,
+			"portrait": "brainy",
+			"boxState": "normal",
+			"expression": "disgust",
+			"text": "Take it or leave it."
+		},
+		{
+			"sound": "BF_Dialogue",
+			"speed": 0.05,
+			"portrait": "bf",
+			"boxState": "normal",
+			"expression": "sing",
+			"text": "Bap!"
+		}
+	]
+}

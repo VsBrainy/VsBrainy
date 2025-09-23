@@ -28,7 +28,6 @@ import states.editors.ChartingState;
 import states.editors.CharacterEditorState;
 import states.MainMenuState;
 import states.StageViewerState;
-import states.JumpScareState;
 
 import substates.PauseSubState;
 import substates.GameOverSubstate;
@@ -1100,7 +1099,12 @@ class PlayState extends MusicBeatState
 						{
 							if (ClientPrefs.getGameplaySetting("practice") || ClientPrefs.getGameplaySetting("botplay"))
 							{
-								MusicBeatState.switchState(new JumpScareState());
+								Song.loadFromJson('chart', 'synthrolled');
+
+								canResync = false;
+								isStoryMode = false;
+								LoadingState.prepareToSong();
+								LoadingState.loadAndSwitchState(new PlayState(), false, false);
 							}
 						}
 						#end
@@ -1825,7 +1829,12 @@ class PlayState extends MusicBeatState
 					#end
 
 					case 'plugins', 'twosome', 'bastard-two', 'bastard two': //lol i don't know whats correct
-						MusicBeatState.switchState(new JumpScareState());
+						Song.loadFromJson('chart', 'synthrolled');
+
+						canResync = false;
+						isStoryMode = false;
+						LoadingState.prepareToSong();
+						LoadingState.loadAndSwitchState(new PlayState(), false, false);
 
 					case 'bastard':
 						Song.loadFromJson('chart', 'bastard-two');
