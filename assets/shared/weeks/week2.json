@@ -30,7 +30,7 @@
 	],
 	"hiddenUntilUnlocked": false,
 	"hideFreeplay": false,
-	"weekBackground": "SKiD03",
+	"weekBackground": "skid03",
 	"difficulties": "normal",
 	"weekCharacters": [
 		"",
@@ -38,7 +38,7 @@
 		""
 	],
 	"storyName": "SKid03's fun rainbow land",
-	"weekName": "skid03",
+	"weekName": "SKiD03",
 	"hideStoryMode": false,
 	"weekBefore": "tutorial",
 	"startUnlocked": true
