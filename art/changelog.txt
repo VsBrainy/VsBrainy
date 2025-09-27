@@ -5,6 +5,7 @@ Addition: 3 freeplay songs
 Addition: 3 secret songs
 Addition: A very challenging to find secret. Have fun...
 Addition: Added credits in song (better than using credits state frfr)
+Addition: Freeplay Select Menu
 Change: Now using a new font
 Change: Brainy's stages changed to look a little better.
 Change: It's now sunset in Brainstorm...
