@@ -1,16 +1,17 @@
 {
-	"programmer": "Brainy7890",
-	"composer": "Brainy7890",
-	"charter": "Brainy7890",
-	"speed": 10,
-	"stage": "minisynth",
+	"composer": "MiniSynth",
 	"player1": "bf",
 	"player2": "fuckyou",
-	"events": [],
+	"events": [
+		[
+			8000,
+			[
+				["Crash Game", "", ""]
+			]
+		]
+	],
 	"notes": [
 		{
-			"gfSection": false,
-			"altAnim": false,
 			"sectionNotes": [
 				[0, 6, 0],
 				[125, 6, 0],
@@ -31,14 +32,14 @@
 				[1875, 5, 0],
 				[1937.5, 4, 0]
 			],
-			"bpm": 150,
 			"sectionBeats": 4,
+			"gfSection": false,
+			"altAnim": false,
+			"bpm": 150,
 			"changeBPM": false,
 			"mustHitSection": false
 		},
 		{
-			"gfSection": false,
-			"altAnim": false,
 			"sectionNotes": [
 				[2000, 6, 0],
 				[2125, 6, 0],
@@ -57,14 +58,14 @@
 				[3750, 5, 0],
 				[3875, 5, 0]
 			],
-			"bpm": 150,
 			"sectionBeats": 4,
+			"gfSection": false,
+			"altAnim": false,
+			"bpm": 150,
 			"changeBPM": false,
 			"mustHitSection": false
 		},
 		{
-			"gfSection": false,
-			"altAnim": false,
 			"sectionNotes": [
 				[4000, 2, 0],
 				[4125, 2, 0],
@@ -85,14 +86,14 @@
 				[5875, 1, 0],
 				[5937.5, 0, 0]
 			],
-			"bpm": 150,
 			"sectionBeats": 4,
+			"gfSection": false,
+			"altAnim": false,
+			"bpm": 150,
 			"changeBPM": false,
 			"mustHitSection": true
 		},
 		{
-			"gfSection": false,
-			"altAnim": false,
 			"sectionNotes": [
 				[6000, 2, 0],
 				[6125, 2, 0],
@@ -111,34 +112,40 @@
 				[7750, 1, 0],
 				[7875, 1, 0]
 			],
-			"bpm": 150,
 			"sectionBeats": 4,
+			"gfSection": false,
+			"altAnim": false,
+			"bpm": 150,
 			"changeBPM": false,
 			"mustHitSection": true
 		},
 		{
+			"sectionNotes": [],
+			"sectionBeats": 4,
 			"gfSection": false,
 			"altAnim": false,
-			"sectionNotes": [],
 			"bpm": 150,
-			"sectionBeats": 4,
 			"changeBPM": false,
 			"mustHitSection": false
 		},
 		{
+			"sectionNotes": [],
+			"sectionBeats": 4,
 			"gfSection": false,
 			"altAnim": false,
-			"sectionNotes": [],
 			"bpm": 150,
-			"sectionBeats": 4,
 			"changeBPM": false,
 			"mustHitSection": false
 		}
 	],
 	"gfVersion": "gf",
-	"format": "psych_v1",
-	"bpm": 120,
-	"needsVoices": true,
+	"charter": "MiniSynth",
+	"offset": 0,
 	"song": "Synthrolled",
-	"offset": 0
+	"stage": "minisynth",
+	"programmer": "MiniSynth",
+	"needsVoices": true,
+	"speed": 10,
+	"format": "psych_v1",
+	"bpm": 120
 }

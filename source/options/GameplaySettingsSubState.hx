@@ -33,9 +33,15 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		addOption(option);
 
 		var option:Option = new Option('Taunt', //Name
-			'If checked, you can press ACCEPT to taunt!.', //Description
+			'If checked, you can press TAUNT to taunt!', //Description
 			'taunt', //Save data variable name
 			BOOL); //Variable type
+		addOption(option);
+
+		var option:Option = new Option('Show Cutscens in Freeplay',
+			'If checked, cutscenes will play in song launched from Freeplay',
+			'showCutscenes',
+			BOOL);
 		addOption(option);
 		
 		var option:Option = new Option('Auto Pause',
@@ -121,6 +127,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.maxValue = 10;
 		option.changeValue = 0.1;
 		addOption(option);
+
 
 		super();
 	}

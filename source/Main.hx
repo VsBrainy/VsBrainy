@@ -23,7 +23,9 @@ import crowplexus.iris.Iris;
 import psychlua.HScript.HScriptInfos;
 #end
 
+#if (mac || linux || secrets)
 import lime.graphics.Image;
+#end
 
 import backend.CoolMath;
 
@@ -168,6 +170,7 @@ class Main extends Sprite
 		}
 		#end
 
+		#if SECRETS
 		var icon;
 
 		if (CoolMath.randBool(0.05))
@@ -180,6 +183,13 @@ class Main extends Sprite
 			icon = Image.fromFile("icon.png");
 
 		Lib.current.stage.window.setIcon(icon);
+		#end
+
+		FlxG.mouse.load(Paths.getSharedPath() + "images/cursor/cursor-default.png");
+
+		#if (mac || linux)
+		Lib.current.stage.window.setIcon(Image.fromFile("icon.png"));
+		#end
 
 		#if html5
 		FlxG.autoPause = false;

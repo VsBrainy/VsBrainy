@@ -24,6 +24,7 @@ import cutscenes.DialogueBoxPsych;
 
 import states.StoryMenuState;
 import states.FreeplayState;
+import states.FreeplaySelectState;
 import states.editors.ChartingState;
 import states.editors.CharacterEditorState;
 import states.MainMenuState;
@@ -1003,6 +1004,8 @@ class PlayState extends MusicBeatState
 		Paths.sound('introGo' + introSoundsSuffix);
 	}
 
+	private inline function doCutscene() return (isStoryMode || ClientPrefs.data.showCutscenes);
+
 	var didDialogue:Bool = false;
 	public function startCountdown()
 	{
@@ -1011,7 +1014,7 @@ class PlayState extends MusicBeatState
 
 		var cutsceneFile:DialogueFile;
 
-		if (!didDialogue && isStoryMode) {
+		if (!didDialogue && doCutscene()) {
 			if (FileSystem.exists(sPath)) {
 				startDialogue(DialogueBoxPsych.parseDialogue(Paths.json(songName + '/dialogue')));
 				didDialogue = true;
@@ -1476,13 +1479,6 @@ class PlayState extends MusicBeatState
 				swagNote.mustPress = gottaHitNote;
 				swagNote.sustainLength = holdLength;
 				swagNote.noteType = noteType;
-
-				var start:Int = 0;
-
-				if (songName.toLowerCase() == "cheating")
-				{
-					swagNote.noteData = FlxG.random.int(start, start + 3);
-				}
 	
 				swagNote.scrollFactor.set();
 				unspawnNotes.push(swagNote);
@@ -1643,14 +1639,12 @@ class PlayState extends MusicBeatState
 
 			var babyArrow:StrumNote = new StrumNote(strumLineX, strumLineY, i, player);
 			babyArrow.downScroll = ClientPrefs.data.downScroll;
-			babyArrow.scale.set(0.1, 0.1);
+
 			if (!isStoryMode && !skipArrowStartTween)
 			{
 				//babyArrow.y -= 10;
 				babyArrow.alpha = 0;
 				FlxTween.tween(babyArrow, {/*y: babyArrow.y + 10,*/ alpha: targetAlpha}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
-				FlxTween.tween(babyArrow.scale, {/*y: babyArrow.y + 10,*/ x: 1}, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
-				FlxTween.tween(babyArrow.scale, {/*y: babyArrow.y + 10,*/ y: 1}, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
 			}
 			else babyArrow.alpha = targetAlpha;
 
@@ -2650,13 +2644,17 @@ class PlayState extends MusicBeatState
 		#end
 
 		var s:String = StringTools.replace(songName.toLowerCase(), " ", "-");
-		var sPath:String = "assets/shared/data/" + s + "/dialogue.json";
+		var sPath:String = "assets/shared/data/" + s + "/after.json";
 
 		var cutsceneFile:DialogueFile;
 
-		if (!didDialogueEnd && isStoryMode) {
+		if (!didDialogueEnd && doCutscene()) {
 			if (FileSystem.exists(sPath)) {
-				startDialogue(DialogueBoxPsych.parseDialogue(Paths.json(songName + '/dialogue')));
+				for (note in strumLineNotes)
+				{
+					note.alpha = 0;
+				}
+				startDialogue(DialogueBoxPsych.parseDialogue(Paths.json(songName + '/after')));
 				didDialogueEnd = true;
 				return false;
 			}
@@ -2733,7 +2731,7 @@ class PlayState extends MusicBeatState
 				#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
 
 				canResync = false;
-				MusicBeatState.switchState(new FreeplayState());
+				MusicBeatState.switchState(new FreeplaySelectState());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 				changedDifficulty = false;
 			}

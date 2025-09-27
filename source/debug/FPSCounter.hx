@@ -4,6 +4,7 @@ import flixel.FlxG;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
 import openfl.system.System;
+import backend.ClientPrefs;
 
 /**
 	The FPS class provides an easy-to-use monitor to display
@@ -61,7 +62,7 @@ class FPSCounter extends TextField
 	}
 
 	public dynamic function updateText():Void { // so people can override it in hscript
-		text = 'FPS: ${currentFPS}'
+		text = 'FPS: ${currentFPS}/${ClientPrefs.data.framerate}'
 		+ '\nMemory: ${flixel.util.FlxStringUtil.formatBytes(memoryMegas)}';
 
 		textColor = 0xFFFFFFFF;

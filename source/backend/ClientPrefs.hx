@@ -81,6 +81,8 @@ import states.TitleState;
 	public var language:String = 'en-US';
 
 	public var minisynthUnlocked = false;
+
+	public var showCutscenes = false;
 }
 
 class ClientPrefs {

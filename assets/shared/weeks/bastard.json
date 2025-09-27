@@ -1,5 +1,5 @@
 {
-	"storyName": "bastard",
+	"storyName": "Bastard",
 	"difficulties": "Normal",
 	"hideFreeplay": false,
 	"weekBackground": "",
@@ -14,6 +14,15 @@
 	"songs": [
 		[
 			"bastard",
+			"guy",
+			[
+				255,
+				255,
+				255
+			]
+        ],
+		[
+			"bastard-two",
 			"guy",
 			[
 				255,

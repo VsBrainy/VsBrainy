@@ -7,6 +7,8 @@ import states.editors.MasterEditorMenu;
 import options.OptionsState;
 import states.PlayState;
 
+import states.FreeplaySelectState;
+
 enum MainMenuColumn {
 	LEFT;
 	CENTER;
@@ -297,7 +299,7 @@ class MainMenuState extends MusicBeatState
 						case 'story_mode':
 							MusicBeatState.switchState(new StoryMenuState());
 						case 'freeplay':
-							MusicBeatState.switchState(new FreeplayState());
+							MusicBeatState.switchState(new FreeplaySelectState());
 
 						#if MODS_ALLOWED
 						case 'mods':

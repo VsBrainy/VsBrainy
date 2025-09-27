@@ -288,8 +288,6 @@ class Note extends FlxSprite
 				animation.play(animToPlay + 'Scroll');
 			}
 		}
-
-		rgbShader.enabled = false;
 		
 		// trace(prevNote);
 
