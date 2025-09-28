@@ -23,9 +23,7 @@ import crowplexus.iris.Iris;
 import psychlua.HScript.HScriptInfos;
 #end
 
-#if (mac || linux || secrets)
 import lime.graphics.Image;
-#end
 
 import backend.CoolMath;
 
