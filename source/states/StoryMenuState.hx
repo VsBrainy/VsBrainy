@@ -3,7 +3,6 @@ package states;
 import backend.WeekData;
 import backend.Highscore;
 import backend.Song;
-import backend.Sounds;
 
 import flixel.group.FlxGroup;
 import flixel.graphics.FlxGraphic;
@@ -17,8 +16,6 @@ import substates.ResetScoreSubState;
 
 import backend.StageData;
 import backend.ClientPrefs;
-
-import backend.Achievements;
 
 class StoryMenuState extends MusicBeatState
 {
@@ -296,16 +293,15 @@ class StoryMenuState extends MusicBeatState
 
         if (FlxG.keys.justPressed.SEVEN && !ClientPrefs.data.minisynthUnlocked)
         {
-            Sounds.play("assets/shared/sounds/minisynthriser.ogg");
+            FlxG.sound.play("assets/shared/sounds/minisynthriser.ogg", 2);
             var coolFade = new FadingOverlay();
             add(coolFade);
             coolFade.fade(1, 2.5, function()
                 {
-                    Sounds.play("assets/shared/sounds/vineboom.ogg");
+                    FlxG.sound.play("assets/shared/sounds/vineboom.ogg");
                     ClientPrefs.data.minisynthUnlocked = true;
                     MusicBeatState.switchState(new StoryMenuState());
                     trace("kinda crazy that you just unlocked a cool secret week. have fun...");
-                    Achievements.unlock("minisynth");
                     ClientPrefs.saveSettings();
                 }, 0.5);
         }

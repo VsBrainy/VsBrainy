@@ -1,4 +1,7 @@
-WOWEE V2 IS OUT
+V1:
+Initial release 
+
+V2:
 
 Addition: SKiD03 week, one secret week
 Addition: 3 freeplay songs
@@ -11,5 +14,11 @@ Change: Brainy's stages changed to look a little better.
 Change: It's now sunset in Brainstorm...
 Change: Notes do a little jiggle when you hit a note and on ghost tap! (can be turned off in setting)
 Removal: Irritated BF Sprites
+Fix: Various bugfixes
 
-Plus various bugfixes
+V2.0.1
+
+Fix: Fixed MiniSynth Week crash
+Fix: Fixed some songs using the wrong Note Splash.
+Addition: There's...something in the files. Try and find it.
+Removal: Achievements. Too lazy to maintain it and whatever.
