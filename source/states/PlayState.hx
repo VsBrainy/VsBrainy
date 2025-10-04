@@ -401,6 +401,7 @@ class PlayState extends MusicBeatState
 		{
 			case 'stage': new StageWeek1(); 			//Week 1
 			case 'brainysland', 'brainyslandsunset', 'brainyslandnight': new Brainy();
+			case 'brainysland-old', 'brainyslandsunset-old', 'brainyslandnight-old': new OldBrainy();
 			case 'skidsland': new SkidLand();
 			case 'rageland': new RageLand();
 			case 'minisynth': new MiniSynth();

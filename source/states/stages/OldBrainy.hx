@@ -5,7 +5,7 @@ import states.PlayState;
 
 import flixel.util.FlxColor;
 
-class Brainy extends BaseStage
+class OldBrainy extends BaseStage
 {
     override function create()
     {
@@ -34,8 +34,8 @@ class Brainy extends BaseStage
                 bg.x += 200;
         }
 
-        var hills:BGSprite = new BGSprite('brainysland/funny_hill', -1422, -500, 0.15, 0.15);
-        var land:BGSprite = new BGSprite('brainysland/i_think_this_is_grass', -1200, -400, 1, 1);
+        var hills:BGSprite = new BGSprite('brainysland/old/hills', -1422, -301, 0.15, 0.15);
+        var land:BGSprite = new BGSprite('brainysland/old/land', -1042, 239, 1, 1);
 
         add(bg);
         add(hills);

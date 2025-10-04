@@ -1,0 +1,34 @@
+{
+	"camera_boyfriend": [
+		-150,
+		0
+	],
+	"preload": {
+		"images/brainysland/": 3
+	},
+	"girlfriend": [
+		400,
+		130
+	],
+	"boyfriend": [
+		770,
+		100
+	],
+	"stageUI": "normal",
+	"camera_girlfriend": [
+		0,
+		0
+	],
+	"opponent": [
+		40,
+		-260
+	],
+	"directory": "",
+	"camera_speed": 1,
+	"camera_opponent": [
+		200,
+		0
+	],
+	"hide_girlfriend": false,
+	"defaultZoom": 0.8
+}
