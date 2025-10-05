@@ -1008,8 +1008,26 @@ class PlayState extends MusicBeatState
 	private inline function doCutscene() return (isStoryMode || ClientPrefs.data.showCutscenes);
 
 	var didDialogue:Bool = false;
+
+	//Maybe i should add this to song data instead?
+	private function getCutsceneMusic():String
+	{
+		switch (SONG.song.toLowerCase()) {
+			case 'brainy', 'brainstorm', 'irritated': return 'brainy';
+
+			case 'landscape', 'shoot-em', 'rage03': return 'skid03';
+
+			case 'melody', 'cords': return 'minisynth';
+
+			case 'intensity': return 'intensity';
+
+			default: return 'default';
+		}
+	}
+
 	public function startCountdown()
 	{
+		FlxG.sound.music.volume = 0;
 		var s:String = StringTools.replace(songName.toLowerCase(), " ", "-");
 		var sPath:String = "assets/shared/data/" + s + "/dialogue.json";
 
@@ -1017,6 +1035,8 @@ class PlayState extends MusicBeatState
 
 		if (!didDialogue && doCutscene()) {
 			if (FileSystem.exists(sPath)) {
+				FlxG.sound.playMusic('assets/shared/music/${getCutsceneMusic()}_dialogue.ogg');
+				FlxG.sound.music.volume = 1;
 				startDialogue(DialogueBoxPsych.parseDialogue(Paths.json(songName + '/dialogue')));
 				didDialogue = true;
 				return false;
@@ -1811,6 +1831,7 @@ class PlayState extends MusicBeatState
 			if (controls.justPressed('debug_1'))
 				switch (SONG.song.toLowerCase())
 				{
+					#if !DEV
 					case 'irritated':
 						Song.loadFromJson('chart', 'cheating');
 
@@ -1846,7 +1867,7 @@ class PlayState extends MusicBeatState
 						isStoryMode = false;
 						LoadingState.prepareToSong();
 						LoadingState.loadAndSwitchState(new PlayState(), false, false);
-
+				#end
 					default:
 						openChartEditor();
 				}

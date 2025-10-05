@@ -35,6 +35,8 @@
 
 	<define name="SECRETS"/>
 
+	<define name="SHADERS_ALLOWED"/>
+
 	<!-- ____________________________ Window Settings ___________________________ -->
 
 	<!--These window settings apply to all targets-->

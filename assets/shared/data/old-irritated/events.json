@@ -1,0 +1,59 @@
+{
+	"events": [
+		[
+			9300,
+			[
+				["Set Camera Zoom", "0.6", ""]
+			]
+		],
+		[
+			28500,
+			[
+				["Set Camera Zoom", "0.7", ""]
+			]
+		],
+		[
+			38100,
+			[
+				["Set Camera Zoom", "0.6", ""]
+			]
+		],
+		[
+			66900,
+			[
+				["Set Camera Zoom", "0.8", ""]
+			]
+		],
+		[
+			86100,
+			[
+				["Set Camera Zoom", "0.6", ""]
+			]
+		],
+		[
+			105300,
+			[
+				["Set Camera Zoom", "0.7", ""]
+			]
+		],
+		[
+			114900,
+			[
+				["Set Camera Zoom", "0.6", ""]
+			]
+		],
+		[
+			143700,
+			[
+				["Set Camera Zoom", "0.8", ""]
+			]
+		],
+		[
+			162900,
+			[
+				["Set Camera Zoom", "0.6 ", ""]
+			]
+		]
+	],
+	"format": "psych_v1"
+}

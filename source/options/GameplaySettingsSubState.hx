@@ -32,6 +32,12 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			BOOL);
 		addOption(option);
 
+		var option:Option = new Option('Automatic Health Gain',
+			'If checked, some songs will give you a health gain.',
+			'autoHealth',
+			BOOL);
+		addOption(option);
+
 		var option:Option = new Option('Taunt', //Name
 			'If checked, you can press TAUNT to taunt!', //Description
 			'taunt', //Save data variable name
