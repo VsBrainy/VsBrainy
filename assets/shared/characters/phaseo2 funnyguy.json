@@ -1,0 +1,96 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				124,
+				-155
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singUP",
+			"indices": [],
+			"name": "phaselol up"
+		},
+		{
+			"offsets": [
+				42,
+				-282
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singDOWN",
+			"indices": [],
+			"name": "phaselol down"
+		},
+		{
+			"offsets": [
+				50,
+				-280
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "idle",
+			"indices": [],
+			"name": "phaselol idle"
+		},
+		{
+			"offsets": [
+				-8,
+				-263
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singRIGHT",
+			"indices": [],
+			"name": "phaselol right"
+		},
+		{
+			"offsets": [
+				39,
+				-267
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singLEFT",
+			"indices": [],
+			"name": "phaselol left"
+		}
+	],
+	"vocals_file": "",
+	"losing_colors": [
+		0,
+		0,
+		0
+	],
+	"no_antialiasing": true,
+	"image": "characters/phaselol",
+	"shake_duration": 0.06,
+	"position": [
+		-510,
+		-290
+	],
+	"health_drain": false,
+	"shake_intensity": 0.002,
+	"healthicon": "guy",
+	"shake_screen": true,
+	"drain_floor": 0,
+	"flip_x": true,
+	"healthbar_colors": [
+		0,
+		0,
+		0
+	],
+	"drain_amount": 0,
+	"camera_position": [
+		-30,
+		200
+	],
+	"sing_duration": 6.1,
+	"noteskin": null,
+	"winning_colors": [
+		0,
+		0,
+		0
+	],
+	"scale": 1
+}
