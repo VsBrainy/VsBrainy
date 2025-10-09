@@ -114,6 +114,8 @@ class PlayState extends MusicBeatState
 	public var DAD_Y:Float = 100;
 	public var GF_X:Float = 400;
 	public var GF_Y:Float = 130;
+	public var PLAYER4_X:Float = 0;
+	public var PLAYER4_Y:Float = 0;
 
 	public var songSpeedTween:FlxTween;
 	public var songSpeed(default, set):Float = 1;
@@ -127,6 +129,7 @@ class PlayState extends MusicBeatState
 	public var boyfriendGroup:FlxSpriteGroup;
 	public var dadGroup:FlxSpriteGroup;
 	public var gfGroup:FlxSpriteGroup;
+	public var player4Group:FlxSpriteGroup;
 	public static var curStage:String = '';
 	public static var stageUI(default, set):String = "normal";
 	public static var uiPrefix:String = "";
@@ -164,6 +167,7 @@ class PlayState extends MusicBeatState
 	public var dad:Character = null;
 	public var gf:Character = null;
 	public var boyfriend:Character = null;
+	public var player4:Character = null;
 
 	public var notes:FlxTypedGroup<Note>;
 	public var unspawnNotes:Array<Note> = [];
@@ -245,6 +249,7 @@ class PlayState extends MusicBeatState
 	public var boyfriendCameraOffset:Array<Float> = null;
 	public var opponentCameraOffset:Array<Float> = null;
 	public var girlfriendCameraOffset:Array<Float> = null;
+	public var player4CameraOffset:Array<Float> = null;
 
 	#if DISCORD_ALLOWED
 	// Discord RPC variables
@@ -309,12 +314,25 @@ class PlayState extends MusicBeatState
 		if(FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
+		if (SONG.song.toLowerCase() == 'madness 100000')
+		{
+			backend.WindowUtil.setWindowSize(960, 720, 960, 720);
+		}
+
 		// Gameplay settings
 		switch (SONG.song.toLowerCase())
 		{
-			case "intensity", "bastard", "bastard two":
-				healthGain = 3;
-				healthLoss = 0.5;
+			case "intensity", "bastard", "bastard two", "synth god":
+				if (ClientPrefs.data.autoHealth)
+				{
+					healthGain = 3;
+					healthLoss = 0.5;
+				}
+				else
+				{
+					healthGain = ClientPrefs.getGameplaySetting('healthgain');
+					healthLoss = ClientPrefs.getGameplaySetting('healthloss');
+				}
 
 			default:
 				healthGain = ClientPrefs.getGameplaySetting('healthgain');
@@ -377,6 +395,16 @@ class PlayState extends MusicBeatState
 		GF_Y = stageData.girlfriend[1];
 		DAD_X = stageData.opponent[0];
 		DAD_Y = stageData.opponent[1];
+		if (stageData.player4 != null)
+		{
+			PLAYER4_X = stageData.player4[0];
+			PLAYER4_Y = stageData.player4[1];
+		}
+		else
+		{
+			PLAYER4_X = 0;
+			PLAYER4_Y = 0;
+		}
 
 		if(stageData.camera_speed != null)
 			cameraSpeed = stageData.camera_speed;
@@ -393,9 +421,16 @@ class PlayState extends MusicBeatState
 		if(girlfriendCameraOffset == null)
 			girlfriendCameraOffset = [0, 0];
 
+		player4CameraOffset = stageData.camera_player4;
+		if(player4CameraOffset == null)
+			player4CameraOffset = [0, 0];
+
 		boyfriendGroup = new FlxSpriteGroup(BF_X, BF_Y);
 		dadGroup = new FlxSpriteGroup(DAD_X, DAD_Y);
 		gfGroup = new FlxSpriteGroup(GF_X, GF_Y);
+
+		if (SONG.usePlayer4)
+			player4Group = new FlxSpriteGroup(PLAYER4_X, PLAYER4_Y);
 
 		switch (curStage)
 		{
@@ -405,6 +440,7 @@ class PlayState extends MusicBeatState
 			case 'skidsland': new SkidLand();
 			case 'rageland': new RageLand();
 			case 'minisynth': new MiniSynth();
+			case 'minisynth-grey': new MiniSynth();
 			case 'brainycheater': 
 				var stage:VoidStage = new VoidStage('cheater/brainycheater', 1, 1, 3, 3);
 				stage.bg.y += (720/2) + 200;
@@ -422,7 +458,7 @@ class PlayState extends MusicBeatState
 			if(SONG.gfVersion == null || SONG.gfVersion.length < 1) SONG.gfVersion = 'gf'; //Fix for the Chart Editor
 			gf = new Character(0, 0, SONG.gfVersion);
 			startCharacterPos(gf);
-			gfGroup.scrollFactor.set(0.95, 0.95);
+			//gfGroup.scrollFactor.set(0.95, 0.95);
 			gfGroup.add(gf);
 		}
 
@@ -433,6 +469,14 @@ class PlayState extends MusicBeatState
 		boyfriend = new Character(0, 0, SONG.player1, true);
 		startCharacterPos(boyfriend);
 		boyfriendGroup.add(boyfriend);
+
+		if (SONG.usePlayer4)
+		{
+			if(SONG.player4 == null || SONG.player4.length < 1) SONG.gfVersion = 'skid03';
+			player4 = new Character(0, 0, SONG.player4);
+			startCharacterPos(player4);
+			player4Group.add(player4);
+		}
 		
 		if(stageData.objects != null && stageData.objects.length > 0)
 		{
@@ -446,6 +490,7 @@ class PlayState extends MusicBeatState
 			add(gfGroup);
 			add(dadGroup);
 			add(boyfriendGroup);
+			add(player4Group);
 		}
 
 		//This switch/case is only for overlays!
@@ -1139,10 +1184,10 @@ class PlayState extends MusicBeatState
 							boyfriend.playAnim(SONG.bfAnimOnGo, true);
 
 						if (SONG.gfAnimOnGo == null)
-							gf.playAnim("cheer", true);
+							if (gf != null) gf.playAnim("cheer", true);
 
 						else
-							gf.playAnim(SONG.gfAnimOnGo, true);
+							if (gf != null) gf.playAnim(SONG.gfAnimOnGo, true);
 						
 						countdownGo = createCountdownSprite(introAlts[2], antialias);
 						FlxG.sound.play(Paths.sound('introGo' + introSoundsSuffix), 0.6);
@@ -1496,6 +1541,7 @@ class PlayState extends MusicBeatState
 
 				var isAlt: Bool = section.altAnim && !gottaHitNote;
 				swagNote.gfNote = (section.gfSection && gottaHitNote == section.mustHitSection);
+				swagNote.player4Note = (section.player4Section && gottaHitNote == section.mustHitSection);
 				swagNote.animSuffix = isAlt ? "-alt" : "";
 				swagNote.mustPress = gottaHitNote;
 				swagNote.sustainLength = holdLength;
@@ -2525,6 +2571,9 @@ class PlayState extends MusicBeatState
 
 					case 'dad':
 						moveCamera(true);
+					
+					case 'player 4':
+						moveCamera(false, true);
 				}
 
 			case 'Crash Game':
@@ -2549,9 +2598,11 @@ class PlayState extends MusicBeatState
 		}
 
 		var isDad:Bool = (SONG.notes[sec].mustHitSection != true);
-		moveCamera(isDad);
+		moveCamera(isDad, SONG.notes[sec].player4Section);
 		if (isDad)
 			callOnScripts('onMoveCamera', ['dad']);
+		else if (SONG.notes[sec].player4Section)
+			callOnScripts('onMoveCamera', ['player4']);
 		else
 			callOnScripts('onMoveCamera', ['boyfriend']);
 	}
@@ -2565,9 +2616,17 @@ class PlayState extends MusicBeatState
 	}
 
 	var cameraTwn:FlxTween;
-	public function moveCamera(isDad:Bool)
+	public function moveCamera(isDad:Bool, ?isPlayer4:Bool = false)
 	{
-		if(isDad)
+		if(isPlayer4)
+		{
+			if(player4 == null) return;
+			camFollow.setPosition(player4.getMidpoint().x + 150, player4.getMidpoint().y - 100);
+			camFollow.x += player4.cameraPosition[0] + opponentCameraOffset[0];
+			camFollow.y += player4.cameraPosition[1] + opponentCameraOffset[1];
+			tweenCamIn();
+		}
+		else if(isDad)
 		{
 			if(dad == null) return;
 			camFollow.setPosition(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
@@ -3209,6 +3268,9 @@ class PlayState extends MusicBeatState
 		var char:Character = boyfriend;
 		if((note != null && note.gfNote) || (SONG.notes[curSection] != null && SONG.notes[curSection].gfSection)) char = gf;
 
+		if (SONG.usePlayer4)
+			if((note != null && note.player4Note) || (SONG.notes[curSection] != null && SONG.notes[curSection].player4Section)) char = player4;
+
 		if(char != null && (note == null || !note.noMissAnimation) && char.hasMissAnimations)
 		{
 			var postfix:String = '';
@@ -3216,6 +3278,11 @@ class PlayState extends MusicBeatState
 
 			var animToPlay:String = singAnimations[Std.int(Math.abs(Math.min(singAnimations.length-1, direction)))] + 'miss' + postfix;
 			char.playAnim(animToPlay, true);
+
+			if (note.bothNote && SONG.usePlayer4)
+			{
+				player4.playAnim(animToPlay, true);
+			}
 
 			if(char != gf && lastCombo > 5 && gf != null && gf.hasAnimation('sad'))
 			{
@@ -3247,6 +3314,7 @@ class PlayState extends MusicBeatState
 			var char:Character = dad;
 			var animToPlay:String = singAnimations[Std.int(Math.abs(Math.min(singAnimations.length-1, note.noteData)))] + note.animSuffix;
 			if(note.gfNote) char = gf;
+			if(note.player4Note) char = player4;
 
 			if(char != null)
 			{
@@ -3259,6 +3327,12 @@ class PlayState extends MusicBeatState
 				}
 
 				if(canPlay) char.playAnim(animToPlay, true);
+
+				if (note.bothNote)
+				{
+					if (player4 != null)
+						char.playAnim(animToPlay, true);
+				}
 				char.holdTimer = 0;
 			}
 		}
@@ -3398,6 +3472,10 @@ class PlayState extends MusicBeatState
 	}
 
 	override function destroy() {
+		if (SONG.song.toLowerCase() == 'madness 100000')
+		{
+			backend.WindowUtil.setWindowSize(1280, 720, 1280, 720);
+		}
 		if (psychlua.CustomSubstate.instance != null)
 		{
 			closeSubState();
@@ -3499,6 +3577,8 @@ class PlayState extends MusicBeatState
 			boyfriend.dance();
 		if (dad != null && beat % dad.danceEveryNumBeats == 0 && !dad.getAnimationName().startsWith('sing') && !dad.stunned)
 			dad.dance();
+		if (player4 != null && beat % player4.danceEveryNumBeats == 0 && !player4.getAnimationName().startsWith('sing') && !player4.stunned)
+			player4.dance();
 	}
 
 	public function playerDance():Void

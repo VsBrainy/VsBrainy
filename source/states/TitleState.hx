@@ -22,6 +22,8 @@ import debug.FPSCounter;
 import backend.ClientPrefs;
 
 import backend.Globals;
+
+import objects.WavyBGSprite;
 typedef TitleData =
 {
 	var titlex:Float;
@@ -73,6 +75,8 @@ class TitleState extends MusicBeatState
 		Paths.clearStoredMemory();
 		super.create();
 		Paths.clearUnusedMemory();
+
+		FlxG.scaleMode = new FixedScaleAdjustSizeScaleMode(false, false);
 
 		if(!initialized)
 		{
@@ -227,6 +231,8 @@ class TitleState extends MusicBeatState
 	var danceLeftFrames:Array<Int> = [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29];
 	var danceRightFrames:Array<Int> = [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 
+	var bg:WavyBGSprite;
+
 	function loadJsonData()
 	{
 		if(Paths.fileExists('images/gfDanceTitle.json', TEXT))
@@ -249,7 +255,7 @@ class TitleState extends MusicBeatState
 	
 					if (titleJSON.backgroundSprite != null && titleJSON.backgroundSprite.trim().length > 0)
 					{
-						var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image(titleJSON.backgroundSprite));
+						bg = new WavyBGSprite("assets/shared/images/" + titleJSON.backgroundSprite);
 						bg.antialiasing = ClientPrefs.data.antialiasing;
 						add(bg);
 					}
@@ -327,6 +333,10 @@ class TitleState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		if (bg != null)
+		{
+			bg.updateShader(elapsed);
+		}
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);

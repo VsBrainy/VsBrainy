@@ -23,6 +23,8 @@
 	<define name="DISCORD_ALLOWED" if="desktop"/>
 	<define name="IRIS_DEBUG"/>
 
+	<define name="ANTISPOILER"/>
+
 	<define name="LUA_ALLOWED"/>
 	<define name="HSCRIPT_ALLOWED"/>
 	
@@ -91,7 +93,7 @@
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
 
 	<assets path='art/changelog.txt' rename='changelog.txt' />
-
+	<assets path='art/credits.txt' rename='credits.txt' />
 
 	<!-- OpenAL config -->
 	<section if="desktop">

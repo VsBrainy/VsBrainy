@@ -14,11 +14,13 @@ typedef StageFile = {
 	var boyfriend:Array<Dynamic>;
 	var girlfriend:Array<Dynamic>;
 	var opponent:Array<Dynamic>;
+	@:optional var player4:Array<Dynamic>;
 	var hide_girlfriend:Bool;
 
 	var camera_boyfriend:Array<Float>;
 	var camera_opponent:Array<Float>;
 	var camera_girlfriend:Array<Float>;
+	@:optional var camera_player4:Array<Float>;
 	var camera_speed:Null<Float>;
 
 	@:optional var preload:Dynamic;

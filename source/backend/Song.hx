@@ -18,6 +18,8 @@ typedef SwagSong =
 	var player1:String;
 	var player2:String;
 	var gfVersion:String;
+	@:optional var player4:String;
+	@:optional var usePlayer4:Bool;
 	var stage:String;
 	var format:String;
 
@@ -48,6 +50,7 @@ typedef SwagSection =
 	@:optional var gfSection:Bool;
 	@:optional var bpm:Float;
 	@:optional var changeBPM:Bool;
+	@:optional var player4Section:Bool;
 }
 
 class Song

@@ -464,6 +464,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		playerDropDown.list = characterList;
 		opponentDropDown.list = characterList;
 		girlfriendDropDown.list = characterList;
+		player4DropDown.list = characterList;
 
 		gameOverCharacters.insert(0, '');
 		gameOverCharacters.sort(function(a:String, b:String)
@@ -644,7 +645,9 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		playerDropDown.selectedLabel = PlayState.SONG.player1;
 		opponentDropDown.selectedLabel = PlayState.SONG.player2;
 		girlfriendDropDown.selectedLabel = PlayState.SONG.gfVersion;
+		player4DropDown.selectedLabel = PlayState.SONG.player4;
 		stageDropDown.selectedLabel = PlayState.SONG.stage;
+		player4CheckBox.checked = PlayState.SONG.usePlayer4;
 		StageData.loadDirectory(PlayState.SONG);
 
 		// DATA TAB
@@ -2163,6 +2166,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		{
 			mustHitCheckBox.checked = sec.mustHitSection;
 			gfSectionCheckBox.checked = sec.gfSection;
+			player4SectionCheckBox.checked = sec.player4Section;
 			altAnimSectionCheckBox.checked = sec.altAnim;
 			changeBpmCheckBox.checked = sec.changeBPM;
 			changeBpmStepper.value = Conductor.bpm;
@@ -2792,6 +2796,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 
 	var mustHitCheckBox:PsychUICheckBox;
 	var gfSectionCheckBox:PsychUICheckBox;
+	var player4SectionCheckBox:PsychUICheckBox;
 	var altAnimSectionCheckBox:PsychUICheckBox;
 
 	var changeBpmCheckBox:PsychUICheckBox;
@@ -2880,6 +2885,12 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		{
 			var sec = getCurChartSection();
 			if(sec != null) sec.gfSection = gfSectionCheckBox.checked;
+			updateHeads(true);
+		});
+		player4SectionCheckBox = new PsychUICheckBox(objX + 100, objY + 40, 'Player 4 Section', 70, function()
+		{
+			var sec = getCurChartSection();
+			if(sec != null) sec.player4Section = player4SectionCheckBox.checked;
 			updateHeads(true);
 		});
 		altAnimSectionCheckBox = new PsychUICheckBox(objX + 200, objY, 'Alt Anim', 70, function()
@@ -3043,6 +3054,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 
 		tab_group.add(mustHitCheckBox);
 		tab_group.add(gfSectionCheckBox);
+		tab_group.add(player4SectionCheckBox);
 		tab_group.add(altAnimSectionCheckBox);
 
 		tab_group.add(new FlxText(beatsPerSecStepper.x, beatsPerSecStepper.y - 15, 100, 'Beats per Section:'));
@@ -3248,6 +3260,9 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	var playerDropDown:PsychUIDropDownMenu;
 	var opponentDropDown:PsychUIDropDownMenu;
 	var girlfriendDropDown:PsychUIDropDownMenu;
+	var player4DropDown:PsychUIDropDownMenu;
+
+	var player4CheckBox:PsychUICheckBox;
 	
 	function addSongTab()
 	{
@@ -3361,7 +3376,19 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			PlayState.SONG.gfVersion = character;
 			trace('selected $character');
 		});
-		
+
+		player4DropDown = new PsychUIDropDownMenu(stageDropDown.x, objY + 80, [''], function(id:Int, character:String)
+		{
+			PlayState.SONG.player4 = character;
+			trace('selected $character');
+		});
+
+		player4CheckBox = new PsychUICheckBox(stageDropDown.x, objY + 120, 'Use Player 4', 80, function()
+		{
+			PlayState.SONG.usePlayer4 = player4CheckBox.checked;
+		});
+
+		tab_group.add(player4CheckBox);
 		tab_group.add(new FlxText(bpmStepper.x, bpmStepper.y - 15, 50, 'BPM:'));
 		tab_group.add(new FlxText(scrollSpeedStepper.x, scrollSpeedStepper.y - 15, 80, 'Scroll Speed:'));
 		tab_group.add(new FlxText(audioOffsetStepper.x, audioOffsetStepper.y - 15, 100, 'Audio Offset (ms):'));
@@ -3374,11 +3401,13 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		tab_group.add(new FlxText(playerDropDown.x, playerDropDown.y - 15, 80, 'Player:'));
 		tab_group.add(new FlxText(opponentDropDown.x, opponentDropDown.y - 15, 80, 'Opponent:'));
 		tab_group.add(new FlxText(girlfriendDropDown.x, girlfriendDropDown.y - 15, 80, 'Girlfriend:'));
+		tab_group.add(new FlxText(player4DropDown.x, player4DropDown.y - 15, 80, 'Player 4:'));
 
 		tab_group.add(stageDropDown);
 		tab_group.add(girlfriendDropDown);
 		tab_group.add(opponentDropDown);
 		tab_group.add(playerDropDown);
+		tab_group.add(player4DropDown);
 	}
 
 	function addFileTab()

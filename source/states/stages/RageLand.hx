@@ -17,19 +17,31 @@ class RageLand extends BaseStage
     {
         super.create();
 
-        bg = new BGSprite('skys/sky_space', 0, 0, 0.25, 0.25);
+        bg = new BGSprite('skys/sky_space', 0, 0, 0, 0);
 
-        bg.scale.x = 3;
-        bg.scale.y = 3;
+        bg.scale.x = 5;
+        bg.scale.y = 5;
         bg.updateHitbox();
         bg.screenCenter();
 
         add(bg);
+    }
 
-        rainbowGround = new BGSprite('skidsland/rainbowGround', 700, 141);
-        rainbowGround.scale.set(2, 2);
+    override function createPost()
+    {
+        super.createPost();
+
+        rainbowGround = new BGSprite('skidsland/rainbowGround', 0, 0);
+        rainbowGround.scale.set(4, 2);
+        rainbowGround.screenCenter(X);
 
         add(rainbowGround);
+
+        add(PlayState.instance.gf);
+        add(PlayState.instance.boyfriend);
+
+        PlayState.instance.dad.scrollFactor.set(0.6, 0.6);
+        PlayState.instance.dad.scale.set(0.75, 0.75);
     }
 
     override function update(elapsed:Float)

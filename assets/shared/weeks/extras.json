@@ -1,0 +1,36 @@
+{
+	"songs": [
+        [
+			"Cheating",
+			"brainy-mad",
+			[
+				230,
+				0,
+				0
+			]
+		],
+		[
+			"madness 100000",
+			"phobia",
+			[
+				146,
+				113,
+				253
+			]
+		]
+	],
+	"hiddenUntilUnlocked": false,
+	"hideFreeplay": false,
+	"weekBackground": "void",
+	"difficulties": "normal",
+	"weekCharacters": [
+		"",
+		"",
+		""
+	],
+	"storyName": "Extras",
+	"weekName": "Extras",
+	"hideStoryMode": true,
+	"weekBefore": "tutorial",
+	"startUnlocked": true
+}

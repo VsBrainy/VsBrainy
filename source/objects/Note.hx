@@ -46,6 +46,8 @@ class Note extends FlxSprite
 		'Hey!',
 		'Hurt Note',
 		'GF Sing',
+		'Player 4 Sing',
+		'Opponent and Player 4 Sing',
 		'No Animation',
 		'Instakill'
 	];
@@ -90,6 +92,8 @@ class Note extends FlxSprite
 
 	public var animSuffix:String = '';
 	public var gfNote:Bool = false;
+	public var player4Note:Bool = false;
+	public var bothNote:Bool = false;
 	public var earlyHitMult:Float = 1;
 	public var lateHitMult:Float = 1;
 	public var lowPriority:Bool = false;
@@ -228,6 +232,10 @@ class Note extends FlxSprite
 					noMissAnimation = true;
 				case 'GF Sing':
 					gfNote = true;
+				case 'Player 4 Sing':
+					player4Note = true;
+				case 'Opponent and Player 4 Sing':
+					bothNote = true;
 				case 'Instakill':
 					rgbShader.r = 0xFFFF0000;
 					rgbShader.g = 0xFFFF0000;
