@@ -8,14 +8,14 @@ import flixel.util.FlxColor;
 #if SHADERS_ALLOWED
 import shaders.PerspectiveEffect;
 #end
-
-
 class Brainy extends BaseStage
 {
     #if SHADERS_ALLOWED
     var land3d:FlxSprite;
     var effect:PerspectiveEffect;
     #end
+
+    var usePerspective = true;
 
     var offset = 0;
 
@@ -25,6 +25,12 @@ class Brainy extends BaseStage
         PlayState.instance.boyfriend.y += offset * 2;
         PlayState.instance.gf.y += offset * 2;
         PlayState.instance.dad.y += offset * 2;
+    }
+
+    override public function new(?usePerspective = true)
+    {
+        this.usePerspective = usePerspective;
+        super();
     }
 
     override function create()
@@ -63,7 +69,7 @@ class Brainy extends BaseStage
         var land:BGSprite = new BGSprite('brainysland/i_think_this_is_grass', -1200, -400 + offset, 1, 1);
         add(land);
         #else
-        if (!ClientPrefs.data.shaders || ClientPrefs.data.lowQuality)
+        if (!ClientPrefs.data.shaders || ClientPrefs.data.lowQuality || !usePerspective)
         {
             var land:BGSprite = new BGSprite('brainysland/i_think_this_is_grass', -1200, -400 + offset, 1, 1);
             add(land);
@@ -87,11 +93,13 @@ class Brainy extends BaseStage
     #if SHADERS_ALLOWED
     override function update(elapsed:Float)
     {
-        if (ClientPrefs.data.shaders || !ClientPrefs.data.lowQuality)
+        if (!usePerspective)
         {
-            if (effect != null) effect.update(elapsed, camGame.scroll.x + FlxG.width/2, (camGame.scroll.y + FlxG.height/2)*-1);
+            if (ClientPrefs.data.shaders || !ClientPrefs.data.lowQuality)
+            {
+                if (effect != null) effect.update(elapsed, camGame.scroll.x + FlxG.width/2, (camGame.scroll.y + FlxG.height/2)*-1);
+            }
         }
-
         super.update(elapsed);
     }
     #end
