@@ -17,6 +17,8 @@ import objects.Bar;
 import states.editors.content.Prompt;
 import states.editors.content.PsychJsonPrinter;
 
+import states.stage.Brainy;
+
 class CharacterEditorState extends MusicBeatState implements PsychUIEventHandler.PsychUIEvent
 {
 	var character:Character;
@@ -1078,7 +1080,7 @@ class CharacterEditorState extends MusicBeatState implements PsychUIEventHandler
 		// bg data //
 		/////////////
 		#if !BASE_GAME_FILES
-		camEditor.bgColor = 0xFF666666;
+		new Brainy();
 		#else
 		var bg:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
 		add(bg);

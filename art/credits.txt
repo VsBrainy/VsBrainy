@@ -7,3 +7,7 @@ Radom - Artist
 - CONTRIBUTORS -
 RAX - Created Freeplay Select
 Slidenote Guy - Created MiniSynth sprites used in Synth God
+
+- SPECIAL THANKS -
+TheoDev - Made FunkinModchart Library
+You, for playing the mod!

@@ -152,7 +152,7 @@ class Song
 		var rawData:String = null;
 		
 		var formattedFolder:String = Paths.formatToSongPath(folder);
-		var formattedSong:String = 'chart';
+		var formattedSong:String = Paths.formatToSongPath(jsonInput);
 		_lastPath = Paths.json('$formattedFolder/$formattedSong');
 
 		#if MODS_ALLOWED

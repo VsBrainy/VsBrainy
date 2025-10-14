@@ -30,9 +30,6 @@ class GlitchEffect {
     
     public function update(elapsed:Float)
     {
-        amplitude = 0.1;
-        frequency = 5;
-        speed = 2.25;
         time += elapsed;
         shader.uTime.value = [time/2];
     }
@@ -40,6 +37,9 @@ class GlitchEffect {
 	public function new()
 	{
 		shader.uTime.value = [0];
+		amplitude = 0.1;
+        frequency = 5;
+        speed = 2.25;
 	}
 }
 

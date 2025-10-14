@@ -1,0 +1,151 @@
+{
+	"composer": "MiniSynth",
+	"player1": "bf",
+	"player2": "fuckyou",
+	"events": [
+		[
+			8000,
+			[
+				["Crash Game", "", ""]
+			]
+		]
+	],
+	"notes": [
+		{
+			"sectionNotes": [
+				[0, 6, 0],
+				[125, 6, 0],
+				[250, 6, 0],
+				[375, 7, 0],
+				[500, 7, 0],
+				[625, 7, 0],
+				[750, 5, 0],
+				[875, 5, 0],
+				[1000, 5, 0],
+				[1125, 4, 0],
+				[1250, 4, 0],
+				[1375, 4, 0],
+				[1500, 5, 0],
+				[1625, 5, 0],
+				[1750, 7, 0],
+				[1812.5, 6, 0],
+				[1875, 5, 0],
+				[1937.5, 4, 0]
+			],
+			"sectionBeats": 4,
+			"gfSection": false,
+			"altAnim": false,
+			"bpm": 150,
+			"changeBPM": false,
+			"mustHitSection": false
+		},
+		{
+			"sectionNotes": [
+				[2000, 6, 0],
+				[2125, 6, 0],
+				[2250, 6, 0],
+				[2375, 7, 0],
+				[2500, 7, 0],
+				[2625, 7, 0],
+				[2750, 5, 0],
+				[2875, 5, 0],
+				[3000, 5, 0],
+				[3125, 5, 0],
+				[3250, 5, 0],
+				[3375, 5, 0],
+				[3500, 5, 0],
+				[3625, 5, 0],
+				[3750, 5, 0],
+				[3875, 5, 0]
+			],
+			"sectionBeats": 4,
+			"gfSection": false,
+			"altAnim": false,
+			"bpm": 150,
+			"changeBPM": false,
+			"mustHitSection": false
+		},
+		{
+			"sectionNotes": [
+				[4000, 2, 0],
+				[4125, 2, 0],
+				[4250, 2, 0],
+				[4375, 3, 0],
+				[4500, 3, 0],
+				[4625, 3, 0],
+				[4750, 1, 0],
+				[4875, 1, 0],
+				[5000, 1, 0],
+				[5125, 0, 0],
+				[5250, 0, 0],
+				[5375, 0, 0],
+				[5500, 1, 0],
+				[5625, 1, 0],
+				[5750, 3, 0],
+				[5812.5, 2, 0],
+				[5875, 1, 0],
+				[5937.5, 0, 0]
+			],
+			"sectionBeats": 4,
+			"gfSection": false,
+			"altAnim": false,
+			"bpm": 150,
+			"changeBPM": false,
+			"mustHitSection": true
+		},
+		{
+			"sectionNotes": [
+				[6000, 2, 0],
+				[6125, 2, 0],
+				[6250, 2, 0],
+				[6375, 3, 0],
+				[6500, 3, 0],
+				[6625, 3, 0],
+				[6750, 1, 0],
+				[6875, 1, 0],
+				[7000, 1, 0],
+				[7125, 1, 0],
+				[7250, 1, 0],
+				[7375, 1, 0],
+				[7500, 1, 0],
+				[7625, 1, 0],
+				[7750, 1, 0],
+				[7875, 1, 0]
+			],
+			"sectionBeats": 4,
+			"gfSection": false,
+			"altAnim": false,
+			"bpm": 150,
+			"changeBPM": false,
+			"mustHitSection": true
+		},
+		{
+			"sectionNotes": [],
+			"sectionBeats": 4,
+			"gfSection": false,
+			"altAnim": false,
+			"bpm": 150,
+			"changeBPM": false,
+			"mustHitSection": false
+		},
+		{
+			"sectionNotes": [],
+			"sectionBeats": 4,
+			"gfSection": false,
+			"altAnim": false,
+			"bpm": 150,
+			"changeBPM": false,
+			"mustHitSection": false
+		}
+	],
+	"gfVersion": "gf",
+	"charter": "MiniSynth",
+	"offset": 0,
+	"song": "Synthrolled",
+	"stage": "minisynth",
+	"programmer": "MiniSynth",
+	"needsVoices": true,
+	"speed": 10,
+	"format": "psych_v1",
+	"bpm": 120
+}

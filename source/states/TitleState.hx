@@ -255,7 +255,7 @@ class TitleState extends MusicBeatState
 	
 					if (titleJSON.backgroundSprite != null && titleJSON.backgroundSprite.trim().length > 0)
 					{
-						bg = new WavyBGSprite("assets/shared/images/" + titleJSON.backgroundSprite);
+						bg = new WavyBGSprite(titleJSON.backgroundSprite);
 						bg.antialiasing = ClientPrefs.data.antialiasing;
 						add(bg);
 					}

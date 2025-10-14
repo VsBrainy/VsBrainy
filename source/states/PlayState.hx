@@ -38,6 +38,8 @@ import openfl.filters.ShaderFilter;
 #end
 
 import shaders.ErrorHandledShader;
+import shaders.*;
+import shaders.Chromatic.ChromaticAbberEffect;
 
 import objects.VideoSprite;
 import objects.Note.EventNote;
@@ -59,6 +61,8 @@ import crowplexus.iris.Iris;
 import crowplexus.hscript.Expr.Error as IrisError;
 import crowplexus.hscript.Printer;
 #end
+
+import shaders.PerspectiveEffect;
 
 import lime.app.Application;
 import Sys;
@@ -282,6 +286,10 @@ class PlayState extends MusicBeatState
 
 	private static var _lastLoadedModDirectory:String = '';
 	public static var nextReloadAll:Bool = false;
+
+	private var glitchEffect = new GlitchEffect();
+	private var chromAbber:Map<String, ChromaticAbberEffect> = new Map();
+
 	override public function create()
 	{
 		//trace('Playback Rate: ' + playbackRate);
@@ -460,19 +468,25 @@ class PlayState extends MusicBeatState
 			startCharacterPos(gf);
 			//gfGroup.scrollFactor.set(0.95, 0.95);
 			gfGroup.add(gf);
+
+			if (SONG.song.toLowerCase() == 'intensity') new ChromaticAbberEffect(gf);
 		}
 
 		dad = new Character(0, 0, SONG.player2);
 		startCharacterPos(dad, true);
 		dadGroup.add(dad);
 
+		if (SONG.song.toLowerCase() == 'intensity') new ChromaticAbberEffect(dad);
+
 		boyfriend = new Character(0, 0, SONG.player1, true);
 		startCharacterPos(boyfriend);
 		boyfriendGroup.add(boyfriend);
 
+		if (SONG.song.toLowerCase() == 'intensity') new ChromaticAbberEffect(boyfriend);
+
 		if (SONG.usePlayer4)
 		{
-			if(SONG.player4 == null || SONG.player4.length < 1) SONG.gfVersion = 'skid03';
+			if(SONG.player4 == null || SONG.player4.length < 1) SONG.player4 = 'skid03';
 			player4 = new Character(0, 0, SONG.player4);
 			startCharacterPos(player4);
 			player4Group.add(player4);
@@ -570,7 +584,7 @@ class PlayState extends MusicBeatState
 		uiGroup.add(timeTxt);
 
 		noteGroup.add(strumLineNotes);
-
+		
 		if(ClientPrefs.data.timeBarType == 'Song Name')
 		{
 			timeTxt.size = 24;
@@ -1168,7 +1182,7 @@ class PlayState extends MusicBeatState
 						{
 							if (ClientPrefs.getGameplaySetting("practice") || ClientPrefs.getGameplaySetting("botplay"))
 							{
-								Song.loadFromJson('chart', 'synthrolled');
+								Song.loadFromJson('synthrolled', 'synthrolled');
 
 								canResync = false;
 								isStoryMode = false;
@@ -1690,6 +1704,7 @@ class PlayState extends MusicBeatState
 	}
 
 	public var skipArrowStartTween:Bool = false; //for lua
+
 	private function generateStaticArrows(player:Int):Void
 	{
 		var strumLineX:Float = ClientPrefs.data.middleScroll ? STRUM_X_MIDDLESCROLL : STRUM_X;
@@ -1705,6 +1720,7 @@ class PlayState extends MusicBeatState
 			}
 
 			var babyArrow:StrumNote = new StrumNote(strumLineX, strumLineY, i, player);
+
 			babyArrow.downScroll = ClientPrefs.data.downScroll;
 
 			if (!isStoryMode && !skipArrowStartTween)
@@ -1839,6 +1855,12 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
+		if (ClientPrefs.data.dumbWavy)
+		{
+			glitchEffect.update(elapsed);
+			var filter = new ShaderFilter(glitchEffect.shader);
+			camGame.setFilters([filter]);
+		}
 		if(!inCutscene && !paused && !freezeCamera) {
 			FlxG.camera.followLerp = 0.04 * cameraSpeed * playbackRate;
 			var idleAnim:Bool = (boyfriend.getAnimationName().startsWith('idle') || boyfriend.getAnimationName().startsWith('danceLeft') || boyfriend.getAnimationName().startsWith('danceRight'));
@@ -1879,7 +1901,7 @@ class PlayState extends MusicBeatState
 				{
 					#if !DEV
 					case 'irritated':
-						Song.loadFromJson('chart', 'cheating');
+						Song.loadFromJson('cheating', 'cheating');
 
 						canResync = false;
 						isStoryMode = false;
@@ -1891,7 +1913,7 @@ class PlayState extends MusicBeatState
 					#end
 
 					case 'plugins', 'twosome', 'bastard-two', 'bastard two': //lol i don't know whats correct
-						Song.loadFromJson('chart', 'synthrolled');
+						Song.loadFromJson('synthrolled', 'synthrolled');
 
 						canResync = false;
 						isStoryMode = false;
@@ -1899,7 +1921,7 @@ class PlayState extends MusicBeatState
 						LoadingState.loadAndSwitchState(new PlayState(), false, false);
 
 					case 'bastard':
-						Song.loadFromJson('chart', 'bastard-two');
+						Song.loadFromJson('bastard-two', 'bastard-two');
 
 						canResync = false;
 						isStoryMode = false;
@@ -1907,7 +1929,7 @@ class PlayState extends MusicBeatState
 						LoadingState.loadAndSwitchState(new PlayState(), false, false);
 
 					case 'melody', 'cords', 'intensity':
-						Song.loadFromJson('chart', 'bastard');
+						Song.loadFromJson('bastard', 'bastard');
 
 						canResync = false;
 						isStoryMode = false;

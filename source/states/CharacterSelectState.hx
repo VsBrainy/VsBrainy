@@ -14,15 +14,13 @@ class CharacterSelectState extends MusicBeatState
     var boyfriend:Character;
     var curStage:String = '';
 
+    public static var characters = ['bf', 'brainy-player'];
+
+    public static var currentChar:String = 'bf';
+
     override function create()
     {
-        curStage = PlayState.curStage;
-
-        switch (curStage)
-        {
-            case 'brainysland', 'brainyslandnight': new Brainy();
-            case 'skidsland': new SkidLand();
-        }
+        var stage = new Brainy();
 
         var stageData:StageFile = StageData.getStageFile(curStage);
 
