@@ -93,7 +93,7 @@ class Brainy extends BaseStage
     #if SHADERS_ALLOWED
     override function update(elapsed:Float)
     {
-        if (!usePerspective)
+        if (usePerspective)
         {
             if (ClientPrefs.data.shaders || !ClientPrefs.data.lowQuality)
             {
