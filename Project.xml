@@ -34,12 +34,10 @@
 	<define name="SHOW_LOADING_SCREEN" />
 
 	<define name="MINISYNTH_TEST"/>
-
 	<define name="DEV"/>
-
 	<define name="SECRETS"/>
-
 	<define name="SHADERS_ALLOWED"/>
+	<define name="TITLE_SCREEN_EASTER_EGG"/>
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
@@ -82,10 +80,7 @@
 	<assets path="assets/songs"         exclude="*.mp3" unless="web"/>
 	<assets path="assets/week_assets"   rename="assets" exclude="*.ogg" if="web"/>
 	<assets path="assets/week_assets"   rename="assets" exclude="*.mp3" unless="web"/>
-	<section if="TITLE_SCREEN_EASTER_EGG">
-		<assets path="assets/secrets" rename="assets/shared" exclude="*.ogg" if="web"/>
-		<assets path="assets/secrets" rename="assets/shared" exclude="*.mp3"  unless="web"/>
-	</section>
+	<assets path="mobile" if="mobile" rename="assets"/>
 
 	<section if="TRANSLATIONS_ALLOWED">
 		<assets path="assets/translations" rename="assets" exclude="*.ogg" if="web"/>
