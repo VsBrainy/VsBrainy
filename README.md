@@ -14,3 +14,6 @@ Repo for the mod and modding engine Vs Brainy.
 
 ### Contributors
 - **RAX** - Made Freeplay Select
+
+## Other info
+Feel free to clone this repo for your own mods if you'd like, just, you know, credit would be nice.
