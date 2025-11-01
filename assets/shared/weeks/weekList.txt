@@ -1,3 +1,6 @@
+week1
+week2
+week-EZ
 storymode
 extras
 joke
