@@ -10,11 +10,11 @@
 	},
 	"stageUI": "normal",
 	"boyfriend": [
-		770,
+		500,
 		100
 	],
 	"girlfriend": [
-		400,
+		800,
 		130
 	],
 	"defaultZoom": 0.6,
@@ -25,8 +25,8 @@
 	"camera_speed": 1,
 	"directory": "",
 	"opponent": [
-		-300,
-		100
+		-500,
+		-200
 	],
 	"camera_opponent": [
 		200,
