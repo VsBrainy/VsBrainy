@@ -1,7 +1,7 @@
 {
 	"storyName": "BRAINY'S Fun rap battle",
 	"difficulties": "Normal",
-	"hideFreeplay": false,
+	"hideFreeplay": true,
 	"weekBackground": "brainy",
 	"weekBefore": "tutorial",
 	"startUnlocked": true,

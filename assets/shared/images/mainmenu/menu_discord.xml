@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="menu_discord.png">
+	<!-- Created using the Spritesheet and XML generator -->
+	<!-- https://uncertainprod.github.io/FNF-Spritesheet-XML-generator-Web -->
+	<SubTexture name="discord idle0000" x="0" y="0" width="155" height="123" frameX="-22" frameY="-46" frameWidth="200" frameHeight="200"/>
+	<SubTexture name="discord selected0000" x="0" y="0" width="155" height="123" frameX="-22" frameY="-46" frameWidth="200" frameHeight="200"/>
+</TextureAtlas>

@@ -5,17 +5,17 @@
 	],
 	"_editorMeta": {
 		"boyfriend": "bf",
-		"dad": "badbrainy",
-		"gf": "old-chum-pal"
+		"gf": "badbrainy",
+		"dad": "old-chum-pal"
 	},
+	"girlfriend": [
+		320,
+		70
+	],
 	"stageUI": "normal",
 	"boyfriend": [
 		770,
 		100
-	],
-	"girlfriend": [
-		320,
-		130
 	],
 	"defaultZoom": 1.1,
 	"objects": [
@@ -42,28 +42,28 @@
 			"type": "sprite"
 		},
 		{
-			"type": "gf"
+			"type": "dad"
 		},
 		{
-			"type": "dad"
+			"type": "gf"
 		},
 		{
 			"type": "boyfriend"
 		}
 	],
 	"camera_girlfriend": [
-		0,
-		0
+		50,
+		-100
 	],
-	"camera_speed": 1,
-	"directory": "",
 	"opponent": [
-		100,
+		40,
 		100
 	],
+	"directory": "",
+	"camera_speed": 1.6,
+	"hide_girlfriend": false,
 	"camera_opponent": [
-		150,
-		0
-	],
-	"hide_girlfriend": false
+		350,
+		100
+	]
 }

@@ -548,8 +548,7 @@ class TitleState extends MusicBeatState
 				case 2:
 					createCoolText(['A mod by'], 40);
 				case 4:
-					addMoreText('Brainy7890', 40);
-					addMoreText('And others', 40);
+					addMoreText('Vs Brainy Development Team', 40);
 				case 5:
 					deleteCoolText();
 				case 6:

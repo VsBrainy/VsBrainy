@@ -1,7 +1,7 @@
 {
 	"storyName": "what the hell is even going on",
 	"difficulties": "Normal",
-	"hideFreeplay": false,
+	"hideFreeplay": true,
 	"weekBackground": "ez",
 	"freeplayColor": [
 		146,

@@ -6,6 +6,7 @@ import lime.app.Application;
 import states.editors.MasterEditorMenu;
 import options.OptionsState;
 import states.PlayState;
+import objects.MenuObject;
 
 import states.FreeplaySelectState;
 
@@ -21,14 +22,14 @@ enum MainMenuColumn {
 
 class MainMenuState extends MusicBeatState
 {
-	public static var psychEngineVersion:String = '3.0.0'; // This is also used for Discord RPC
+	public static var psychEngineVersion:String = '2.1.0'; // This is also used for Discord RPC
 	public static var curSelected:Int = 0;
 	public static var curColumn:MainMenuColumn = CENTER;
 	var allowMouse:Bool = true; //Turn this off to block mouse movement in menus
 
-	var menuItems:FlxTypedGroup<FlxSprite>;
-	var leftItem:FlxSprite;
-	var rightItem:FlxSprite;
+	var menuItems:FlxTypedGroup<MenuObject>;
+	var leftItem:MenuObject;
+	var rightItem:MenuObject;
 
 	//Centered/Text options
 	var optionShit:Array<String> = [
@@ -39,7 +40,7 @@ class MainMenuState extends MusicBeatState
 	];
 
 	var leftOption:String = #if GAMEJOLT_ALLOWED 'gamejolt' #else null #end;
-	var rightOption:String = 'discord';
+	var rightOption:String = #if DISCORD_ALLOWED 'discord' #else null #end;
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
@@ -62,12 +63,13 @@ class MainMenuState extends MusicBeatState
 		persistentUpdate = persistentDraw = true;
 
 		var yScroll:Float = 0.25;
-		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
+		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		bg.scrollFactor.set(0, yScroll);
 		bg.setGraphicSize(Std.int(bg.width * 1.175));
 		bg.updateHitbox();
 		bg.screenCenter();
+		bg.color = 0xfde871;
 		add(bg);
 
 		camFollow = new FlxObject(0, 0, 1, 1);
@@ -83,7 +85,7 @@ class MainMenuState extends MusicBeatState
 		magenta.color = 0xFFfd719b;
 		add(magenta);
 
-		menuItems = new FlxTypedGroup<FlxSprite>();
+		menuItems = new FlxTypedGroup<MenuObject>();
 		add(menuItems);
 
 		for (num => option in optionShit)
@@ -133,9 +135,10 @@ class MainMenuState extends MusicBeatState
 		FlxG.camera.follow(camFollow, null, 0.15);
 	}
 
-	function createMenuItem(name:String, x:Float, y:Float):FlxSprite
+	function createMenuItem(name:String, x:Float, y:Float):MenuObject
 	{
-		var menuItem:FlxSprite = new FlxSprite(x, y);
+		var menuItem:MenuObject = new MenuObject(x, y);
+		menuItem.option = name;
 		menuItem.frames = Paths.getSparrowAtlas('mainmenu/menu_$name');
 		menuItem.animation.addByPrefix('idle', '$name idle', 24, true);
 		menuItem.animation.addByPrefix('selected', '$name selected', 24, true);
@@ -375,13 +378,17 @@ class MainMenuState extends MusicBeatState
 		curSelected = FlxMath.wrap(curSelected + change, 0, optionShit.length - 1);
 		FlxG.sound.play(Paths.sound('scrollMenu'));
 
+		var i = 0;
+
 		for (item in menuItems)
 		{
 			item.animation.play('idle');
+			item.scale.set(1, 1);
 			item.centerOffsets();
+			i++;
 		}
 
-		var selectedItem:FlxSprite;
+		var selectedItem:MenuObject;
 		switch(curColumn)
 		{
 			case CENTER:
@@ -392,6 +399,8 @@ class MainMenuState extends MusicBeatState
 				selectedItem = rightItem;
 		}
 		selectedItem.animation.play('selected');
+		if (selectedItem.option == "discord")
+				selectedItem.scale.set(1.2, 1.2);
 		selectedItem.centerOffsets();
 		camFollow.y = selectedItem.getGraphicMidpoint().y;
 	}

@@ -1,9 +1,9 @@
 {
-	"storyName": "Joke",
+	"storyName": "MiniSynth",
 	"difficulties": "Normal",
 	"hideFreeplay": false,
 	"weekBackground": "",
-	"weekBefore": "week1",
+	"weekBefore": "week-EZ",
 	"startUnlocked": true,
 	"weekCharacters": [
 		"",
@@ -12,6 +12,33 @@
 	],
 	"hideStoryMode": true,
 	"songs": [
+		[
+			"melody",
+			"guy",
+			[
+				255,
+				255,
+				255
+			]
+		],
+		[
+			"cords",
+			"guy",
+			[
+				255,
+				255,
+				255
+			]
+		],
+		[
+			"Intensity",
+			"angryguy",
+			[
+				80,
+				0,
+				0
+			]
+		],
 		[
 			"plugins",
 			"guy",
@@ -49,6 +76,7 @@
 			]
 		]
     ],
-	"weekName": "Joke",
-	"hiddenUntilUnlocked": false
+	"weekName": "MiniSynth",
+	"hiddenUntilUnlocked": true,
+	"freeplaySelectColor": [255, 255, 255]
 }

@@ -33,8 +33,6 @@
 	<define name="MULTITHREADED_LOADING" if="desktop"/> <!-- UNCOMMENTING THIS LINE WILL ENABLE MULTITHREADED LOADING, WHICH IMPROVES LOADING TIMES, BUT APPARENTLY CAN FREEZE THE GAME ON SONG LOAD IN OLDER PCs? -->
 	<define name="SHOW_LOADING_SCREEN" />
 
-	<define name="MINISYNTH_TEST"/>
-	<define name="DEV"/>
 	<define name="SECRETS"/>
 	<define name="SHADERS_ALLOWED"/>
 	<define name="TITLE_SCREEN_EASTER_EGG"/>
@@ -80,7 +78,6 @@
 	<assets path="assets/songs"         exclude="*.mp3" unless="web"/>
 	<assets path="assets/week_assets"   rename="assets" exclude="*.ogg" if="web"/>
 	<assets path="assets/week_assets"   rename="assets" exclude="*.mp3" unless="web"/>
-	<assets path="mobile" if="mobile" rename="assets"/>
 
 	<section if="TRANSLATIONS_ALLOWED">
 		<assets path="assets/translations" rename="assets" exclude="*.ogg" if="web"/>
@@ -100,8 +97,10 @@
 
 	<!-- _______________________________ Libraries ______________________________ -->
 
-	<haxelib name="flixel" version="5.6.1"/>
-	<haxelib name="flixel-addons" version="3.2.2"/>
+	<haxelib name="openfl" version="9.4.2"/>
+
+	<haxelib name="flixel" version="6.1.1"/>
+	<haxelib name="flixel-addons" version="3.3.2"/>
 	<haxelib name="tjson" version="1.4.0"/>
 
 	<!--Psych stuff needed-->
@@ -189,8 +188,5 @@
 	<assets path='art/icons/iconOG.png' rename='icon.png'/>
 	<assets path='art/icons/iconSynth.png' rename='iconSynth.png' if="secrets"/>
 	
-	<icon path="art/icons/icon16.png" size='16'/>
-	<icon path="art/icons/icon32.png" size='32'/>
-	<icon path="art/icons/icon64.png" size='64'/>
 	<icon path="art/icons/iconOG.png" />
 </project>

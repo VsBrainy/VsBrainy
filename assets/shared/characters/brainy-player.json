@@ -1,44 +1,44 @@
 {
 	"animations": [
 		{
-			"loop": false,
 			"offsets": [0, 0],
+			"loop": false,
+			"fps": 24,
 			"anim": "idle",
-			"fps": 24,
-			"name": "idle",
-			"indices": []
+			"indices": [],
+			"name": "idle"
 		},
 		{
+			"loop": false,
 			"offsets": [-16, -8],
-			"loop": false,
-			"fps": 24,
 			"anim": "singDOWN",
-			"indices": [1, 2],
-			"name": "down"
+			"fps": 24,
+			"name": "down",
+			"indices": [1, 2]
 		},
 		{
+			"loop": false,
 			"offsets": [-3, 22],
-			"loop": false,
-			"fps": 24,
 			"anim": "singUP",
-			"indices": [1, 2],
-			"name": "up"
+			"fps": 24,
+			"name": "up",
+			"indices": [1, 2]
 		},
 		{
+			"loop": false,
 			"offsets": [0, 0],
-			"indices": [1, 2],
-			"fps": 24,
 			"anim": "singLEFT",
-			"loop": false,
-			"name": "right"
+			"fps": 24,
+			"name": "right",
+			"indices": [1, 2]
 		},
 		{
-			"offsets": [-30, 0],
-			"indices": [3, 4],
-			"fps": 24,
-			"anim": "singRIGHT",
 			"loop": false,
-			"name": "left"
+			"offsets": [-30, 0],
+			"anim": "singRIGHT",
+			"fps": 24,
+			"name": "left",
+			"indices": [3, 4]
 		}
 	],
 	"vocals_file": "",
@@ -48,7 +48,7 @@
 	"healthicon": "brainy",
 	"flip_x": false,
 	"healthbar_colors": [255, 198, 0],
-	"camera_position": [40, 0],
+	"camera_position": [160, 0],
 	"sing_duration": 4,
 	"scale": 1,
 	"_editor_isPlayer": true

@@ -17,6 +17,10 @@ class FreeplaySelectState extends MusicBeatState {
     var weekImage:FlxSprite = null;
     var weekName:FlxText;
     var hintText:FlxText;
+    
+    var bg:FlxSprite;
+
+    var colors:Array<Int> = new Array();
 
     override function create():Void {
         super.create();
@@ -24,16 +28,19 @@ class FreeplaySelectState extends MusicBeatState {
         backend.WeekData.reloadWeekFiles(false);
         weeks = WeekData.weeksList.copy();
         if (weeks.length == 0) {
-            FlxG.switchState(new MainMenuState());
+            MusicBeatState.switchState(new states.ErrorState("NO WEEKS ADDED FOR FREEPLAY\n\nPress ACCEPT to go to the Week Editor Menu.\nPress BACK to return to Main Menu.",
+				function() MusicBeatState.switchState(new states.editors.WeekEditorState()),
+				function() MusicBeatState.switchState(new states.MainMenuState())));
             return;
         }
 
-        var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
+        bg = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
         bg.scrollFactor.set(0, 0);
         bg.setGraphicSize(Std.int(bg.width * 1.175));
         bg.updateHitbox();
         bg.screenCenter();
         bg.antialiasing = ClientPrefs.data.antialiasing;
+        bg.color = 0xFFfd719b;
         insert(0, bg);
 
         weekName = new FlxText(0, 50, FlxG.width, '', 48);
@@ -129,6 +136,8 @@ class FreeplaySelectState extends MusicBeatState {
                     loadNewWeekImage(weekId);
                 }
             });
+            if (colors != null || colors.length - 1 < curWeek)
+                bg.color = colors[curWeek];
         } else {
             loadNewWeekImage(weekId);
         }

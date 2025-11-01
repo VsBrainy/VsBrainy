@@ -2,7 +2,6 @@ V1:
 Initial release 
 
 V2:
-
 Addition: SKiD03 week, one secret week
 Addition: 3 freeplay songs
 Addition: 3 secret songs
@@ -16,9 +15,13 @@ Change: Notes do a little jiggle when you hit a note and on ghost tap! (can be t
 Removal: Irritated BF Sprites
 Fix: Various bugfixes
 
-V2.0.1
-
+V2.0.1:
 Fix: Fixed MiniSynth Week crash
 Fix: Fixed some songs using the wrong Note Splash.
 Addition: There's...something in the files. Try and find it.
 Removal: Achievements. Too lazy to maintain it and whatever.
+
+V2.1.0
+Addition: Modpack Support! Any Psych Engine Modpack should work, unless it depends on base game assets.
+Some freeplay songs
+Improved organization in Freeplay Select Menu

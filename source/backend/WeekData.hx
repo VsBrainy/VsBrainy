@@ -18,6 +18,7 @@ typedef WeekFile =
 	var hideStoryMode:Bool;
 	var hideFreeplay:Bool;
 	var difficulties:String;
+	@:optional var freeplaySelectColor:Array<Int>;
 }
 
 class WeekData {
@@ -39,6 +40,8 @@ class WeekData {
 	public var difficulties:String;
 
 	public var fileName:String;
+
+	public var freeplaySelectColor:Array<Int>;
 
 	public static function createWeekFile():WeekFile {
 		var weekFile:WeekFile = {
@@ -159,8 +162,9 @@ class WeekData {
 			}
 		}
 	}
-
-	private static function getWeekFile(path:String):WeekFile {
+	
+	//why was this private?
+	public static function getWeekFile(path:String):WeekFile {
 		var rawJson:String = null;
 		#if MODS_ALLOWED
 		if(FileSystem.exists(path)) {
