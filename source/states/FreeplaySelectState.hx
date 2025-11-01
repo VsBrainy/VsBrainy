@@ -136,8 +136,6 @@ class FreeplaySelectState extends MusicBeatState {
                     loadNewWeekImage(weekId);
                 }
             });
-            if (colors != null || colors.length - 1 < curWeek)
-                bg.color = colors[curWeek];
         } else {
             loadNewWeekImage(weekId);
         }
