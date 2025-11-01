@@ -24,6 +24,7 @@
 	<!-- <define name="GAMEJOLT_ALLOWED" if="desktop"/> -->
 	<define name="IRIS_DEBUG"/>
 	<define name="MODS_ALLOWED"/>
+	<define name="CHECK_FOR_UPDATES"/>
 
 	<define name="LUA_ALLOWED"/>
 	<define name="HSCRIPT_ALLOWED"/>
