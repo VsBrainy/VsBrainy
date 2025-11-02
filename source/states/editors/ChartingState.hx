@@ -595,18 +595,18 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	function openNewChart()
 	{
 		var song:SwagSong = {
-			song: 'Test',
+			song: 'Brainy',
 			notes: [],
 			events: [],
-			bpm: 150,
+			bpm: 130,
 			needsVoices: true,
-			speed: 1,
+			speed: 2,
 			offset: 0,
 
 			player1: 'bf',
-			player2: 'dad',
+			player2: 'brainy',
 			gfVersion: 'gf',
-			stage: 'stage',
+			stage: 'brainysland',
 			format: 'psych_v1'
 		};
 		Song.chartPath = null;
@@ -3280,7 +3280,6 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		});
 		var reloadAudioButton:PsychUIButton = new PsychUIButton(objX + 120, objY, 'Reload Audio', function() loadMusic(true), 80);
 
-		#if mac
 		var reloadJsonButton:PsychUIButton = new PsychUIButton(objX + 205, objY, 'Reload JSON', function()
 		{
 			var cur = Paths.formatToSongPath(songNameInputText.text);
@@ -3311,7 +3310,6 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			if(!ignoreProgressCheckBox.checked) openSubState(new Prompt('Warning: Any unsaved progress\nwill be lost.', func));
 			else func();
 		}, 80);
-		#end
 
 		objY += 65;
 		//(x:Float = 0, y:Float = 0, step:Float = 1, defValue:Float = 0, min:Float = -999, max:Float = 999, decimals:Int = 0, ?wid:Int = 60, ?isPercent:Bool = false)
