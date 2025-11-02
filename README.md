@@ -2,6 +2,10 @@
 
 Repo for the mod and modding engine Vs Brainy.
 
+[Download here on GameJolt](https://gamejolt.com/games/vsbrainy/1021340).
+
+
+
 ## Credits
 ### Main Credits
 - **Brainy7890** - Owner, Composer, Programmer, Charter and Animator
