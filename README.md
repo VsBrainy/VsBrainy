@@ -17,3 +17,8 @@ Repo for the mod and modding engine Vs Brainy.
 
 ## Other info
 Feel free to clone this repo for your own mods if you'd like, just, you know, credit would be nice.
+
+### Branches
+- Stable branch - Latest stable release
+- Main Branch - Stable enough, may receive some updates
+- Dev Branch - Unstable, spoilers about.
