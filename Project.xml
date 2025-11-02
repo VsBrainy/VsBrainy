@@ -70,8 +70,6 @@
 	<assets path="assets/fonts" />
 	<assets path="assets/shared"        exclude="*.ogg" if="web"/>
 	<assets path="assets/shared"        exclude="*.mp3" unless="web"/>
-	<assets path="assets/embed"         exclude="*.ogg" if="web" embed="true"/>
-	<assets path="assets/embed"         exclude="*.mp3" unless="web" embed="true"/>
 	<assets path="assets/videos"        if="VIDEOS_ALLOWED"/>
 	<assets path="assets/songs"         exclude="*.ogg" if="web"/>
 	<assets path="assets/songs"         exclude="*.mp3" unless="web"/>
@@ -96,6 +94,7 @@
 
 	<!-- _______________________________ Libraries ______________________________ -->
 
+	<haxelib name="flixel" version="6.1.1"/>
 	<haxelib name="openfl" version="9.4.2"/>
 
 	<haxelib name="tjson" version="1.4.0"/>
