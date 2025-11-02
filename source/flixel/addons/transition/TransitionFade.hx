@@ -15,27 +15,6 @@ import openfl.geom.Matrix;
 import openfl.geom.Point;
 import openfl.geom.Rectangle;
 
-#if html5
-@:keep @:bitmap("assets/images/transitions/diagonal_gradient.png")
-private class RawGraphicDiagonalGradient extends BitmapData {}
-class GraphicDiagonalGradient extends RawGraphicDiagonalGradient
-{
-	static inline var WIDTH = 319;
-	static inline var HEIGHT = 128;
-	
-	public function new(?onLoad)
-	{
-		super(WIDTH, HEIGHT, true, 0xFFffffff, onLoad);
-		// Set properties because `@:bitmap` constructors ignore width/height
-		this.width = WIDTH;
-		this.height = HEIGHT;
-	}
-}
-#else
-@:keep @:bitmap("assets/images/transitions/diagonal_gradient.png")
-private class GraphicDiagonalGradient extends BitmapData {}
-#end
-
 typedef TweenEndValues = { ?x:Float, ?y:Float, ?alpha:Float };
 /**
  *
