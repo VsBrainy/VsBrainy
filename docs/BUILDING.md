@@ -10,7 +10,7 @@ Now, you can just type in `git clone --recurse-submodules https://github.com/VsB
 
 (If you don't want to clone assets with it, remove `--recurse-submodules` from the command.
 
-Now, run [this on Windows](./setup/windows.bat) or [this on Mac and Linux](./setup/unix.sh) to install dependencies.
+Now, run [this on Windows](/setup/windows.bat) or [this on Mac and Linux](/setup/unix.sh) to install dependencies.
 
 Now, using the `cd` command, navigate to the repo's root directory, and then finally, type in any of these commands.
 
