@@ -35,6 +35,7 @@
 	<define name="SECRETS"/>
 	<define name="SHADERS_ALLOWED"/>
 	<define name="TITLE_SCREEN_EASTER_EGG"/>
+	<!-- <define name="TRANSLATIONS_ALLOWED"/> -->
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
@@ -67,6 +68,8 @@
 	<define name="CRASH_HANDLER" if="desktop release" />
 
 	<!-- Assets -->
+	<assets path="assets/embed"         exclude="*.ogg" if="web" embed="true"/>
+	<assets path="assets/embed"         exclude="*.mp3" unless="web" embed="true"/>
 	<assets path="assets/fonts" />
 	<assets path="assets/shared"        exclude="*.ogg" if="web"/>
 	<assets path="assets/shared"        exclude="*.mp3" unless="web"/>
@@ -90,6 +93,10 @@
 	<section if="desktop">
 		<assets path="alsoft.txt" rename="plugins/alsoft.ini" type="text" if="windows"/>
 		<assets path="alsoft.txt" rename="plugins/alsoft.conf" type="text" unless="windows"/>
+	</section>
+
+	<section if="MODS_ALLOWED">
+		<assets path="example_mods" rename="mods"/>
 	</section>
 
 	<!-- _______________________________ Libraries ______________________________ -->

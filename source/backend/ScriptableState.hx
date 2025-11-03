@@ -19,40 +19,56 @@ class ScriptableState extends MusicBeatState
 {
     public var state:String = "ScriptableState";
 
-    public var hscript:HScript;
+    public var hscript:HScript = null;
 
     private inline function getFile(path:String):Null<String>
     {
-        return Paths.getPath(path, TEXT, 'states/');
+        return Paths.getPath(path + '.hx', TEXT, 'states');
     }
 
-    override public function new()
+    public function init(state:String)
     {
-        hscript = new HScript(null, getFile(state));
-        super();
+        this.state = state;
+        var file = getFile(state);
+        trace(file);
+        if (FileSystem.exists(file))
+            hscript = new HScript(null, file);
+        else
+            trace("HScript file not found, ignoring");
+
+        call("onInit");
+    }
+
+    public function call(func:String, args:Array<Dynamic> = null):Null<Dynamic>
+    {
+        if (args == null) args = [];
+        if (hscript != null && hscript.exists(func))
+            return hscript.call(func, args);
+        else
+            return null;
     }
 
     override public function create()
     {
-        hscript.call("onCreate");
+        call("onCreate");
         super.create();
         createPost();
     }
 
     public function createPost()
     {
-        hscript.call("onCreatePost");
+        call("onCreatePost");
     }
 
     override public function update(elapsed:Float)
     {
-        hscript.call("onUpdate", [elapsed]);
+        call("onUpdate", [elapsed]);
         super.update(elapsed);
         updatePost(elapsed);
     }
 
     public function updatePost(elapsed:Float)
     {
-        hscript.call("onUpdatePost", [elapsed]);
+        call("onUpdatePost", [elapsed]);
     }
 }

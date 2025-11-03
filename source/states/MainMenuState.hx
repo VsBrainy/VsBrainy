@@ -20,9 +20,13 @@ enum MainMenuColumn {
 	RIGHT;
 }
 
-class MainMenuState extends MusicBeatState
+class MainMenuState extends #if HSCRIPT_ALLOWED 
+								ScriptableState 
+								#else 
+								MusicBeatState 
+							#end
 {
-	public static var psychEngineVersion:String = '2.1.0'; // This is also used for Discord RPC
+	public static var psychEngineVersion:String = '2.1.2'; // This is also used for Discord RPC
 	public static var curSelected:Int = 0;
 	public static var curColumn:MainMenuColumn = CENTER;
 	var allowMouse:Bool = true; //Turn this off to block mouse movement in menus
@@ -46,6 +50,15 @@ class MainMenuState extends MusicBeatState
 	var camFollow:FlxObject;
 
 	static var showOutdatedWarning:Bool = true;
+
+	#if HSCRIPT_ALLOWED
+	override public function new()
+	{
+		super();
+		init("MainMenuState");
+	}
+	#end
+
 	override function create()
 	{
 		super.create();

@@ -26,6 +26,10 @@ import backend.Controls;
 import backend.CoolUtil;
 import backend.MusicBeatState;
 import backend.MusicBeatSubstate;
+#if HSCRIPT_ALLOWED
+import backend.ScriptableState;
+import backend.CustomState;
+#end
 import backend.CustomFadeTransition;
 import backend.ClientPrefs;
 import backend.Conductor;
@@ -62,7 +66,7 @@ import flixel.tweens.FlxTween;
 import flixel.group.FlxSpriteGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.addons.transition.FlxTransitionableState;
-import flixel.system.scaleModes.FixedScaleAdjustSizeScaleMode;
+import flixel.system.scaleModes.*;
 
 using StringTools;
 #end
