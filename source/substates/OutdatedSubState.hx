@@ -24,14 +24,14 @@ class OutdatedSubState extends MusicBeatSubstate
 		add(bg);
 
 		warnText = new FlxText(0, 0, FlxG.width,
-			'Sup bro, looks like you\'re running an outdated version of\nPsych Engine (${MainMenuState.psychEngineVersion})\n
+			'Sup bro, looks like you\'re running an outdated version of\nVs Brainy and SKiD03 (${MainMenuState.psychEngineVersion})\n
 			-----------------------------------------------\n
 			Press ENTER to update to the latest version ${updateVersion}\n
 			Press ESCAPE to proceed anyway.\n
 			You can disable this warning by unchecking the
 			"Check for Updates" setting in the Options Menu\n
 			-----------------------------------------------\n
-			Thank you for using the Engine!',
+			Thank you for playing the mod!',
 			32);
 		warnText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
 		warnText.scrollFactor.set();
