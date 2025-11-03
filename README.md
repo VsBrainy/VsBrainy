@@ -2,9 +2,9 @@
 
 Repo for the mod and modding engine Vs Brainy.
 
-[Download here on GameJolt](https://gamejolt.com/games/vsbrainy/1021340).
+[Download here on GameJolt](https://gamejolt.com/games/vsbrainy/1021340)
 
-Or, if you want to compile the mod yourself, refer to the [build instructions](docs/BUILDING.md)
+Or, if you want to compile the mod yourself, refer to the [build instructions](docs/BUILDING.md).
 
 
 ## Credits
