@@ -2,6 +2,11 @@
 
 Repo for the mod and modding engine Vs Brainy.
 
+[Download here on GameJolt](https://gamejolt.com/games/vsbrainy/1021340).
+
+Or, if you want to compile the mod yourself, refer to the [build instructions](docs/BUILDING.md)
+
+
 ## Credits
 ### Main Credits
 - **Brainy7890** - Owner, Composer, Programmer, Charter and Animator
@@ -17,3 +22,8 @@ Repo for the mod and modding engine Vs Brainy.
 
 ## Other info
 Feel free to clone this repo for your own mods if you'd like, just, you know, credit would be nice.
+
+### Branches
+- Stable branch - Latest stable release
+- Main Branch - Stable enough, may receive some updates
+- Dev Branch - Unstable, spoilers about.
