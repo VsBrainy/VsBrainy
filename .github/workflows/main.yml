@@ -2,7 +2,6 @@
 
 name: Build
 
-
 # Controls when the action will run.
 on:
   workflow_dispatch:
@@ -16,14 +15,13 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4.1.7
+        with: 
+          submodules: 'recursive'
 
       - uses: krdlab/setup-haxe@master
         with:
           haxe-version: 4.3.7
-      - name: Clone submodules
-        run: |
-          git submodule add https://github.com/VsBrainy/assets.git assets
-        shell: cmd
+
       # Runs a set of commands using the runners shell
       - name: Install Haxelib
         run: |
