@@ -25,5 +25,5 @@ Feel free to clone this repo for your own mods if you'd like, just, you know, cr
 
 ### Branches
 - Stable branch - Latest stable release
-- Main Branch - Stable enough, may receive some updates
+- Main Branch - Stable enough, may receive some more updates compared to Stable
 - Dev Branch - Unstable, spoilers about.
