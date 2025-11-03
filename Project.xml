@@ -94,6 +94,10 @@
 		<assets path="alsoft.txt" rename="plugins/alsoft.conf" type="text" unless="windows"/>
 	</section>
 
+	<section if="MODS_ALLOWED">
+		<assets path="example_mods" rename="mods"/>
+	</section>
+
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<haxelib name="flixel" version="6.1.1"/>
