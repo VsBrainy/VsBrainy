@@ -324,6 +324,7 @@ class PlayState extends MusicBeatState
 
 		if (SONG.song.toLowerCase() == 'madness 100000')
 		{
+			FlxG.scaleMode = new FixedScaleAdjustSizeScaleMode(false, false);
 			backend.WindowUtil.setWindowSize(960, 720, 960, 720);
 		}
 
@@ -3496,6 +3497,7 @@ class PlayState extends MusicBeatState
 	override function destroy() {
 		if (SONG.song.toLowerCase() == 'madness 100000')
 		{
+			FlxG.scaleMode = new RatioScaleMode();
 			backend.WindowUtil.setWindowSize(1280, 720, 1280, 720);
 		}
 		if (psychlua.CustomSubstate.instance != null)

@@ -35,6 +35,7 @@
 	<define name="SECRETS"/>
 	<define name="SHADERS_ALLOWED"/>
 	<define name="TITLE_SCREEN_EASTER_EGG"/>
+	<!-- <define name="TRANSLATIONS_ALLOWED"/> -->
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 

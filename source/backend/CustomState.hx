@@ -6,5 +6,7 @@ class CustomState extends ScriptableState
     {
         super();
         this.state = state;
+
+        init(state);
     }
 }

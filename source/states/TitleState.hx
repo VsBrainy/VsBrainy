@@ -77,7 +77,7 @@ class TitleState extends MusicBeatState
 		super.create();
 		Paths.clearUnusedMemory();
 
-		FlxG.scaleMode = new FixedScaleAdjustSizeScaleMode(false, false);
+		FlxG.scaleMode = new RatioScaleMode();
 
 		if(!initialized)
 		{
