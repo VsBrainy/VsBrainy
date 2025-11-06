@@ -14,6 +14,8 @@ import states.FreeplaySelectState;
 import states.AuthState;
 #end
 
+import backend.MainMenuData;
+
 enum MainMenuColumn {
 	LEFT;
 	CENTER;
@@ -36,20 +38,23 @@ class MainMenuState extends #if HSCRIPT_ALLOWED
 	var rightItem:MenuObject;
 
 	//Centered/Text options
-	var optionShit:Array<String> = [
-		'story_mode',
-		'freeplay',
-		#if MODS_ALLOWED 'mods', #end
-		'options'
-	];
+	var optionShit:Array<String> = [];
+
+	#if MODS_ALLOWED
+	var MODS_ALLOWED:Bool = true;
+	#else
+	var MOD_ALLOWED:Bool = false;
+	#end
 
 	var leftOption:String = #if GAMEJOLT_ALLOWED 'gamejolt' #else null #end;
-	var rightOption:String = #if DISCORD_ALLOWED 'discord' #else null #end;
+	var rightOption:String = null;
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 
 	static var showOutdatedWarning:Bool = true;
+
+	public var menuData:MainMenuData;
 
 	#if HSCRIPT_ALLOWED
 	override public function new()
@@ -61,6 +66,31 @@ class MainMenuState extends #if HSCRIPT_ALLOWED
 
 	override function create()
 	{
+		menuData = new MainMenuData();
+
+		if (menuData.file == null)
+		{
+			MusicBeatState.switchState(new states.ErrorState("MENU JSON NOT DEFINED\n\nPRESS ACCEPT OR BACK TO QUIT GAME", function() {Sys.exit(0);}, function() {Sys.exit(0);}));
+		}
+
+		for (option in menuData.file.center)
+		{
+			if (option.displayConditions != null) 
+			{
+				if (Flags.getFlag(option.displayConditions))
+				{
+					optionShit.push(option.name);
+				}
+			}
+			else
+				optionShit.push(option.name);
+		}
+
+		if (menuData.file.leftOption != null)
+			leftOption = menuData.file.leftOption.name;
+		if (menuData.file.rightOption != null)
+		rightOption = menuData.file.rightOption.name;
+
 		super.create();
 
 		#if MODS_ALLOWED
@@ -101,19 +131,63 @@ class MainMenuState extends #if HSCRIPT_ALLOWED
 		menuItems = new FlxTypedGroup<MenuObject>();
 		add(menuItems);
 
+		var i:Int = 0;
+
 		for (num => option in optionShit)
 		{
 			var item:FlxSprite = createMenuItem(option, 0, (num * 140) + 90);
 			item.y += (4 - optionShit.length) * 70; // Offsets for when you have anything other than 4 items
 			item.screenCenter(X);
+			if (menuData.file.center[i].unlockPos != null )
+			{
+				if (menuData.file.center[i].x == null)
+					item.x = 0;
+				else
+					item.x = menuData.file.center[i].x;
+
+				if (menuData.file.center[i].y == null)
+					item.x = 0;
+				else
+					item.y = menuData.file.center[i].y;
+			}
+			i++;
 		}
 
 		if (leftOption != null)
+		{
 			leftItem = createMenuItem(leftOption, 60, 490);
+			
+			if (menuData.file.leftOption != null)
+			{
+				if (menuData.file.leftOption.x == null)
+					leftItem.x = 0;
+				else
+					leftItem.x = menuData.file.leftOption.x;
+
+				if (menuData.file.leftOption.y == null)
+					leftItem.x = 0;
+				else
+					leftItem.y = menuData.file.leftOption.y;
+			}
+		}
+
 		if (rightOption != null)
 		{
 			rightItem = createMenuItem(rightOption, FlxG.width - 60, 490);
 			rightItem.x -= rightItem.width;
+
+			if (menuData.file.leftOption != null)
+			{
+				if (menuData.file.rightOption.x == null)
+					rightItem.x = 0;
+				else
+					rightItem.x = menuData.file.rightOption.x;
+
+				if (menuData.file.rightOption.y == null)
+					rightItem.x = 0;
+				else
+					rightItem.y = menuData.file.rightOption.y;
+			}
 		}
 
 		var psychVer:FlxText = new FlxText(12, FlxG.height - 44, 0, "Brainy Engine v" + psychEngineVersion, 12);
@@ -358,9 +432,20 @@ class MainMenuState extends #if HSCRIPT_ALLOWED
 							item.visible = true;
 
 						default:
+							#if HSCRIPT_ALLOWED
+							if (FileSystem.exists(MainMenuData.getScript(option)))
+								menuData.callback(option);
+							else
+							{
+								trace('Menu Item ${option} doesn\'t do anything');
+								selectedSomethin = false;
+								item.visible = true;
+							}
+							#else
 							trace('Menu Item ${option} doesn\'t do anything');
 							selectedSomethin = false;
 							item.visible = true;
+							#end
 					}
 				});
 				

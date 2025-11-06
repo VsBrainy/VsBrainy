@@ -40,6 +40,8 @@ import backend.Language;
 
 import backend.ui.*; //Psych-UI
 
+import backend.Flags;
+
 import objects.Alphabet;
 import objects.BGSprite;
 
