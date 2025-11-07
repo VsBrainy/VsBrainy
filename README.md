@@ -1,4 +1,4 @@
-# FRIDAY NIGHT FUNKIN': Vs Brainy
+# FRIDAY NIGHT FUNKIN': Vs Brainy and SKiD03
 
 ![brainy icon](art/icons/iconOG.png)
 
