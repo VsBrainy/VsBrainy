@@ -180,7 +180,7 @@ class MenuCharacterEditorState extends MusicBeatState implements PsychUIEventHan
 		
 		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("Menu Character Editor", "Editting: " + characterFile.image);
+		DiscordClient.changePresence("Menu Character Editor", "Editing: " + characterFile.image);
 		#end
 	}
 
