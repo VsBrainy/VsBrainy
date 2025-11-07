@@ -5,6 +5,7 @@ import haxe.Json;
 #if HSCRIPT_ALLOWED
 import psychlua.HScript;
 #end
+    
 typedef MenuItem =
 {
     var name:String;
