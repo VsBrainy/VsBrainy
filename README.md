@@ -2,6 +2,13 @@
 
 ![brainy icon](art/icons/iconOG.png)
 
+<details>
+<summary>wait who's that?</summary>
+<br>
+![minisynth icon](art/icons/iconSynth.png)
+</details>
+
+
 Repo for the Friday Night Funkin' mod and modding engine (forked from Psych) Vs Brainy and SKiD03.
 
 [Download here on GameJolt](https://gamejolt.com/games/vsbrainy/1021340)
