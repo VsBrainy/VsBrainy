@@ -5,7 +5,7 @@
 <details>
 <summary>wait who's that?</summary>
 <br>
-![minisynth icon](art/icons/iconSynth.png)
+<img src="art/icons/iconSynth.png">
 </details>
 
 
