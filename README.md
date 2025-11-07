@@ -15,6 +15,10 @@ Repo for the Friday Night Funkin' mod and modding engine (forked from Psych) Vs 
 
 Or, if you want to compile the mod yourself, refer to the [build instructions](docs/BUILDING.md).
 
+## Modding
+A major feature of this mod is to be able to mod it! Visit the [wiki](https://github.com/VsBrainy/VS-Brainy/wiki) for more information on how to do that!
+
+(Do note, it's just like Psych Engine, but with more features!)
 
 ## Credits
 ### Main Credits
