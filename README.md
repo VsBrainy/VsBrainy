@@ -1,6 +1,6 @@
 # FRIDAY NIGHT FUNKIN': Vs Brainy
 
-Repo for the mod and modding engine Vs Brainy.
+Repo for the Friday Night Funkin' mod and modding engine (forked from Psych) Vs Brainy and SKiD03.
 
 [Download here on GameJolt](https://gamejolt.com/games/vsbrainy/1021340)
 
