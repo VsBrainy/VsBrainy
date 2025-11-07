@@ -59,7 +59,7 @@ local note7X, note7Y, note7Alpha
 
 local easeTime
 
-function onCreatePost()'
+function onCreatePost()';
     private var finalFile:String;
     private var setupFile:String = "";
     private var typeArray:Array<String> = ["Linear", "Sine In/Out"];
