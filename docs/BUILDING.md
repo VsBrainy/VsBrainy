@@ -8,7 +8,7 @@ First, make you have [git](https://git-scm.com/install/) and [Haxe](https://haxe
 ## Cloning
 Now, you can just type in `git clone --recurse-submodules https://github.com/VsBrainy/VS-Brainy.git` in Command Line/Powershell/Terminal and it's cloned!
 
-(If you don't want to clone assets with it, remove `--recurse-submodules` from the command.
+(If you don't want to clone assets with it, remove `--recurse-submodules` from the command, but the mod may not compile correctly.)
 
 Now, run [this on Windows](/setup/windows.bat) or [this on Mac and Linux](/setup/unix.sh) to install dependencies.
 
