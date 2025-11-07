@@ -18,7 +18,8 @@ class MasterEditorMenu extends MusicBeatState
 		'Dialogue Editor',
 		'Dialogue Portrait Editor',
 		'Note Splash Editor',
-		'Main Menu Editor'
+		'Main Menu Editor',
+		'Modchart Editor'
 	];
 	private var grpTexts:FlxTypedGroup<Alphabet>;
 	private var directories:Array<String> = [null];
@@ -124,6 +125,8 @@ class MasterEditorMenu extends MusicBeatState
 					MusicBeatState.switchState(new NoteSplashEditorState());
 				case 'Main Menu Editor':
 					MusicBeatState.switchState(new MainMenuEditorState());
+				case 'Modchart Editor':
+					MusicBeatState.switchState(new ModchartEditorState());
 			}
 			FlxG.sound.music.volume = 0;
 			FreeplayState.destroyFreeplayVocals();
