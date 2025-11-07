@@ -45,8 +45,24 @@ class MainMenuData
 
         #if HSCRIPT_ALLOWED
         for (item in file.center)
-            if (FileSystem.exists(MainMenuData.getScript(item.name)))
-                hscripts.set(item.name, new HScript(null, Paths.hx('data/mainmenu/${item.name}')));
+            setScript(item.name);
+
+        if (file.leftOption != null)
+            setScript(file.leftOption.name);
+
+        if (file.rightOption != null)
+            setScript(file.rightOption.name);
+        trace('HScripts: ' + hscripts);
+        #end
+    }
+
+    public function setScript(name)
+    {
+        #if HSCRIPT_ALLOWED
+        if (FileSystem.exists(MainMenuData.getScript(name)))
+            hscripts.set(name, new HScript(null, Paths.hx('data/mainmenu/${name}')));
+        #else
+        throw 'Function MainMenuData setScript() not allowed when HScript is disabled!';
         #end
     }
 
