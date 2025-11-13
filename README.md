@@ -34,7 +34,7 @@ A major feature of this mod is to be able to mod it! Visit the [wiki](https://gi
 - **RAX** - Made Freeplay Select
 
 ## Other info
-Feel free to clone this repo for your own mods if you'd like, just, you know, credit would be nice.
+Feel free to clone this repo for your own mods if you'd like, just be sure to credit.
 
 ### Branches
 - Stable branch - Latest stable release
