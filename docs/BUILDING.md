@@ -22,3 +22,5 @@ lime build mac
 lime build linux
 #etc
 ```
+
+Also, if you wanted to, you could fork this repository and run `main.yml`, but this unrecommended.
