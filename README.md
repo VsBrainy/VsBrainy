@@ -21,7 +21,7 @@ A major feature of this mod is to be able to mod it! Visit the [wiki](https://gi
 (Do note, it's just like Psych Engine, but with more features!)
 
 ## Contributing
-
+Read [here](docs/CONTRIBUTING.md).
 
 ## Credits
 ### Main Credits
