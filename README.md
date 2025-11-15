@@ -36,6 +36,9 @@ Read [here](docs/CONTRIBUTING.md).
 ### Contributors
 - **RAX** - Made Freeplay Select
 
+### Special Thanks
+- You, for your interest in the project.
+
 ## Other info
 Feel free to clone this repo for your own mods if you'd like, just be sure to credit.
 
