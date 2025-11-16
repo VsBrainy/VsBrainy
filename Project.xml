@@ -188,7 +188,7 @@
 	<!-- _________________________________ Custom _______________________________ -->
 
 	<assets path='art/icons/iconOG.png' rename='icon.png'/>
-	<assets path='art/icons/iconSynth.png' rename='iconSynth.png' if="secrets"/>
+	<assets path='art/icons/iconSynth.png' rename='iconSynth.png' if="SECRETS"/>
 	
 	<icon path="art/icons/iconOG.png" />
 </project>

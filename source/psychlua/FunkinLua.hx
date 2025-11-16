@@ -121,6 +121,7 @@ class FunkinLua {
 		set('screenWidth', FlxG.width);
 		set('screenHeight', FlxG.height);
 
+		set('isBrainyEngine', true);
 
 		// PlayState-only variables
 		if(game != null)

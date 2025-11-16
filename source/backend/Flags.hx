@@ -1,7 +1,6 @@
 package backend;
 
 //this class is for runtime checking of compile flags.
-
 class Flags
 {
     static public function getFlag(flag:String):Bool
@@ -13,6 +12,9 @@ class Flags
             
             case 'DISCORD_ALLOWED':
                 return #if DISCORD_ALLOWED true #else false #end;
+
+            case 'LUA_ALLOWED':
+                return #if LUA_ALLOWED true #else false #end;
 
             default:
                 return false;

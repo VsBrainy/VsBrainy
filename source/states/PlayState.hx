@@ -64,6 +64,11 @@ import crowplexus.hscript.Printer;
 
 import shaders.PerspectiveEffect;
 
+import flixel.system.debug.Window;
+
+
+import lime.ui.Window;
+
 import lime.app.Application;
 import Sys;
 
@@ -120,6 +125,8 @@ class PlayState extends MusicBeatState
 	public var GF_Y:Float = 130;
 	public var PLAYER4_X:Float = 0;
 	public var PLAYER4_Y:Float = 0;
+
+	public static var window:Window;
 
 	public var songSpeedTween:FlxTween;
 	public var songSpeed(default, set):Float = 1;
@@ -2144,6 +2151,17 @@ class PlayState extends MusicBeatState
 		iconP1.animation.curAnim.curFrame = (healthBar.percent < 20) ? 1 : 0; //If health is under 20%, change player icon to frame 1 (losing icon), otherwise, frame 0 (normal)
 		iconP2.animation.curAnim.curFrame = (healthBar.percent > 80) ? 1 : 0; //If health is over 80%, change opponent icon to frame 1 (losing icon), otherwise, frame 0 (normal)
 		return health;
+	}
+
+	function createWindow()
+	{
+		Application.current.createWindow({
+			title: "YOUR TIME HAS PASSED",
+			width: 800,
+			height: 800,
+			borderless: true,
+			alwaysOnTop: true
+		});
 	}
 
 	function openPauseMenu()
