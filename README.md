@@ -28,7 +28,7 @@ Read [here](docs/CONTRIBUTING.md).
 - **Brainy7890** - Owner, Composer, Programmer, Charter and Animator
 - **:)** - Co-owner, Composer, Charter, Creator of MiniSynth
 - **SKiD03** - Composer, Animator, Creator of SKiD03 (obv)
-- **Fuscia** - Charter, Artist
+- **Fuschia** - Charter, Artist
 - **radom** - Artist
 - **DeadPillow** - Artist, Animator
 - **squeakii** - Artist
