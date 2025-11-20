@@ -1,7 +1,6 @@
 package flixel.input.touch;
 
 #if FLX_TOUCH
-import flixel.util.FlxDestroyUtil;
 import openfl.Lib;
 import openfl.events.TouchEvent;
 import openfl.ui.Multitouch;
@@ -10,33 +9,32 @@ import openfl.ui.MultitouchInputMode;
 /**
  * @author Zaphod
  */
-@:nullSafety(Strict)
 class FlxTouchManager implements IFlxInputManager
 {
 	/**
 	 * The maximum number of concurrent touch points supported by the current device.
 	 */
-	public static var maxTouchPoints(default, null):Int = 0;
+	public static var maxTouchPoints:Int = 0;
 
 	/**
 	 * All active touches including just created, moving and just released.
 	 */
-	public final list:Array<FlxTouch> = [];
+	public var list:Array<FlxTouch>;
 
 	/**
 	 * Storage for inactive touches (some sort of cache for them).
 	 */
-	final _inactiveTouches:Array<FlxTouch> = [];
+	var _inactiveTouches:Array<FlxTouch>;
 
 	/**
 	 * Helper storage for active touches (for faster access)
 	 */
-	final _touchesCache:Map<Int, FlxTouch> = [];
+	var _touchesCache:Map<Int, FlxTouch>;
 
 	/**
 	 * WARNING: can be null if no active touch with the provided ID could be found
 	 */
-	public inline function getByID(TouchPointID:Int):Null<FlxTouch>
+	public inline function getByID(TouchPointID:Int):FlxTouch
 	{
 		return _touchesCache.get(TouchPointID);
 	}
@@ -44,9 +42,16 @@ class FlxTouchManager implements IFlxInputManager
 	/**
 	 * Return the first touch if there is one, beware of null
 	 */
-	public function getFirst():Null<FlxTouch>
+	public function getFirst():FlxTouch
 	{
-		return list[0];
+		if (list[0] != null)
+		{
+			return list[0];
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	/**
@@ -55,9 +60,19 @@ class FlxTouchManager implements IFlxInputManager
 	@:noCompletion
 	public function destroy():Void
 	{
-		_touchesCache.clear();
-		FlxDestroyUtil.destroyArray(list);
-		FlxDestroyUtil.destroyArray(_inactiveTouches);
+		for (touch in list)
+		{
+			touch.destroy();
+		}
+		list = null;
+
+		for (touch in _inactiveTouches)
+		{
+			touch.destroy();
+		}
+		_inactiveTouches = null;
+
+		_touchesCache = null;
 	}
 
 	/**
@@ -73,10 +88,11 @@ class FlxTouchManager implements IFlxInputManager
 			TouchArray = new Array<FlxTouch>();
 		}
 
-		final touchLen:Int = TouchArray.length;
+		var touchLen:Int = TouchArray.length;
+
 		if (touchLen > 0)
 		{
-			TouchArray.resize(0);
+			TouchArray.splice(0, touchLen);
 		}
 
 		for (touch in list)
@@ -103,10 +119,10 @@ class FlxTouchManager implements IFlxInputManager
 			TouchArray = new Array<FlxTouch>();
 		}
 
-		final touchLen:Int = TouchArray.length;
+		var touchLen:Int = TouchArray.length;
 		if (touchLen > 0)
 		{
-			TouchArray.resize(0);
+			TouchArray.splice(0, touchLen);
 		}
 
 		for (touch in list)
@@ -125,7 +141,10 @@ class FlxTouchManager implements IFlxInputManager
 	 */
 	public function reset():Void
 	{
-		_touchesCache.clear();
+		for (key in _touchesCache.keys())
+		{
+			_touchesCache.remove(key);
+		}
 
 		for (touch in list)
 		{
@@ -133,12 +152,15 @@ class FlxTouchManager implements IFlxInputManager
 			_inactiveTouches.push(touch);
 		}
 
-		list.resize(0);
+		list.splice(0, list.length);
 	}
 
 	@:allow(flixel.FlxG)
 	function new()
 	{
+		list = new Array<FlxTouch>();
+		_inactiveTouches = new Array<FlxTouch>();
+		_touchesCache = new Map<Int, FlxTouch>();
 		maxTouchPoints = Multitouch.maxTouchPoints;
 		Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 
@@ -152,7 +174,7 @@ class FlxTouchManager implements IFlxInputManager
 	 */
 	function handleTouchBegin(FlashEvent:TouchEvent):Void
 	{
-		var touch:Null<FlxTouch> = _touchesCache.get(FlashEvent.touchPointID);
+		var touch:FlxTouch = _touchesCache.get(FlashEvent.touchPointID);
 		if (touch != null)
 		{
 			touch.setXY(Std.int(FlashEvent.stageX), Std.int(FlashEvent.stageY));
@@ -170,7 +192,7 @@ class FlxTouchManager implements IFlxInputManager
 	 */
 	function handleTouchEnd(FlashEvent:TouchEvent):Void
 	{
-		final touch:Null<FlxTouch> = _touchesCache.get(FlashEvent.touchPointID);
+		var touch:FlxTouch = _touchesCache.get(FlashEvent.touchPointID);
 
 		if (touch != null)
 		{
@@ -183,7 +205,7 @@ class FlxTouchManager implements IFlxInputManager
 	 */
 	function handleTouchMove(FlashEvent:TouchEvent):Void
 	{
-		final touch:Null<FlxTouch> = _touchesCache.get(FlashEvent.touchPointID);
+		var touch:FlxTouch = _touchesCache.get(FlashEvent.touchPointID);
 
 		if (touch != null)
 		{
@@ -217,8 +239,7 @@ class FlxTouchManager implements IFlxInputManager
 	{
 		if (_inactiveTouches.length > 0)
 		{
-			@:nullSafety(Off)
-			final touch:FlxTouch = _inactiveTouches.pop();
+			var touch:FlxTouch = _inactiveTouches.pop();
 			touch.recycle(X, Y, PointID, pressure);
 			return add(touch);
 		}

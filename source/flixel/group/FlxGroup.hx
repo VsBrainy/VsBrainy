@@ -9,30 +9,15 @@ import flixel.util.FlxSignal.FlxTypedSignal;
 import flixel.util.FlxSort;
 
 /**
- * Contains a bunch of `FlxBasic`s for vaious organizational purposes, namely
- * collision, updating and drawing.
- * 
- * ## Collision
- * When used as an arg in `FlxG.collide` or `FlxG.overlap`, groups will use quadtrees to
- * greatly reduce the number of overlap checks, resulting in much better peformance compared
- * to having individual overlap checks on each pair of objects.
- * 
- * ## Drawing and Updating
- * Calling `update` or `draw` on a group will call `update` or `draw` on each member. Typically,
- * to update or draw a group you add it to the state, or to a group that was added to the state,
- * this way, the state will update and draw it's members based on the desired framerates.
- * 
- * ## FlxContainers
- * Though objects can be in various organizational groups, it's highly recommended that they only
- * get drawn or updated by one containing group. For this reason `FlxContainer` was made, objects
- * can only be in one `FlxContainer` at a time, adding them to a second will remove them from
- * their previous container, but not from any group.
+ * An alias for `FlxTypedGroup<FlxBasic>`, meaning any flixel object or basic can be added to a
+ * `FlxGroup`, even another `FlxGroup`.
  */
 typedef FlxGroup = FlxTypedGroup<FlxBasic>;
 
 /**
- * A `FlxGroup` that only allows specific members to be a specific type of `FlxBasic`.
- * To use any kind of `FlxBasic` use `FlxGroup`, which is an alias for `FlxTypedGroup<FlxBasic>`.
+ * This is an organizational class that can update and render a bunch of `FlxBasic`s.
+ * NOTE: Although `FlxGroup` extends `FlxBasic`, it will not automatically
+ * add itself to the global collisions quad tree, it will only add its members.
  */
 class FlxTypedGroup<T:FlxBasic> extends FlxBasic
 {
@@ -128,23 +113,23 @@ class FlxTypedGroup<T:FlxBasic> extends FlxBasic
 	override public function destroy():Void
 	{
 		super.destroy();
-		
+
 		FlxDestroyUtil.destroy(_memberAdded);
 		FlxDestroyUtil.destroy(_memberRemoved);
-		
+
 		if (members != null)
 		{
-			/* Note: basic.destroy() will remove it from it's container, which may be this group.
-			 * So we need to make sure this loop can handle deletions
-			 */
-			var count = length;
-			while (count-- > 0)
+			var i:Int = 0;
+			var basic:FlxBasic = null;
+
+			while (i < length)
 			{
-				final basic = members.shift();
+				basic = members[i++];
+
 				if (basic != null)
 					basic.destroy();
 			}
-			
+
 			members = null;
 		}
 	}
@@ -154,8 +139,13 @@ class FlxTypedGroup<T:FlxBasic> extends FlxBasic
 	 */
 	override public function update(elapsed:Float):Void
 	{
-		for (basic in members)
+		var i:Int = 0;
+		var basic:FlxBasic = null;
+
+		while (i < length)
 		{
+			basic = members[i++];
+
 			if (basic != null && basic.exists && basic.active)
 			{
 				basic.update(elapsed);
@@ -169,9 +159,9 @@ class FlxTypedGroup<T:FlxBasic> extends FlxBasic
 	override public function draw():Void
 	{
 		final oldDefaultCameras = FlxCamera._defaultCameras;
-		if (_cameras != null)
+		if (cameras != null)
 		{
-			FlxCamera._defaultCameras = _cameras;
+			FlxCamera._defaultCameras = cameras;
 		}
 
 		for (basic in members)
@@ -215,9 +205,10 @@ class FlxTypedGroup<T:FlxBasic> extends FlxBasic
 			{
 				length = index + 1;
 			}
-			
-			onMemberAdd(basic);
-			
+
+			if (_memberAdded != null)
+				_memberAdded.dispatch(basic);
+
 			return basic;
 		}
 
@@ -228,8 +219,10 @@ class FlxTypedGroup<T:FlxBasic> extends FlxBasic
 		// If we made it this far, we need to add the basic to the group.
 		members.push(basic);
 		length++;
-		onMemberAdd(basic);
-		
+
+		if (_memberAdded != null)
+			_memberAdded.dispatch(basic);
+
 		return basic;
 	}
 
@@ -261,8 +254,10 @@ class FlxTypedGroup<T:FlxBasic> extends FlxBasic
 		if (position < length && members[position] == null)
 		{
 			members[position] = object;
-			onMemberAdd(object);
-			
+
+			if (_memberAdded != null)
+				_memberAdded.dispatch(object);
+
 			return object;
 		}
 
@@ -273,7 +268,9 @@ class FlxTypedGroup<T:FlxBasic> extends FlxBasic
 		// If we made it this far, we need to insert the object into the group at the specified position.
 		members.insert(position, object);
 		length++;
-		onMemberAdd(object);
+
+		if (_memberAdded != null)
+			_memberAdded.dispatch(object);
 
 		return object;
 	}
@@ -372,9 +369,10 @@ class FlxTypedGroup<T:FlxBasic> extends FlxBasic
 		}
 		else
 			members[index] = null;
-		
-		onMemberRemove(basic);
-		
+
+		if (_memberRemoved != null)
+			_memberRemoved.dispatch(basic);
+
 		return basic;
 	}
 
@@ -395,8 +393,10 @@ class FlxTypedGroup<T:FlxBasic> extends FlxBasic
 
 		members[index] = newObject;
 
-		onMemberRemove(oldObject);
-		onMemberAdd(newObject);
+		if (_memberRemoved != null)
+			_memberRemoved.dispatch(oldObject);
+		if (_memberAdded != null)
+			_memberAdded.dispatch(newObject);
 
 		return newObject;
 	}
@@ -676,7 +676,10 @@ class FlxTypedGroup<T:FlxBasic> extends FlxBasic
 		if (_memberRemoved != null)
 		{
 			for (member in members)
-				onMemberRemove(member);
+			{
+				if (member != null)
+					_memberRemoved.dispatch(member);
+			}
 		}
 
 		FlxArrayUtil.clearArray(members);
@@ -885,7 +888,8 @@ class FlxTypedGroup<T:FlxBasic> extends FlxBasic
 
 			if (basic != null)
 			{
-				onMemberRemove(basic);
+				if (_memberRemoved != null)
+					_memberRemoved.dispatch(cast basic);
 
 				basic.destroy();
 			}
@@ -893,18 +897,6 @@ class FlxTypedGroup<T:FlxBasic> extends FlxBasic
 		}
 
 		return maxSize;
-	}
-	
-	function onMemberAdd(member:T)
-	{
-		if (_memberAdded != null)
-			_memberAdded.dispatch(cast member);
-	}
-	
-	function onMemberRemove(member:T)
-	{
-		if (_memberRemoved != null)
-			_memberRemoved.dispatch(cast member);
 	}
 
 	@:noCompletion
@@ -938,9 +930,7 @@ class FlxTypedGroupIterator<T>
 	var _cursor:Int;
 	var _length:Int;
 
-	// NOTE: these methods are inlined to ensure there are no allocation when iterating through a group
-	
-	public inline function new(groupMembers:Array<T>, ?filter:T->Bool)
+	public function new(groupMembers:Array<T>, ?filter:T->Bool)
 	{
 		_groupMembers = groupMembers;
 		_filter = filter;
@@ -948,12 +938,12 @@ class FlxTypedGroupIterator<T>
 		_length = _groupMembers.length;
 	}
 
-	public inline function next()
+	public function next()
 	{
 		return hasNext() ? _groupMembers[_cursor++] : null;
 	}
 
-	public inline function hasNext():Bool
+	public function hasNext():Bool
 	{
 		while (_cursor < _length && (_groupMembers[_cursor] == null || _filter != null && !_filter(_groupMembers[_cursor])))
 		{

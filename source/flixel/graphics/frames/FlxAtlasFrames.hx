@@ -9,6 +9,7 @@ import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.system.FlxAssets;
 import haxe.xml.Access;
+import openfl.Assets;
 import openfl.geom.Rectangle;
 
 /**
@@ -35,12 +36,12 @@ class FlxAtlasFrames extends FlxFramesCollection
 	/**
 	 * Parsing method for atlases generated from Aseprite's JSON export options. Note that Aseprite
 	 * and Texture Packer use the same JSON format, however this method honors frames' `duration`
-	 * whereas `fromTexturePackerJson` ignores it by default (for backwards compatibility reasons).
+	 * whereas `fromTexturePackerJson` ignores it by default (for backwrds compatibility reasons).
 	 *
 	 * @param   source       The image source (can be `FlxGraphic`, `String`, or `BitmapData`).
 	 * @param   description  Contents of JSON file with atlas description.
-	 *                       You can get it with `FlxG.assets.getText(path/to/description.json)`.
-	 *                       Or you can just pass a path to the JSON file in the assets directory.
+	 *                       You can get it with `Assets.getText(path/to/description.json)`.
+	 *                       Or you can just a pass path to the JSON file in the assets directory.
 	 *                       You can also directly pass in the parsed object.
 	 * @return  Newly created `FlxAtlasFrames` collection.
 	 * @see [Exporting texture atlases with Aseprite](https://www.aseprite.org/docs/sprite-sheet/#texture-atlases)
@@ -55,11 +56,11 @@ class FlxAtlasFrames extends FlxFramesCollection
 	 *
 	 * @param   source            The image source (can be `FlxGraphic`, `String`, or `BitmapData`).
 	 * @param   description       Contents of JSON file with atlas description.
-	 *                            You can get it with `FlxG.assets.getText(path/to/description.json)`.
-	 *                            Or you can just pass a path to the JSON file in the assets directory.
+	 *                            You can get it with `Assets.getText(path/to/description.json)`.
+	 *                            Or you can just a pass path to the JSON file in the assets directory.
 	 *                            You can also directly pass in the parsed object.
 	 * @param   useFrameDuration  If true, any frame durations defined in the JSON will override the
-	 *                            frameRate set in your `FlxAnimationController`.
+	 *                            frameRate set in you `FlxAnimationController`.
 	 *                            Note: You can also use `fromAseprite` which uses duration.
 	 * @return  Newly created `FlxAtlasFrames` collection.
 	 */
@@ -131,7 +132,7 @@ class FlxAtlasFrames extends FlxFramesCollection
 	 *
 	 * @param   source        The image source (can be `FlxGraphic`, `String` or `BitmapData`).
 	 * @param   description   Contents of the file with atlas description.
-	 *                        You can get it with `FlxG.assets.getText(path/to/description/file)`.
+	 *                        You can get it with `Assets.getText(path/to/description/file)`.
 	 *                        Or you can just pass path to the description file in the assets directory.
 	 * @return  Newly created `FlxAtlasFrames` collection.
 	 */
@@ -151,8 +152,8 @@ class FlxAtlasFrames extends FlxFramesCollection
 
 		frames = new FlxAtlasFrames(graphic);
 
-		if (FlxG.assets.exists(description))
-			description = FlxG.assets.getTextUnsafe(description);
+		if (Assets.exists(description))
+			description = Assets.getText(description);
 
 		var pack:String = StringTools.trim(description);
 		var lines:Array<String> = pack.split("\n");
@@ -253,9 +254,6 @@ class FlxAtlasFrames extends FlxFramesCollection
 
 		for (texture in data.nodes.SubTexture)
 		{
-			if (!texture.has.width && texture.has.w)
-				throw "Sparrow v1 is not supported, use Sparrow v2";
-			
 			var name = texture.att.name;
 			var trimmed = texture.has.frameX;
 			var rotated = (texture.has.rotated && texture.att.rotated == "true");
@@ -264,39 +262,24 @@ class FlxAtlasFrames extends FlxFramesCollection
 
 			var rect = FlxRect.get(Std.parseFloat(texture.att.x), Std.parseFloat(texture.att.y), Std.parseFloat(texture.att.width),
 				Std.parseFloat(texture.att.height));
-			
+
 			var size = if (trimmed)
 			{
-				FlxRect.get(Std.parseInt(texture.att.frameX), Std.parseInt(texture.att.frameY), Std.parseInt(texture.att.frameWidth),
+				new Rectangle(Std.parseInt(texture.att.frameX), Std.parseInt(texture.att.frameY), Std.parseInt(texture.att.frameWidth),
 					Std.parseInt(texture.att.frameHeight));
 			}
 			else
 			{
-				FlxRect.get(0, 0, rect.width, rect.height);
+				new Rectangle(0, 0, rect.width, rect.height);
 			}
-			
 
 			var angle = rotated ? FlxFrameAngle.ANGLE_NEG_90 : FlxFrameAngle.ANGLE_0;
 
-			var offset = FlxPoint.get(-size.x, -size.y);
+			var offset = FlxPoint.get(-size.left, -size.top);
 			var sourceSize = FlxPoint.get(size.width, size.height);
 
 			if (rotated && !trimmed)
 				sourceSize.set(size.height, size.width);
-
-			// Prevents issues caused by adding frames of size 0
-			if (rect.width == 0 || rect.height == 0)
-            {
-                if (!trimmed)
-                    size.setSize(1,1);
-                
-                var frame = frames.addEmptyFrame(size);
-
-                frame.name = name;
-                frame.offset.copyFrom(offset);
-                
-                continue;
-            }
 
 			frames.addAtlasFrame(rect, sourceSize, offset, name, angle, flipX, flipY);
 		}
@@ -357,7 +340,7 @@ class FlxAtlasFrames extends FlxFramesCollection
 	 *
 	 * @param   Source        The image source (can be `FlxGraphic`, `String` or `BitmapData`).
 	 * @param   Description   Contents of the file with atlas description.
-	 *                        You can get it with `FlxG.assets.getText(path/to/description/file)`.
+	 *                        You can get it with `Assets.getText(path/to/description/file)`.
 	 *                        Or you can just pass a path to the description file in the assets directory.
 	 * @return  Newly created `FlxAtlasFrames` collection.
 	 */
@@ -377,8 +360,8 @@ class FlxAtlasFrames extends FlxFramesCollection
 
 		frames = new FlxAtlasFrames(graphic);
 
-		if (FlxG.assets.exists(Description))
-			Description = FlxG.assets.getTextUnsafe(Description);
+		if (Assets.exists(Description))
+			Description = Assets.getText(Description);
 
 		var pack = StringTools.trim(Description);
 		var lines:Array<String> = pack.split("\n");
@@ -423,7 +406,7 @@ class FlxAtlasFrames extends FlxFramesCollection
 
 	override public function addBorder(border:FlxPoint):FlxAtlasFrames
 	{
-		var resultBorder = FlxPoint.weak().add(this.border).add(border);
+		var resultBorder = FlxPoint.weak().addPoint(this.border).addPoint(border);
 		var atlasFrames = FlxAtlasFrames.findFrame(parent, resultBorder);
 		if (atlasFrames != null)
 			return atlasFrames;
@@ -437,7 +420,7 @@ class FlxAtlasFrames extends FlxFramesCollection
 	}
 	
 	/**
-	 * Adds all of the frames from the specified collection
+	 * Adds all ofthe frames from the specified collection
 	 * 
 	 * @param   collection     The frames to add. Note: calling destroy() on this collection
 	 *                         after it has been added can cause crashes.

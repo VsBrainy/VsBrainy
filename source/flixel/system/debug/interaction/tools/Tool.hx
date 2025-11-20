@@ -2,10 +2,9 @@ package flixel.system.debug.interaction.tools;
 
 import openfl.display.BitmapData;
 import openfl.display.Sprite;
-import flixel.system.FlxAssets;
 import flixel.system.debug.interaction.Interaction;
 import flixel.system.ui.FlxSystemButton;
-import flixel.util.FlxDestroyUtil;
+import flixel.util.FlxDestroyUtil.IFlxDestroyable;
 
 /**
  * The base class of all tools in the interactive debug.
@@ -43,15 +42,15 @@ class Tool extends Sprite implements IFlxDestroyable
 		return _brain.activeTool == this && _brain.visible;
 	}
 
-	function setButton(icon:FlxGraphicSource):Void
+	function setButton(Icon:Class<BitmapData>):Void
 	{
-		button = new FlxSystemButton(icon.resolveBitmapData(), onButtonClicked, true);
+		button = new FlxSystemButton(Type.createInstance(Icon, [0, 0]), onButtonClicked, true);
 		button.toggled = true;
 
-		var tooltipName = _name;
+		var tooltip = _name;
 		if (_shortcut != null)
-			tooltipName += ' ($_shortcut)';
-		Tooltip.add(button, tooltipName);
+			tooltip += ' ($_shortcut)';
+		Tooltip.add(button, tooltip);
 	}
 
 	/**
@@ -61,10 +60,10 @@ class Tool extends Sprite implements IFlxDestroyable
 	 * that a specific action is happening. Use `setCursorInUse()` to
 	 * learn more about custom cursors.
 	 */
-	function setCursor(Icon:BitmapData, offsetX = 0.0, offsetY = 0.0):Void
+	function setCursor(Icon:BitmapData):Void
 	{
 		cursor = Icon;
-		_brain.registerCustomCursor(_name, cursor, offsetX, offsetY);
+		_brain.registerCustomCursor(_name, cursor);
 	}
 
 	/**

@@ -2,7 +2,6 @@ package flixel.graphics.frames.bmfont;
 
 import flixel.FlxG;
 import flixel.system.debug.log.LogStyle;
-import haxe.PosInfos;
 
 /**
  * Helps providing a fast dot-syntax access to the most common `Xml` methods.
@@ -63,7 +62,7 @@ abstract BMFontXml(Xml) from Xml
 		if (this.nodeType == Xml.Document)
 			throw 'Cannot access document attribute $name';
 		
-		return this.nodeType != Xml.Document && this.exists(name);
+		return this.nodeType == Xml.Document && this.exists(name);
 	}
 	
 	/** Check the existence of a sub node with the given name. **/
@@ -84,7 +83,7 @@ abstract BMFontXml(Xml) from Xml
 
 private abstract NodeAccess(Xml) from Xml to Xml
 {
-	inline function getHelper(name:String, ?invalid:(String, ?PosInfos)->Void):BMFontXml
+	inline function getHelper(name:String, ?invalid:(String)->Void):BMFontXml
 	{
 		final xml = this.elementsNamed(name).next();
 		if (xml == null)
@@ -103,7 +102,7 @@ private abstract NodeAccess(Xml) from Xml to Xml
 	
 	public function get(name:String):BMFontXml
 	{
-		return getHelper(name, (msg, ?_)->throw msg);
+		return getHelper(name, (msg)->throw msg);
 	}
 	
 	public function getWarn(name:String)
@@ -119,7 +118,7 @@ private abstract NodeAccess(Xml) from Xml to Xml
 
 private abstract AttribAccess(Xml) from Xml to Xml
 {
-	inline function stringHelper(name:String, ?invalid:(String, ?PosInfos)->Void, ?backup:String):String
+	inline function stringHelper(name:String, ?invalid:(String)->Void, ?backup:String):String
 	{
 		var value = backup;
 		if (this.nodeType == Xml.Document)
@@ -145,7 +144,7 @@ private abstract AttribAccess(Xml) from Xml to Xml
 	
 	public function string(name:String)
 	{
-		return stringHelper(name, (msg, ?_)->throw msg);
+		return stringHelper(name, (msg)->throw msg);
 	}
 	
 	public function stringWarn(name:String, ?backup:String)
@@ -158,7 +157,7 @@ private abstract AttribAccess(Xml) from Xml to Xml
 		return stringHelper(name, FlxG.log.error, backup);
 	}
 	
-	inline function intHelper(name:String, ?invalid:(String, ?PosInfos)->Void, backup:Int):Int
+	inline function intHelper(name:String, ?invalid:(String)->Void, backup:Int):Int
 	{
 		var value = backup;
 		if (this.nodeType == Xml.Document)
@@ -184,7 +183,7 @@ private abstract AttribAccess(Xml) from Xml to Xml
 	
 	public function int(name:String)
 	{
-		return intHelper(name, (msg, ?_)->throw msg, 0);
+		return intHelper(name, (msg)->throw msg, 0);
 	}
 	
 	public function intWarn(name:String, backup:Int)
@@ -197,7 +196,7 @@ private abstract AttribAccess(Xml) from Xml to Xml
 		return intHelper(name, FlxG.log.error, backup);
 	}
 	
-	inline function boolHelper(name:String, ?invalid:(String, ?PosInfos)->Void, backup:Bool):Bool
+	inline function boolHelper(name:String, ?invalid:(String)->Void, backup:Bool):Bool
 	{
 		var value = backup;
 		if (this.nodeType == Xml.Document)
@@ -223,7 +222,7 @@ private abstract AttribAccess(Xml) from Xml to Xml
 	
 	public function bool(name:String)
 	{
-		return boolHelper(name, (msg, ?_)->throw msg, false);
+		return boolHelper(name, (msg)->throw msg, false);
 	}
 	
 	public function boolWarn(name:String, backup:Bool)

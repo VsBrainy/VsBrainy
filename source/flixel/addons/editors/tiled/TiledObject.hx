@@ -27,7 +27,6 @@ class TiledObject
 	public static inline var POLYGON = 2;
 	public static inline var POLYLINE = 3;
 	public static inline var TILE = 4;
-	public static inline var POINT = 5;
 
 	public var x:Int;
 	public var y:Int;
@@ -148,10 +147,6 @@ class TiledObject
 		{
 			objectType = POLYLINE;
 			getPoints(source.node.polyline);
-		}
-		else if (source.hasNode.point)
-		{
-			objectType = POINT;
 		}
 	}
 

@@ -8,7 +8,6 @@ import flixel.math.FlxMath;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
-import flixel.math.FlxRect;
 import flixel.util.FlxSpriteUtil;
 
 /**
@@ -22,44 +21,44 @@ class FlxTiledSprite extends FlxStrip
 	 * The x-offset of the texture
 	 */
 	public var scrollX(default, set):Float = 0;
-	
+
 	/**
 	 * The y-offset of the texture.
 	 */
 	public var scrollY(default, set):Float = 0;
-	
+
 	/**
 	 * Repeat texture on x axis. Default is true
 	 */
 	public var repeatX(default, set):Bool = true;
-	
+
 	/**
 	 * Repeat texture on y axis. Default is true
 	 */
 	public var repeatY(default, set):Bool = true;
-	
+
 	/**
 	 * Helper sprite, which does actual rendering in blit render mode.
 	 */
 	var renderSprite:FlxSprite;
-	
+
 	var regen:Bool = true;
-	
+
 	var graphicVisible:Bool = true;
-	
-	public function new(?graphic:FlxGraphicAsset, width:Float, height:Float, repeatX = true, repeatY = true)
+
+	public function new(?Graphic:FlxGraphicAsset, Width:Float, Height:Float, RepeatX:Bool = true, RepeatY:Bool = true)
 	{
 		super();
-		
+
 		repeat = true;
-		
+
 		indices[0] = 0;
 		indices[1] = 1;
 		indices[2] = 2;
 		indices[3] = 2;
 		indices[4] = 3;
 		indices[5] = 0;
-		
+
 		uvtData[0] = 0;
 		uvtData[1] = 0;
 		uvtData[2] = 1;
@@ -68,64 +67,58 @@ class FlxTiledSprite extends FlxStrip
 		uvtData[5] = 1;
 		uvtData[6] = 0;
 		uvtData[7] = 1;
-		
+
 		vertices[0] = 0;
 		vertices[1] = 0;
-		vertices[2] = width;
+		vertices[2] = Width;
 		vertices[3] = 0;
-		vertices[4] = width;
-		vertices[5] = height;
+		vertices[4] = Width;
+		vertices[5] = Height;
 		vertices[6] = 0;
-		vertices[7] = height;
-		
-		this.width = width;
-		this.height = height;
-		
-		this.repeatX = repeatX;
-		this.repeatY = repeatY;
-		
-		if (graphic != null)
-			loadGraphic(graphic);
+		vertices[7] = Height;
+
+		width = Width;
+		height = Height;
+
+		repeatX = RepeatX;
+		repeatY = RepeatY;
+
+		if (Graphic != null)
+			loadGraphic(Graphic);
 	}
-	
-	override function destroy():Void
+
+	override public function destroy():Void
 	{
 		renderSprite = FlxDestroyUtil.destroy(renderSprite);
 		super.destroy();
 	}
-	
-	override function loadGraphic(graphic, animated = false, width = 0, height = 0, unique = false, ?key:String):FlxSprite
+
+	override public function loadGraphic(Graphic:FlxGraphicAsset, Animated:Bool = false, Width:Int = 0, Height:Int = 0, Unique:Bool = false,
+			?Key:String):FlxSprite
 	{
-		this.graphic = FlxG.bitmap.add(graphic);
+		graphic = FlxG.bitmap.add(Graphic);
 		return this;
 	}
-	
-	public function loadFrame(frame:FlxFrame):FlxTiledSprite
+
+	public function loadFrame(Frame:FlxFrame):FlxTiledSprite
 	{
-		graphic = FlxGraphic.fromFrame(frame);
+		graphic = FlxGraphic.fromFrame(Frame);
 		return this;
 	}
-	
-	override function set_clipRect(value:FlxRect):FlxRect
+
+	override function set_graphic(Value:FlxGraphic):FlxGraphic
 	{
-		regen = true;
-		
-		return super.set_clipRect(value);
-	}
-	
-	override function set_graphic(value:FlxGraphic):FlxGraphic
-	{
-		if (graphic != value)
+		if (graphic != Value)
 			regen = true;
-		
-		return super.set_graphic(value);
+
+		return super.set_graphic(Value);
 	}
-	
+
 	function regenGraphic():Void
 	{
 		if (!regen || graphic == null)
 			return;
-		
+
 		if (FlxG.renderBlit)
 		{
 			updateRenderSprite();
@@ -134,92 +127,69 @@ class FlxTiledSprite extends FlxStrip
 		{
 			updateVerticesData();
 		}
-		
+
 		regen = false;
 	}
-	
-	override function draw():Void
+
+	override public function draw():Void
 	{
 		if (regen)
 			regenGraphic();
-		
-		if (graphicVisible)
-		{
-			if (FlxG.renderBlit)
-			{
-				renderSprite.x = x;
-				renderSprite.y = y;
-				renderSprite.scrollFactor.set(scrollFactor.x, scrollFactor.y);
-				renderSprite._cameras = _cameras;
-				renderSprite.draw();
-			}
-			else
-			{
-				super.draw();
-			}
-		}
-		
-		#if FLX_DEBUG
-		if (FlxG.debugger.drawDebug)
-			drawDebug();
-		#end
-	}
-	
-	#if FLX_DEBUG
-	/**
-	 * Copied exactly from `FlxObject`, to avoid any future changes to `FlxStrip`'s debug drawing
-	 */
-	override function drawDebug()
-	{
-		if (ignoreDrawDebug)
+
+		if (!graphicVisible)
 			return;
-		
-		final drawPath = path != null && !path.ignoreDrawDebug;
-		
-		for (camera in getCamerasLegacy())
+
+		if (FlxG.renderBlit)
 		{
-			drawDebugOnCamera(camera);
-			
-			if (drawPath)
-			{
-				path.drawDebugOnCamera(camera);
-			}
-		}
-	}
-	#end
-	
-	function updateRenderSprite():Void
-	{
-		graphicVisible = true;
-		
-		if (renderSprite == null)
-			renderSprite = new FlxSprite();
-		
-		final drawRect = getDrawRect();
-		drawRect.x = Std.int(drawRect.x);
-		drawRect.y = Std.int(drawRect.y);
-		drawRect.width = Std.int(drawRect.width);
-		drawRect.height = Std.int(drawRect.height);
-		//TODO: rect.int() or smth
-		
-		if (drawRect.width * drawRect.height == 0)
-		{
-			graphicVisible = false;
-			drawRect.put();
-			return;
-		}
-		
-		if (renderSprite.width != drawRect.width || renderSprite.height != drawRect.height)
-		{
-			renderSprite.makeGraphic(Std.int(drawRect.width), Std.int(drawRect.height), FlxColor.TRANSPARENT, true);
+			renderSprite.x = x;
+			renderSprite.y = y;
+			renderSprite.scrollFactor.set(scrollFactor.x, scrollFactor.y);
+			renderSprite._cameras = _cameras;
+			renderSprite.draw();
 		}
 		else
 		{
-			renderSprite.pixels.fillRect(renderSprite.pixels.rect, FlxColor.TRANSPARENT);
+			super.draw();
 		}
-		
+	}
+
+	function updateRenderSprite():Void
+	{
+		graphicVisible = true;
+
+		if (renderSprite == null)
+			renderSprite = new FlxSprite();
+
+		var rectX:Float = repeatX ? 0 : scrollX;
+		var rectWidth:Float = repeatX ? width : graphic.bitmap.width;
+
+		if (!repeatX && (rectX > width || rectX + rectWidth < 0))
+		{
+			graphicVisible = false;
+			return;
+		}
+
+		var rectY:Float = repeatY ? 0 : scrollY;
+		var rectHeight:Float = repeatY ? height : graphic.bitmap.height;
+
+		if (!repeatY && (rectY > height || rectY + rectHeight < 0))
+		{
+			graphicVisible = false;
+			return;
+		}
+
+		if (renderSprite.width != width || renderSprite.height != height)
+		{
+			renderSprite.makeGraphic(Std.int(width), Std.int(height), FlxColor.TRANSPARENT, true);
+		}
+		else
+		{
+			_flashRect2.setTo(0, 0, width, height);
+			renderSprite.pixels.fillRect(_flashRect2, FlxColor.TRANSPARENT);
+		}
+
 		FlxSpriteUtil.flashGfx.clear();
-		
+
 		if (scrollX != 0 || scrollY != 0)
 		{
 			_matrix.identity();
@@ -231,150 +201,119 @@ class FlxTiledSprite extends FlxStrip
 		{
 			FlxSpriteUtil.flashGfx.beginBitmapFill(graphic.bitmap);
 		}
-		
-		FlxSpriteUtil.flashGfx.drawRect(drawRect.x, drawRect.y, drawRect.width, drawRect.height);
+
+		FlxSpriteUtil.flashGfx.drawRect(rectX, rectY, rectWidth, rectHeight);
 		renderSprite.pixels.draw(FlxSpriteUtil.flashGfxSprite, null, colorTransform);
 		FlxSpriteUtil.flashGfx.clear();
 		renderSprite.dirty = true;
 	}
-	
+
 	function updateVerticesData():Void
 	{
 		if (graphic == null)
 			return;
-		
-		final frame:FlxFrame = graphic.imageFrame.frame;
+
+		var frame:FlxFrame = graphic.imageFrame.frame;
 		graphicVisible = true;
-		
-		final drawRect = getDrawRect();
-		
-		if (drawRect.width * drawRect.height == 0)
+
+		if (repeatX)
 		{
-			graphicVisible = false;
-			drawRect.put();
-			return;
+			vertices[0] = vertices[6] = 0.0;
+			vertices[2] = vertices[4] = width;
+
+			uvtData[0] = uvtData[6] = -scrollX / frame.sourceSize.x;
+			uvtData[2] = uvtData[4] = uvtData[0] + width / frame.sourceSize.x;
 		}
-		
-		// Texture coordinates (UVs)
-		final rectUX:Float = (drawRect.x - scrollX) / frame.sourceSize.x;
-		final rectVX:Float = rectUX + (drawRect.width-drawRect.x) / frame.sourceSize.x;
-		final rectUY:Float = (drawRect.y - scrollY) / frame.sourceSize.y;
-		final rectVY:Float = rectUY + (drawRect.height - drawRect.y) / frame.sourceSize.y;
-		
-		vertices[0] = drawRect.x;
-		vertices[2] = drawRect.width;
-		vertices[4] = drawRect.width;
-		vertices[6] = drawRect.x;
-		
-		uvtData[0] = rectUX;
-		uvtData[2] = rectVX;
-		uvtData[4] = rectVX;
-		uvtData[6] = rectUX;
-		
-		vertices[1] = drawRect.y;
-		vertices[3] = drawRect.y;
-		vertices[5] = drawRect.height;
-		vertices[7] = drawRect.height;
-		
-		uvtData[1] = rectUY;
-		uvtData[3] = rectUY;
-		uvtData[5] = rectVY;
-		uvtData[7] = rectVY;
-		
-		drawRect.put();
-	}
-	
-	function getDrawRect(?result:FlxRect):FlxRect
-	{
-		if (result == null)
-			result = FlxRect.get();
-		
-		final frame:FlxFrame = graphic.imageFrame.frame;
-		final sourceSizeX = FlxG.renderBlit ? graphic.bitmap.width : frame.sourceSize.x;
-		final sourceSizeY = FlxG.renderBlit ? graphic.bitmap.height : frame.sourceSize.y;
-		
-		result.x = (repeatX ? 0 : scrollX);
-		if (clipRect != null)
+		else
 		{
-			result.x += clipRect.x;
+			vertices[0] = vertices[6] = FlxMath.bound(scrollX, 0, width);
+			vertices[2] = vertices[4] = FlxMath.bound(scrollX + frame.sourceSize.x, 0, width);
+
+			if (vertices[2] - vertices[0] <= 0)
+			{
+				graphicVisible = false;
+				return;
+			}
+
+			uvtData[0] = uvtData[6] = (vertices[0] - scrollX) / frame.sourceSize.x;
+			uvtData[2] = uvtData[4] = uvtData[0] + (vertices[2] - vertices[0]) / frame.sourceSize.x;
 		}
-		result.x = FlxMath.bound(result.x, 0, width);
-		
-		result.width = (repeatX ? result.x + width : scrollX + sourceSizeX);
-		if (clipRect != null)
+
+		if (repeatY)
 		{
-			result.width = FlxMath.bound(result.width, clipRect.x, clipRect.right);
+			vertices[1] = vertices[3] = 0.0;
+			vertices[5] = vertices[7] = height;
+
+			uvtData[1] = uvtData[3] = -scrollY / frame.sourceSize.y;
+			uvtData[5] = uvtData[7] = uvtData[1] + height / frame.sourceSize.y;
 		}
-		result.width = FlxMath.bound(result.width, 0, width);
-		
-		result.y = (repeatY ? 0 : scrollY);
-		if (clipRect != null) 
+		else
 		{
-			result.y += clipRect.y;
+			vertices[1] = vertices[3] = FlxMath.bound(scrollY, 0, height);
+			vertices[5] = vertices[7] = FlxMath.bound(scrollY + frame.sourceSize.y, 0, height);
+
+			if (vertices[5] - vertices[1] <= 0)
+			{
+				graphicVisible = false;
+				return;
+			}
+
+			uvtData[1] = uvtData[3] = (vertices[1] - scrollY) / frame.sourceSize.y;
+			uvtData[5] = uvtData[7] = uvtData[1] + (vertices[5] - vertices[1]) / frame.sourceSize.y;
 		}
-		result.y = FlxMath.bound(result.y, 0, height);
-		
-		result.height = (repeatY ? result.y + height : scrollY + sourceSizeY);
-		if (clipRect != null)
-		{
-			result.height = FlxMath.bound(result.height, clipRect.y, clipRect.bottom);
-		}
-		result.height = FlxMath.bound(result.height, 0, height);
-		
-		return result;
 	}
-	
-	override function set_width(value:Float):Float
+
+	override function set_width(Width:Float):Float
 	{
-		if (value <= 0)
-			return value;
-		
-		if (value != width)
+		if (Width <= 0)
+			return Width;
+
+		if (Width != width)
 			regen = true;
-		
-		return super.set_width(value);
+
+		return super.set_width(Width);
 	}
-	
-	override function set_height(value:Float):Float
+
+	override function set_height(Height:Float):Float
 	{
-		if (value <= 0)
-			return value;
-		
-		if (value != height)
+		if (Height <= 0)
+			return Height;
+
+		if (Height != height)
 			regen = true;
-		
-		return super.set_height(value);
+
+		return super.set_height(Height);
 	}
-	
-	function set_scrollX(value:Float):Float
+
+	function set_scrollX(Value:Float):Float
 	{
-		if (value != scrollX)
+		if (Value != scrollX)
 			regen = true;
-		
-		return scrollX = value;
+
+		return scrollX = Value;
 	}
-	
-	function set_scrollY(value:Float):Float
+
+	function set_scrollY(Value:Float):Float
 	{
-		if (value != scrollY)
+		if (Value != scrollY)
 			regen = true;
-		
-		return scrollY = value;
+
+		return scrollY = Value;
 	}
-	
-	function set_repeatX(value:Bool):Bool
+
+	function set_repeatX(Value:Bool):Bool
 	{
-		if (value != repeatX)
+		if (Value != repeatX)
 			regen = true;
-		
-		return repeatX = value;
+
+		return repeatX = Value;
 	}
-	
-	function set_repeatY(value:Bool):Bool
+
+	function set_repeatY(Value:Bool):Bool
 	{
-		if (value != repeatY)
+		if (Value != repeatY)
 			regen = true;
-		
-		return repeatY = value;
+
+		return repeatY = Value;
 	}
 }

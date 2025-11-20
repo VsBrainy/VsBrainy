@@ -2,16 +2,15 @@ package flixel.input.gamepad.mappings;
 
 import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.gamepad.id.LogitechID;
-import flixel.input.gamepad.mappings.FlxGamepadMapping;
 
-class LogitechMapping extends FlxTypedGamepadMapping<LogitechID>
+class LogitechMapping extends FlxGamepadMapping
 {
 	#if FLX_JOYSTICK_API
-	static inline var LEFT_ANALOG_STICK_FAKE_X = 20;
-	static inline var LEFT_ANALOG_STICK_FAKE_Y = 21;
+	static inline var LEFT_ANALOG_STICK_FAKE_X:Int = 20;
+	static inline var LEFT_ANALOG_STICK_FAKE_Y:Int = 21;
 
-	static inline var RIGHT_ANALOG_STICK_FAKE_X = 22;
-	static inline var RIGHT_ANALOG_STICK_FAKE_Y = 23;
+	static inline var RIGHT_ANALOG_STICK_FAKE_X:Int = 22;
+	static inline var RIGHT_ANALOG_STICK_FAKE_Y:Int = 23;
 	#end
 
 	override function initValues():Void
@@ -20,7 +19,7 @@ class LogitechMapping extends FlxTypedGamepadMapping<LogitechID>
 		rightStick = LogitechID.RIGHT_ANALOG_STICK;
 	}
 
-	override function getID(rawID:LogitechID):FlxGamepadInputID
+	override public function getID(rawID:Int):FlxGamepadInputID
 	{
 		return switch (rawID)
 		{
@@ -53,7 +52,7 @@ class LogitechMapping extends FlxTypedGamepadMapping<LogitechID>
 		}
 	}
 
-	override function getRawID(ID:FlxGamepadInputID):LogitechID
+	override public function getRawID(ID:FlxGamepadInputID):Int
 	{
 		return switch (ID)
 		{
@@ -86,13 +85,8 @@ class LogitechMapping extends FlxTypedGamepadMapping<LogitechID>
 			case LEFT_TRIGGER_FAKE: LogitechID.SEVEN;
 			case RIGHT_TRIGGER_FAKE: LogitechID.EIGHT;
 			#end
-			default: super.getRawID(ID);
+			default: -1;
 		}
-	}
-	
-	override function getMappedInput(id:FlxGamepadInputID)
-	{
-		return FlxGamepadMappedInput.LOGITECH(getRawID(id));
 	}
 	
 	override function getInputLabel(id:FlxGamepadInputID)
@@ -119,7 +113,7 @@ class LogitechMapping extends FlxTypedGamepadMapping<LogitechID>
 	}
 
 	#if FLX_JOYSTICK_API
-	override function axisIndexToRawID(axisID:LogitechID):Int
+	override public function axisIndexToRawID(axisID:Int):Int
 	{
 		return if (axisID == leftStick.x) LEFT_ANALOG_STICK_FAKE_X; else if (axisID == leftStick.y) LEFT_ANALOG_STICK_FAKE_Y; else if (axisID == rightStick.x)
 			RIGHT_ANALOG_STICK_FAKE_X;

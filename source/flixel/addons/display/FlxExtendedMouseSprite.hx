@@ -183,8 +183,6 @@ class FlxExtendedMouseSprite extends FlxSprite
 	 * Returns how many vertical pixels the mouse pointer is inside this sprite from the top left corner. Returns -1 if outside.
 	 */
 	public var mouseY(get, never):Int;
-	var viewX(get, never):Int;
-	var viewY(get, never):Int;
 	#end
 
 	var _snapOnDrag:Bool = false;
@@ -455,11 +453,11 @@ class FlxExtendedMouseSprite extends FlxSprite
 			if (acceleration.x < 0)
 			{
 				//	Gravity is pulling them left
-				if (touching.has(WALL))
+				if ((touching & WALL) != 0)
 				{
 					drag.y = frictionY;
 
-					if (!wasTouching.has(WALL))
+					if ((wasTouching & WALL) == 0)
 					{
 						if (velocity.x < toleranceX)
 						{
@@ -475,12 +473,12 @@ class FlxExtendedMouseSprite extends FlxSprite
 			else if (acceleration.x > 0)
 			{
 				//	Gravity is pulling them right
-				if (touching.has(WALL))
+				if ((touching & WALL) != 0)
 				{
 					//	Stop them sliding like on ice
 					drag.y = frictionY;
 
-					if (!wasTouching.has(WALL))
+					if ((wasTouching & WALL) == 0)
 					{
 						if (velocity.x > -toleranceX)
 						{
@@ -501,11 +499,11 @@ class FlxExtendedMouseSprite extends FlxSprite
 			if (acceleration.y < 0)
 			{
 				//	Gravity is pulling them up (velocity is negative)
-				if (touching.has(CEILING))
+				if ((touching & CEILING) != 0)
 				{
 					drag.x = frictionX;
 
-					if (!wasTouching.has(CEILING))
+					if ((wasTouching & CEILING) == 0)
 					{
 						if (velocity.y < toleranceY)
 						{
@@ -521,12 +519,12 @@ class FlxExtendedMouseSprite extends FlxSprite
 			else if (acceleration.y > 0)
 			{
 				//	Gravity is pulling them down (velocity is positive)
-				if (touching.has(FLOOR))
+				if ((touching & FLOOR) != 0)
 				{
 					//	Stop them sliding like on ice
 					drag.x = frictionX;
 
-					if (!wasTouching.has(FLOOR))
+					if ((wasTouching & FLOOR) == 0)
 					{
 						if (velocity.y > -toleranceY)
 						{
@@ -551,14 +549,14 @@ class FlxExtendedMouseSprite extends FlxSprite
 		if (_allowHorizontalDrag)
 		{
 			#if FLX_MOUSE
-			x = Math.floor(viewX + scrollFactor.x * (FlxG.mouse.x - viewX)) - _dragOffsetX;
+			x = Math.floor(FlxG.mouse.screenX + scrollFactor.x * (FlxG.mouse.x - FlxG.mouse.screenX)) - _dragOffsetX;
 			#end
 		}
 
 		if (_allowVerticalDrag)
 		{
 			#if FLX_MOUSE
-			y = Math.floor(viewY + scrollFactor.y * (FlxG.mouse.y - viewY)) - _dragOffsetY;
+			y = Math.floor(FlxG.mouse.screenY + scrollFactor.y * (FlxG.mouse.y - FlxG.mouse.screenY)) - _dragOffsetY;
 			#end
 		}
 
@@ -659,8 +657,8 @@ class FlxExtendedMouseSprite extends FlxSprite
 		#if FLX_MOUSE
 		if (_dragFromPoint == false)
 		{
-			_dragOffsetX = Math.floor(viewX + scrollFactor.x * (FlxG.mouse.x - viewX) - x);
-			_dragOffsetY = Math.floor(viewY + scrollFactor.y * (FlxG.mouse.y - viewY) - y);
+			_dragOffsetX = Math.floor(FlxG.mouse.screenX + scrollFactor.x * (FlxG.mouse.x - FlxG.mouse.screenX) - x);
+			_dragOffsetY = Math.floor(FlxG.mouse.screenY + scrollFactor.y * (FlxG.mouse.y - FlxG.mouse.screenY) - y);
 		}
 		else
 		{
@@ -830,8 +828,8 @@ class FlxExtendedMouseSprite extends FlxSprite
 	#if FLX_MOUSE
 	function get_mouseOver():Bool
 	{
-		return FlxMath.pointInCoordinates(Math.floor(viewX + scrollFactor.x * (FlxG.mouse.x - viewX)),
-			Math.floor(viewY + scrollFactor.y * (FlxG.mouse.y - viewY)), Math.floor(x), Math.floor(y), Math.floor(width),
+		return FlxMath.pointInCoordinates(Math.floor(FlxG.mouse.screenX + scrollFactor.x * (FlxG.mouse.x - FlxG.mouse.screenX)),
+			Math.floor(FlxG.mouse.screenY + scrollFactor.y * (FlxG.mouse.y - FlxG.mouse.screenY)), Math.floor(x), Math.floor(y), Math.floor(width),
 			Math.floor(height));
 	}
 
@@ -853,15 +851,6 @@ class FlxExtendedMouseSprite extends FlxSprite
 		}
 
 		return -1;
-	}
-	inline function get_viewX():Int
-	{
-		return #if (flixel < version("5.9.0")) FlxG.mouse.screenX #else FlxG.mouse.viewX #end;
-	}
-	
-	inline function get_viewY():Int
-	{
-		return #if (flixel < version("5.9.0")) FlxG.mouse.screenY #else FlxG.mouse.viewY #end;
 	}
 	#end
 

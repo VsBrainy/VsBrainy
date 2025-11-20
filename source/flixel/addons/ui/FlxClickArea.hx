@@ -9,12 +9,6 @@ import flixel.FlxObject;
 import flixel.ui.FlxButton;
 import flixel.math.FlxPoint;
 
-#if (flixel < version("5.7.0"))
-import flixel.ui.FlxButton.NORMAL;
-import flixel.ui.FlxButton.HIGHLIGHT;
-import flixel.ui.FlxButton.PRESSED;
-#end
-
 /**
  * Trimmed-down button, invisible click area, only responds to onUP
  */
@@ -62,7 +56,7 @@ class FlxClickArea extends FlxObject
 
 		onUp = OnUp;
 
-		status = NORMAL;
+		status = FlxButton.NORMAL;
 		_pressed = false;
 		_initialized = false;
 
@@ -133,7 +127,7 @@ class FlxClickArea extends FlxObject
 		if (continueUpdate)
 		{
 			var offAll:Bool = true;
-			#if (flixel >= version("5.7.0"))
+			#if (flixel >= "5.7.0")
 			final cameras = getCameras(); // else use this.cameras
 			#end
 			for (camera in cameras)
@@ -157,7 +151,7 @@ class FlxClickArea extends FlxObject
 			}
 			if (offAll)
 			{
-				status = NORMAL;
+				status = FlxButton.NORMAL;
 			}
 		}
 	}
@@ -175,11 +169,11 @@ class FlxClickArea extends FlxObject
 
 			if (JustPressed)
 			{
-				status = PRESSED;
+				status = FlxButton.PRESSED;
 			}
-			if (status == NORMAL)
+			if (status == FlxButton.NORMAL)
 			{
-				status = HIGHLIGHT;
+				status = FlxButton.HIGHLIGHT;
 			}
 		}
 
@@ -191,7 +185,7 @@ class FlxClickArea extends FlxObject
 	 */
 	function onMouseUp(event:Event):Void
 	{
-		if (!exists || !visible || !active || (status != PRESSED))
+		if (!exists || !visible || !active || (status != FlxButton.PRESSED))
 		{
 			return;
 		}
@@ -199,6 +193,6 @@ class FlxClickArea extends FlxObject
 		{
 			onUp();
 		}
-		status = NORMAL;
+		status = FlxButton.NORMAL;
 	}
 }

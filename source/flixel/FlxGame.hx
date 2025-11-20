@@ -3,7 +3,6 @@ package flixel;
 import flixel.graphics.tile.FlxDrawBaseItem;
 import flixel.system.FlxSplash;
 import flixel.util.FlxArrayUtil;
-import flixel.util.FlxDestroyUtil;
 import flixel.util.typeLimit.NextState;
 import openfl.Assets;
 import openfl.Lib;
@@ -14,6 +13,10 @@ import openfl.events.Event;
 import openfl.filters.BitmapFilter;
 #if desktop
 import openfl.events.FocusEvent;
+#end
+#if FLX_POST_PROCESS
+import flixel.effects.postprocess.PostProcess;
+import openfl.display.OpenGLView;
 #end
 #if FLX_DEBUG
 import flixel.system.debug.FlxDebugger;
@@ -145,6 +148,14 @@ class FlxGame extends Sprite
 	 */
 	var _filters:Array<BitmapFilter>;
 
+	#if (desktop && lime_legacy)
+	/**
+	 * Ugly workaround to ensure consistent behaviour between flash and cpp
+	 * (the focus event should not fire when the game starts up!)
+	 */
+	var _onFocusFiredOnce:Bool = false;
+	#end
+
 	#if FLX_FOCUS_LOST_SCREEN
 	/**
 	 * The "focus lost" screen.
@@ -218,6 +229,18 @@ class FlxGame extends Sprite
 	var _recordingRequested:Bool = false;
 	#end
 
+	#if FLX_POST_PROCESS
+	/**
+	 * `Sprite` for postprocessing effects
+	 */
+	var postProcessLayer:Sprite = new Sprite();
+
+	/**
+	 * Post process effects active on the `postProcessLayer`.
+	 */
+	var postProcesses:Array<PostProcess> = [];
+	#end
+
 	/**
 	 * Instantiate a new game object.
 	 *
@@ -230,8 +253,7 @@ class FlxGame extends Sprite
 	 *                         [`scaleMode`](https://api.haxeflixel.com/flixel/system/scaleModes/index.html)
 	 *                         will determine the actual display size of the game.
 	 * @param initialState     A constructor for the initial state, ex: `PlayState.new` or `()->new PlayState()`.
-	 *                         Note: Before Flixel 6, this took a `Class<FlxState>`, this has been
-	 *                         deprecated, but is still available, for backwards compatibility.
+	 *                         Note: Also allows `Class<FlxState>` for backwards compatibility.
 	 * @param updateFramerate  How frequently the game should update. Default is 60 fps.
 	 * @param drawFramerate    Sets the actual display / draw framerate for the game. Default is 60 fps.
 	 * @param skipSplash       Whether you want to skip the flixel splash screen with `FLX_NO_DEBUG`.
@@ -306,6 +328,11 @@ class FlxGame extends Sprite
 
 		addChild(_inputContainer);
 
+		#if FLX_POST_PROCESS
+		if (OpenGLView.isSupported)
+			addChild(postProcessLayer);
+		#end
+
 		// Creating the debugger overlay
 		#if FLX_DEBUG
 		debugger = new FlxDebugger(FlxG.stage.stageWidth, FlxG.stage.stageHeight);
@@ -327,9 +354,9 @@ class FlxGame extends Sprite
 		#end
 
 		// Focus gained/lost monitoring
-		#if (sys && openfl >= "9.3.0")
-		stage.nativeWindow.addEventListener(Event.DEACTIVATE, onFocusLost);
-		stage.nativeWindow.addEventListener(Event.ACTIVATE, onFocus);
+		#if (desktop && openfl <= "4.0.0")
+		stage.addEventListener(FocusEvent.FOCUS_OUT, onFocusLost);
+		stage.addEventListener(FocusEvent.FOCUS_IN, onFocus);
 		#else
 		stage.addEventListener(Event.DEACTIVATE, onFocusLost);
 		stage.addEventListener(Event.ACTIVATE, onFocus);
@@ -362,6 +389,15 @@ class FlxGame extends Sprite
 			return; // Don't run this function twice (bug in standalone flash player)
 		#end
 
+		#if (desktop && lime_legacy)
+		// make sure the on focus event doesn't fire on startup
+		if (!_onFocusFiredOnce)
+		{
+			_onFocusFiredOnce = true;
+			return;
+		}
+		#end
+
 		#if mobile
 		// just check if device orientation has been changed
 		onResize(_);
@@ -392,6 +428,11 @@ class FlxGame extends Sprite
 
 	function onFocusLost(event:Event):Void
 	{
+		#if next
+		if (event != null && event.target != FlxG.stage)
+			return;
+		#end
+
 		#if flash
 		if (_lostFocus)
 			return; // Don't run this function twice (bug in standalone flash player)
@@ -426,6 +467,11 @@ class FlxGame extends Sprite
 		var width:Int = FlxG.stage.stageWidth;
 		var height:Int = FlxG.stage.stageHeight;
 
+		#if !flash
+		if (FlxG.renderTile)
+			FlxG.bitmap.onContext();
+		#end
+
 		resizeGame(width, height);
 	}
 
@@ -450,6 +496,11 @@ class FlxGame extends Sprite
 		#if FLX_SOUND_TRAY
 		if (soundTray != null)
 			soundTray.screenCenter();
+		#end
+
+		#if FLX_POST_PROCESS
+		for (postProcess in postProcesses)
+			postProcess.rebuild();
 		#end
 	}
 
@@ -577,7 +628,7 @@ class FlxGame extends Sprite
 
 		// Finally assign and create the new state
 		_state = _nextState.createInstance();
-		_state._constructor = _nextState.getConstructor();
+		_state._constructor = _nextState;
 		_nextState = null;
 
 		if (_gameJustStarted)
@@ -596,8 +647,8 @@ class FlxGame extends Sprite
 
 		FlxG.signals.postStateSwitch.dispatch();
 	}
-	
-	function gameStart()
+
+	function gameStart():Void
 	{
 		FlxG.signals.postGameStart.dispatch();
 		_gameJustStarted = false;
@@ -681,9 +732,14 @@ class FlxGame extends Sprite
 
 		updateElapsed();
 
-		updateInput();
-		
 		FlxG.signals.preUpdate.dispatch();
+
+		updateInput();
+
+		#if FLX_POST_PROCESS
+		if (postProcesses[0] != null)
+			postProcesses[0].update(FlxG.elapsed);
+		#end
 
 		#if FLX_SOUND_SYSTEM
 		FlxG.sound.update(FlxG.elapsed);
@@ -700,13 +756,7 @@ class FlxGame extends Sprite
 		#end
 
 		#if FLX_POINTER_INPUT
-		var len = FlxG.swipes.length;
-		while(len-- > 0)
-		{
-			final swipe = FlxG.swipes.pop();
-			if (swipe != null)
-				swipe.destroy();
-		}
+		FlxArrayUtil.clearArray(FlxG.swipes);
 		#end
 
 		filters = filtersEnabled ? _filters : null;
@@ -806,18 +856,16 @@ class FlxGame extends Sprite
 		if (FlxG.renderTile)
 			FlxDrawBaseItem.drawCalls = 0;
 
+		#if FLX_POST_PROCESS
+		if (postProcesses[0] != null)
+			postProcesses[0].capture();
+		#end
+
 		FlxG.cameras.lock();
 
-		if (FlxG.plugins.drawOnTop)
-		{
-			_state.draw();
-			FlxG.plugins.draw();
-		}
-		else
-		{
-			FlxG.plugins.draw();
-			_state.draw();
-		}
+		FlxG.plugins.draw();
+
+		_state.draw();
 
 		if (FlxG.renderTile)
 		{

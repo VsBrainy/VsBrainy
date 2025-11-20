@@ -8,9 +8,15 @@ import flixel.math.FlxMath;
 import flixel.system.FlxLinkedList;
 import flixel.system.FlxQuadTree;
 import flixel.system.debug.DebuggerUtil;
+import flixel.system.debug.FlxDebugger.GraphicStats;
 import flixel.system.ui.FlxSystemButton;
 import flixel.util.FlxColor;
 
+@:bitmap("assets/images/debugger/buttons/minimize.png")
+private class GraphicMinimizeButton extends BitmapData {}
+
+@:bitmap("assets/images/debugger/buttons/maximize.png")
+private class GraphicMaximizeButton extends BitmapData {}
 
 /**
  * A simple performance monitor widget, for use in the debugger overlay.
@@ -86,7 +92,7 @@ class Stats extends Window
 	 */
 	public function new()
 	{
-		super("Stats", Icon.stats, 0, 0, false);
+		super("Stats", new GraphicStats(0, 0), 0, 0, false);
 
 		var minHeight = if (FlxG.renderTile) 200 else 185;
 		minSize.y = minHeight;
@@ -143,7 +149,7 @@ class Stats extends Window
 
 		_leftTextField.text = "Update: \nDraw:" + drawMethod + "\nQuadTrees: \nLists:";
 
-		_toggleSizeButton = new FlxSystemButton(Icon.maximize, toggleSize);
+		_toggleSizeButton = new FlxSystemButton(new GraphicMaximizeButton(0, 0), toggleSize);
 		_toggleSizeButton.alpha = Window.HEADER_ALPHA;
 		addChild(_toggleSizeButton);
 
@@ -327,7 +333,7 @@ class Stats extends Window
 	 */
 	public inline function currentMem():Float
 	{
-		return (#if (openfl >= "9.4.0") System.totalMemoryNumber #else System.totalMemory #end / 1024) / 1000;
+		return (System.totalMemory / 1024) / 1000;
 	}
 
 	/**
@@ -414,7 +420,7 @@ class Stats extends Window
 			x -= INITIAL_WIDTH;
 			drawTimeGraph.visible = true;
 			updateTimeGraph.visible = true;
-			_toggleSizeButton.changeIcon(Icon.minimize);
+			_toggleSizeButton.changeIcon(new GraphicMinimizeButton(0, 0));
 		}
 		else
 		{
@@ -422,7 +428,7 @@ class Stats extends Window
 			x += INITIAL_WIDTH;
 			drawTimeGraph.visible = false;
 			updateTimeGraph.visible = false;
-			_toggleSizeButton.changeIcon(Icon.maximize);
+			_toggleSizeButton.changeIcon(new GraphicMaximizeButton(0, 0));
 		}
 
 		updateSize();

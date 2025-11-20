@@ -51,7 +51,6 @@ class FlxBackdrop extends FlxSprite
 	
 	var _blitOffset:FlxPoint = FlxPoint.get();
 	var _blitGraphic:FlxGraphic = null;
-	var _tileMatrix:FlxMatrix = new FlxMatrix();
 	var _prevDrawParams:BackdropDrawParams =
 	{
 		graphicKey:null,
@@ -83,10 +82,9 @@ class FlxBackdrop extends FlxSprite
 
 	override function destroy():Void
 	{
-		spacing = FlxDestroyUtil.put(spacing);
-		_blitOffset = FlxDestroyUtil.put(_blitOffset);
+		spacing = FlxDestroyUtil.destroy(spacing);
+		_blitOffset = FlxDestroyUtil.destroy(_blitOffset);
 		_blitGraphic = FlxDestroyUtil.destroy(_blitGraphic);
-		_tileMatrix = null;
 		
 		super.destroy();
 	}
@@ -115,7 +113,7 @@ class FlxBackdrop extends FlxSprite
 			drawToLargestCamera();
 		}
 		
-		#if (flixel >= version("5.7.0"))
+		#if (flixel >= "5.7.0")
 		final cameras = getCamerasLegacy();
 		#end
 		for (camera in cameras)
@@ -161,7 +159,7 @@ class FlxBackdrop extends FlxSprite
 	{
 		var largest:FlxCamera = null;
 		var largestArea = 0.0;
-		#if (flixel >= version("5.7.0"))
+		#if (flixel >= "5.7.0")
 		final cameras = getCamerasLegacy(); // else use this.cameras
 		#end
 		for (camera in cameras)
@@ -202,7 +200,7 @@ class FlxBackdrop extends FlxSprite
 		final frame = drawBlit ? _blitGraphic.imageFrame.frame : _frame;
 		
 		// The distance between repeated sprites, in screen space
-		final tileSize = FlxPoint.get(frame.frame.width, frame.frame.height);
+		var tileSize = FlxPoint.get(frame.frame.width, frame.frame.height);
 		if (drawDirect)
 			tileSize.addPoint(spacing);
 		
@@ -258,7 +256,6 @@ class FlxBackdrop extends FlxSprite
 			}
 		}
 		
-		tileSize.put();
 		camera.buffer.unlock();
 	}
 
@@ -278,7 +275,7 @@ class FlxBackdrop extends FlxSprite
 		_matrix.translate(-origin.x, -origin.y);
 		
 		// The distance between repeated sprites, in screen space
-		final tileSize = FlxPoint.get(frame.frame.width, frame.frame.height);
+		var tileSize = FlxPoint.get(frame.frame.width, frame.frame.height);
 		
 		if (drawDirect)
 		{
@@ -342,33 +339,33 @@ class FlxBackdrop extends FlxSprite
 		if (drawBlit)
 			_point.addPoint(_blitOffset);
 		
+		final mat = new FlxMatrix();
 		for (tileX in 0...tilesX)
 		{
 			for (tileY in 0...tilesY)
 			{
-				_tileMatrix.copyFrom(_matrix);
+				mat.copyFrom(_matrix);
 				
-				_tileMatrix.translate(_point.x + (tileSize.x * tileX), _point.y + (tileSize.y * tileY));
+				mat.translate(_point.x + (tileSize.x * tileX), _point.y + (tileSize.y * tileY));
 				
 				if (isPixelPerfectRender(camera))
 				{
-					_tileMatrix.tx = Math.floor(_tileMatrix.tx);
-					_tileMatrix.ty = Math.floor(_tileMatrix.ty);
+					mat.tx = Math.floor(mat.tx);
+					mat.ty = Math.floor(mat.ty);
 				}
 				
 				if (FlxG.renderBlit)
 				{
 					final pixels = drawBlit ? _blitGraphic.bitmap: framePixels;
-					camera.drawPixels(frame, pixels, _tileMatrix, colorTransform, blend, antialiasing, shader);
+					camera.drawPixels(frame, pixels, mat, colorTransform, blend, antialiasing, shader);
 				}
 				else
 				{
-					drawItem.addQuad(frame, _tileMatrix, colorTransform);
+					drawItem.addQuad(frame, mat, colorTransform);
 				}
 			}
 		}
 		
-		tileSize.put();
 		if (FlxG.renderBlit)
 			camera.buffer.unlock();
 	}

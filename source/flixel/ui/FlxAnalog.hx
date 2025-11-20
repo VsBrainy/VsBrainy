@@ -2,7 +2,7 @@ package flixel.ui;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.group.FlxSpriteContainer;
+import flixel.group.FlxSpriteGroup;
 import flixel.input.touch.FlxTouch;
 import flixel.math.FlxAngle;
 import flixel.math.FlxMath;
@@ -16,8 +16,7 @@ import flixel.util.FlxDestroyUtil;
  *
  * @author Ka Wing Chin
  */
-@:deprecated("FlxAnalog is deprecated, use FlxVirtualStick or FlxVirtualPad, instead")
-class FlxAnalog extends FlxSpriteContainer
+class FlxAnalog extends FlxSpriteGroup
 {
 	/**
 	 * Shows the current state of the button.
@@ -221,7 +220,7 @@ class FlxAnalog extends FlxSpriteContainer
 		var offAll:Bool = true;
 
 		#if FLX_MOUSE
-		_point.set(FlxG.mouse.viewX, FlxG.mouse.viewY);
+		_point.set(FlxG.mouse.screenX, FlxG.mouse.screenY);
 
 		if (!updateAnalog(_point, FlxG.mouse.pressed, FlxG.mouse.justPressed, FlxG.mouse.justReleased))
 		{
@@ -302,7 +301,7 @@ class FlxAnalog extends FlxSpriteContainer
 		// if the control is used in a group, for example.
 		if (Touch != null)
 		{
-			TouchPoint.set(Touch.viewX, Touch.viewY);
+			TouchPoint.set(Touch.screenX, Touch.screenY);
 		}
 		#end
 

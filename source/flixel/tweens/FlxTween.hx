@@ -9,7 +9,6 @@ import flixel.math.FlxMath;
 import flixel.tweens.FlxEase.EaseFunction;
 import flixel.tweens.misc.AngleTween;
 import flixel.tweens.misc.ColorTween;
-import flixel.tweens.misc.FlickerTween;
 import flixel.tweens.misc.NumTween;
 import flixel.tweens.misc.VarTween;
 import flixel.tweens.motion.CircularMotion;
@@ -176,6 +175,36 @@ enum abstract FlxTweenType(Int) from Int to Int
 class FlxTween implements IFlxDestroyable
 {
 	/**
+	 * Deprecated, use `FlxTweenType.PERSIST` instead.
+	 */
+	@:deprecated("Use FlxTweenType.PERSIST instead")
+	public static var PERSIST = FlxTweenType.PERSIST;
+
+	/**
+	 * Deprecated, use `FlxTweenType.LOOPING` instead.
+	 */
+	@:deprecated("Use FlxTweenType.LOOPING instead")
+	public static var LOOPING = FlxTweenType.LOOPING;
+
+	/**
+	 * Deprecated, use `FlxTweenType.PINGPONG` instead.
+	 */
+	@:deprecated("Use FlxTweenType.PINGPONG instead")
+	public static var PINGPONG = FlxTweenType.PINGPONG;
+
+	/**
+	 * Deprecated, use `FlxTweenType.ONESHOT` instead.
+	 */
+	@:deprecated("Use FlxTweenType.ONESHOT instead")
+	public static var ONESHOT = FlxTweenType.ONESHOT;
+
+	/**
+	 * Deprecated, use `FlxTweenType.BACKWARD` instead.
+	 */
+	@:deprecated("Use FlxTweenType.BACKWARD instead")
+	public static var BACKWARD = FlxTweenType.BACKWARD;
+
+	/**
 	 * The global tweening manager that handles global tweens
 	 * @since 4.2.0
 	 */
@@ -223,39 +252,7 @@ class FlxTween implements IFlxDestroyable
 	{
 		return globalManager.num(FromValue, ToValue, Duration, Options, TweenFunction);
 	}
-	
-	/**
-	 * Flickers the desired object
-	 *
-	 * @param   basic     The object to flicker
-	 * @param   duration  Duration of the tween, in seconds
-	 * @param   period    How often, in seconds, the visibility cycles
-	 * @param   options   A structure with flicker and tween options
-	 * @since 5.7.0
-	 */
-	public static function flicker(basic:FlxBasic, duration = 1.0, period = 0.08, ?options:FlickerTweenOptions)
-	{
-		return globalManager.flicker(basic, duration, period, options);
-	}
-	
-	/**
-	 * Whether the object is flickering via the global tween manager
-	 * @since 5.7.0
-	 */
-	public static function isFlickering(basic:FlxBasic)
-	{
-		return globalManager.isFlickering(basic);
-	}
-	
-	/**
-	 * Cancels all flicker tweens on the object in the global tween manager
-	 * @since 5.7.0
-	 */
-	public static function stopFlickering(basic:FlxBasic)
-	{
-		return globalManager.stopFlickering(basic);
-	}
-	
+
 	/**
 	 * A simple shake effect for FlxSprite. Shorthand for creating a ShakeTween, starting it and adding it to the TweenManager.
 	 *
@@ -520,12 +517,6 @@ class FlxTween implements IFlxDestroyable
 	public var finished(default, null):Bool;
 	public var scale(default, null):Float = 0;
 	public var backward(default, null):Bool;
-	
-	/**
-	 * The total time passed since start
-	 * @since 5.7.0
-	 */
-	public var time(get, never):Float;
 
 	/**
 	 * How many times this tween has been executed / has finished so far - useful to
@@ -863,15 +854,10 @@ class FlxTween implements IFlxDestroyable
 		}
 		return loopDelay = dly;
 	}
-	
-	inline function get_time():Float
-	{
-		return Math.max(_secondsSinceStart - _delayToUse, 0);
-	}
 
 	inline function get_percent():Float
 	{
-		return time / duration;
+		return Math.max((_secondsSinceStart - _delayToUse), 0) / duration;
 	}
 
 	function set_percent(value:Float):Float
@@ -1012,40 +998,6 @@ class FlxTweenManager extends FlxBasic
 		var tween = new NumTween(Options, this);
 		tween.tween(FromValue, ToValue, Duration, TweenFunction);
 		return add(tween);
-	}
-	
-	/**
-	 * Flickers the desired object
-	 *
-	 * @param   basic     The object to flicker
-	 * @param   duration  Duration of the tween, in seconds
-	 * @param   period    How often, in seconds, the visibility cycles
-	 * @param   options   A structure with flicker and tween options
-	 * @since 5.7.0
-	 */
-	public function flicker(basic:FlxBasic, duration = 1.0, period = 0.08, ?options:FlickerTweenOptions)
-	{
-		final tween = new FlickerTween(options, this);
-		tween.tween(basic, duration, period);
-		return add(tween);
-	}
-	
-	/**
-	 * Whether the object is flickering via this manager
-	 * @since 5.7.0
-	 */
-	public function isFlickering(basic:FlxBasic)
-	{
-		return containsTweensOf(basic, ["flicker"]);
-	}
-	
-	/**
-	 * Cancels all flicker tweens on the object
-	 * @since 5.7.0
-	 */
-	public function stopFlickering(basic:FlxBasic)
-	{
-		return cancelTweensOf(basic, ["flicker"]);
 	}
 
 	/**
@@ -1442,37 +1394,37 @@ class FlxTweenManager extends FlxBasic
 	 *
 	 * Note: loops backwards to allow removals.
 	 *
-	 * @param   object      The object with tweens you are searching for.
-	 * @param   fieldPaths  List of the tween field paths to check. If `null` or empty, any tween of
-	 *                      the specified object will match. Allows dot paths to check child properties.
-	 * @param   func        The function to call on each matching tween.
+	 * @param Object The object with tweens you are searching for.
+	 * @param FieldPaths Optional list of the tween field paths to check. If null or empty, any tween of the specified
+	 * object will match. Allows dot paths to check child properties.
+	 * @param Function The function to call on each matching tween.
 	 * 
 	 * @since 4.9.0
 	 */
-	function forEachTweensOf(object:Dynamic, ?fieldPaths:Array<String>, func:FlxTween->Void)
+	function forEachTweensOf(Object:Dynamic, ?FieldPaths:Array<String>, Function:FlxTween->Void)
 	{
-		if (object == null)
+		if (Object == null)
 			throw "Cannot cancel tween variables of an object that is null.";
 		
-		if (fieldPaths == null || fieldPaths.length == 0)
+		if (FieldPaths == null || FieldPaths.length == 0)
 		{
 			var i = _tweens.length;
 			while (i-- > 0)
 			{
 				var tween = _tweens[i];
-				if (tween.isTweenOf(object))
-					func(tween);
+				if (tween.isTweenOf(Object))
+					Function(tween);
 			}
 		}
 		else
 		{
 			// check for dot paths and convert to object/field pairs
 			var propertyInfos = new Array<TweenProperty>();
-			for (fieldPath in fieldPaths)
+			for (fieldPath in FieldPaths)
 			{
-				var target = object;
-				final path = fieldPath.split(".");
-				final field = path.pop();
+				var target = Object;
+				var path = fieldPath.split(".");
+				var field = path.pop();
 				for (component in path)
 				{
 					target = Reflect.getProperty(target, component);
@@ -1487,29 +1439,17 @@ class FlxTweenManager extends FlxBasic
 			var i = _tweens.length;
 			while (i-- > 0)
 			{
-				final tween = _tweens[i];
+				var tween = _tweens[i];
 				for (info in propertyInfos)
 				{
 					if (tween.isTweenOf(info.object, info.field))
 					{
-						func(tween);
+						Function(tween);
 						break;
 					}
 				} 
 			}
 		}
-	}
-	
-	/**
-	 * Crude helper to search for any tweens with the desired properties
-	 * 
-	 * @since 5.7.0
-	 */
-	function containsTweensOf(object:Dynamic, ?fieldPaths:Array<String>):Bool
-	{
-		var found = false;
-		forEachTweensOf(object, fieldPaths, (_)->found = true);
-		return found;
 	}
 
 	/**

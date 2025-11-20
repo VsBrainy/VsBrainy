@@ -91,31 +91,25 @@ class FlxImageFrame extends FlxFramesCollection
 	 */
 	public static function fromGraphic(graphic:FlxGraphic, ?region:FlxRect):FlxImageFrame
 	{
-		// TODO: look into this
-		if (graphic == null || graphic.isDestroyed)
+		if (graphic == null)
 			return null;
 
 		// find ImageFrame, if there is one already
-		final checkRegion = FlxRect.get(0, 0, graphic.width, graphic.height);
-		if (region != null)
-			region.copyTo(checkRegion);
-		
-		final imageFrame:FlxImageFrame = FlxImageFrame.findFrame(graphic, checkRegion);
-		checkRegion.put();
+		var checkRegion:FlxRect = region;
+
+		if (checkRegion == null)
+			checkRegion = FlxRect.weak(0, 0, graphic.width, graphic.height);
+
+		var imageFrame:FlxImageFrame = FlxImageFrame.findFrame(graphic, checkRegion);
 		if (imageFrame != null)
-		{
-			if (region != null)
-				region.putWeak();
-			
 			return imageFrame;
-		}
 
 		// or create it, if there is no such object
-		final imageFrame = new FlxImageFrame(graphic);
+		imageFrame = new FlxImageFrame(graphic);
 
 		if (region == null)
 		{
-			region = FlxRect.weak(0, 0, graphic.width, graphic.height);
+			region = FlxRect.get(0, 0, graphic.width, graphic.height);
 		}
 		else
 		{
@@ -198,16 +192,14 @@ class FlxImageFrame extends FlxFramesCollection
 	{
 		if (frameBorder == null)
 			frameBorder = FlxPoint.weak();
-		
+
 		var imageFrames:Array<FlxImageFrame> = cast graphic.getFramesCollections(FlxFrameCollectionType.IMAGE);
 		for (imageFrame in imageFrames)
 		{
 			if (imageFrame.equals(frameRect, frameBorder) && imageFrame.frame.type != FlxFrameType.EMPTY)
 				return imageFrame;
 		}
-		
-		frameBorder.putWeak();
-		frameRect.putWeak();
+
 		return null;
 	}
 
@@ -242,7 +234,7 @@ class FlxImageFrame extends FlxFramesCollection
 
 	override public function addBorder(border:FlxPoint):FlxImageFrame
 	{
-		var resultBorder:FlxPoint = FlxPoint.weak().add(this.border).add(border);
+		var resultBorder:FlxPoint = FlxPoint.weak().addPoint(this.border).addPoint(border);
 
 		var imageFrame:FlxImageFrame = FlxImageFrame.findFrame(parent, frame.frame, resultBorder);
 		if (imageFrame != null)
@@ -251,6 +243,12 @@ class FlxImageFrame extends FlxFramesCollection
 		imageFrame = new FlxImageFrame(parent, resultBorder);
 		imageFrame.pushFrame(frame.setBorderTo(border));
 		return imageFrame;
+	}
+
+	override public function destroy():Void
+	{
+		super.destroy();
+		FlxDestroyUtil.destroy(frame);
 	}
 
 	function get_frame():FlxFrame

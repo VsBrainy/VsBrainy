@@ -342,7 +342,6 @@ class FlxAction implements IFlxDestroyable
 	var _y:Null<Float> = null;
 
 	var _timestamp:Int = 0;
-	@:deprecated("_checked is deprecated, use triggered, instead")
 	var _checked:Bool = false;
 
 	/**
@@ -436,33 +435,40 @@ class FlxAction implements IFlxDestroyable
 	 */
 	public function check():Bool
 	{
-		if (_timestamp == FlxG.game.ticks)
-			return triggered; // run no more than once per frame
-		
 		_x = null;
 		_y = null;
-		
-		_timestamp = FlxG.game.ticks;
-		triggered = false;
-		
-		var i = inputs != null ? inputs.length : 0;
-		while (i-- > 0) // Iterate backwards, since we may remove items
+
+		if (_timestamp == FlxG.game.ticks)
 		{
-			final input = inputs[i];
-			
+			triggered = _checked;
+			return _checked; // run no more than once per frame
+		}
+
+		_timestamp = FlxG.game.ticks;
+		_checked = false;
+
+		var len = inputs != null ? inputs.length : 0;
+		for (i in 0...len)
+		{
+			var j = len - i - 1;
+			var input = inputs[j];
+
 			if (input.destroyed)
 			{
-				inputs.remove(input);
+				inputs.splice(j, 1);
 				continue;
 			}
-			
+
 			input.update();
-			
+
 			if (input.check(this))
-				triggered = true;
+			{
+				_checked = true;
+			}
 		}
-		
-		return triggered;
+
+		triggered = _checked;
+		return _checked;
 	}
 
 	/**

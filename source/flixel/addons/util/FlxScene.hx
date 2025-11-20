@@ -10,7 +10,6 @@ import flixel.tile.FlxTilemap;
 import flixel.ui.FlxButton;
 import flixel.util.FlxAxes;
 import flixel.util.FlxColor;
-import flixel.util.FlxDirectionFlags;
 import haxe.xml.Parser;
 import openfl.Assets;
 
@@ -251,7 +250,7 @@ class FlxScene
 
 				case "tile":
 					var id = Std.parseInt(element.att.id);
-					var collision:FlxDirectionFlags = cast Std.parseInt(element.att.collision);
+					var collision = Std.parseInt(element.att.collision);
 
 					tilemap.setTileProperties(id, collision);
 			}

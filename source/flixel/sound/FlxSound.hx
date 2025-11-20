@@ -7,13 +7,19 @@ import flixel.math.FlxPoint;
 import flixel.system.FlxAssets.FlxSoundAsset;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxStringUtil;
+import openfl.Assets;
 import openfl.events.Event;
 import openfl.events.IEventDispatcher;
 import openfl.media.Sound;
 import openfl.media.SoundChannel;
 import openfl.media.SoundTransform;
 import openfl.net.URLRequest;
+#if flash11
 import openfl.utils.ByteArray;
+#end
+#if (openfl >= "8.0.0")
+import openfl.utils.AssetType;
+#end
 
 /**
  * This is the universal flixel sound object, used for streaming, music, and sound effects.
@@ -75,9 +81,6 @@ class FlxSound extends FlxBasic
 	
 	/**
 	 * Pan amount. -1 = full left, 1 = full right. Proximity based panning overrides this.
-	 * 
-	 * Note: On desktop targets this only works with mono sounds, due to limitations of OpenAL.
-	 * More info: [OpenFL Forums - SoundTransform.pan does not work](https://community.openfl.org/t/windows-legacy-soundtransform-pan-does-not-work/6616/2?u=geokureli)
 	 */
 	public var pan(get, set):Float;
 	
@@ -111,8 +114,7 @@ class FlxSound extends FlxBasic
 	public var length(get, never):Float;
 	
 	/**
-	 * The sound group this sound belongs to, can only be in one group.
-	 * NOTE: This setter is deprecated, use `group.add(sound)` or `group.remove(sound)`.
+	 * The sound group this sound belongs to
 	 */
 	public var group(default, set):FlxSoundGroup;
 	
@@ -206,7 +208,7 @@ class FlxSound extends FlxBasic
 	/**
 	 * Helper var to prevent the sound from playing after focus was regained when it was already paused.
 	 */
-	var _resumeOnFocus:Bool = false;
+	var _alreadyPaused:Bool = false;
 	
 	/**
 	 * The FlxSound constructor gets all the variables initialized, but NOT ready to play a sound yet.
@@ -250,10 +252,6 @@ class FlxSound extends FlxBasic
 	
 	override public function destroy():Void
 	{
-		// Prevents double destroy
-		if (group != null)
-			group.remove(this);
-		
 		_transform = null;
 		exists = false;
 		active = false;
@@ -335,8 +333,6 @@ class FlxSound extends FlxBasic
 	/**
 	 * One of the main setup functions for sounds, this function loads a sound from an embedded MP3.
 	 *
-	 * **Note:** If the `FLX_DEFAULT_SOUND_EXT` flag is enabled, you may omit the file extension
-	 *
 	 * @param	EmbeddedSound	An embedded Class object representing an MP3 file.
 	 * @param	Looped			Whether or not this sound should loop endlessly.
 	 * @param	AutoDestroy		Whether or not this FlxSound instance should be destroyed when the sound finishes playing.
@@ -361,8 +357,8 @@ class FlxSound extends FlxBasic
 		}
 		else if ((EmbeddedSound is String))
 		{
-			if (FlxG.assets.exists(EmbeddedSound, SOUND))
-				_sound = FlxG.assets.getSoundUnsafe(EmbeddedSound);
+			if (Assets.exists(EmbeddedSound, AssetType.SOUND) || Assets.exists(EmbeddedSound, AssetType.MUSIC))
+				_sound = Assets.getSound(EmbeddedSound);
 			else
 				FlxG.log.error('Could not find a Sound asset with an ID of \'$EmbeddedSound\'.');
 		}
@@ -407,6 +403,7 @@ class FlxSound extends FlxBasic
 		return init(Looped, AutoDestroy, OnComplete);
 	}
 	
+	#if flash11
 	/**
 	 * One of the main setup functions for sounds, this function loads a sound from a ByteArray.
 	 *
@@ -426,6 +423,7 @@ class FlxSound extends FlxBasic
 		
 		return init(Looped, AutoDestroy, OnComplete);
 	}
+	#end
 	
 	function init(Looped:Bool = false, AutoDestroy:Bool = false, ?OnComplete:Void->Void):FlxSound
 	{
@@ -594,24 +592,11 @@ class FlxSound extends FlxBasic
 	@:allow(flixel.sound.FlxSoundGroup)
 	function updateTransform():Void
 	{
-		_transform.volume = calcTransformVolume();
-		
+		_transform.volume = #if FLX_SOUND_SYSTEM (FlxG.sound.muted ? 0 : 1) * FlxG.sound.volume * #end
+			(group != null ? group.volume : 1) * _volume * _volumeAdjust;
+			
 		if (_channel != null)
 			_channel.soundTransform = _transform;
-	}
-	
-	function calcTransformVolume():Float
-	{
-		final volume = (group != null ? group.getVolume() : 1.0) * _volume * _volumeAdjust;
-		
-		#if FLX_SOUND_SYSTEM
-		if (FlxG.sound.muted)
-			return 0.0;
-		
-		return FlxG.sound.applySoundCurve(FlxG.sound.volume * volume);
-		#else
-		return volume;
-		#end
 	}
 	
 	/**
@@ -706,35 +691,36 @@ class FlxSound extends FlxBasic
 	@:allow(flixel.system.frontEnds.SoundFrontEnd)
 	function onFocus():Void
 	{
-		if (_resumeOnFocus)
-		{
-			_resumeOnFocus = false;
+		if (!_alreadyPaused)
 			resume();
-		}
 	}
 	
 	@:allow(flixel.system.frontEnds.SoundFrontEnd)
 	function onFocusLost():Void
 	{
-		_resumeOnFocus = !_paused;
+		_alreadyPaused = _paused;
 		pause();
 	}
 	#end
 	
-	@:deprecated("sound.group = myGroup is deprecated, use myGroup.add(sound)") // 5.7.0
-	function set_group(value:FlxSoundGroup):FlxSoundGroup
+	function set_group(group:FlxSoundGroup):FlxSoundGroup
 	{
-		if (value != null)
+		if (this.group != group)
 		{
-			// add to new group, also removes from prev and calls updateTransform
-			value.add(this);
+			var oldGroup:FlxSoundGroup = this.group;
+			
+			// New group must be set before removing sound to prevent infinite recursion
+			this.group = group;
+			
+			if (oldGroup != null)
+				oldGroup.remove(this);
+				
+			if (group != null)
+				group.add(this);
+				
+			updateTransform();
 		}
-		else
-		{
-			// remove from prev group, also calls updateTransform
-			group.remove(this);
-		}
-		return value;
+		return group;
 	}
 	
 	inline function get_playing():Bool
@@ -786,9 +772,7 @@ class FlxSound extends FlxBasic
 	
 	inline function set_pan(pan:Float):Float
 	{
-		_transform.pan = pan;
-		updateTransform();
-		return pan;
+		return _transform.pan = pan;
 	}
 	
 	inline function get_time():Float

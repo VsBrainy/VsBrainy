@@ -39,10 +39,6 @@ class FlxGamepadButtonList extends FlxBaseGamepadList
 	inline function get_RIGHT_SHOULDER()
 		return check(FlxGamepadInputID.RIGHT_SHOULDER);
 
-	/**
-	 * Also known as "select", the left-most center button.
-	 * Not to be confused with `CANCEL`, which is a face button (usually B)
-	 */
 	public var BACK(get, never):Bool;
 
 	inline function get_BACK()
@@ -214,25 +210,6 @@ class FlxGamepadButtonList extends FlxBaseGamepadList
 
 	inline function get_RIGHT_STICK_DIGITAL_LEFT()
 		return check(FlxGamepadInputID.RIGHT_STICK_DIGITAL_LEFT);
-	
-	/**
-	 * Mapped to The bottom face button on most controllers, and the
-	 * right face button on Nintendo Switch controllers
-	**/
-	public var ACCEPT(get, never):Bool;
-	
-	inline function get_ACCEPT()
-		return check(FlxGamepadInputID.ACCEPT);
-	
-	/**
-	 * Mapped to The right face button on most controllers, and the
-	 * bottom face button on Nintendo Switch controllers.
-	 * Not to be confused with `BACK` which is the XInput "select" button
-	**/
-	public var CANCEL(get, never):Bool;
-	
-	inline function get_CANCEL()
-		return check(FlxGamepadInputID.CANCEL);
 
 	public function new(status:FlxInputState, gamepad:FlxGamepad)
 	{

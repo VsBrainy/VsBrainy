@@ -1,8 +1,9 @@
 package flixel.system.debug.watch;
 
 import flixel.FlxG;
-import flixel.system.debug.FlxDebugger;
-import flixel.system.debug.ScrollSprite;
+import flixel.math.FlxPoint;
+import flixel.system.debug.FlxDebugger.GraphicWatch;
+import openfl.display.Sprite;
 
 using flixel.util.FlxStringUtil;
 using flixel.util.FlxArrayUtil;
@@ -11,52 +12,32 @@ using flixel.util.FlxArrayUtil;
  * A Visual Studio-style "watch" window, for use in the debugger overlay.
  * Track the values of any public variable in real-time, and/or edit their values on the fly.
  */
-class Watch extends WatchBase<WatchEntry>
-{
-	#if FLX_DEBUG
-	public function new(closable = false)
-	{
-		super(WatchEntry.new, "Watch", Icon.watch, true, null, closable);
-	}
-	#end
-}
-
-class WatchBase<TEntry:WatchEntry> extends Window
+class Watch extends Window
 {
 	#if FLX_DEBUG
 	static inline var LINE_HEIGHT:Int = 15;
-	
-	public var alwaysOnTop(get, set):Bool;
-	inline function get_alwaysOnTop() return _alwaysOnTop;
-	inline function set_alwaysOnTop(value:Bool) return _alwaysOnTop = value;
-	
-	final entriesContainer:ScrollSprite;
-	final scrollbar:ScrollBar;
-	final entries:Array<TEntry> = [];
-	var create:(displayName:String, data:WatchEntryData)->TEntry;
-	
-	public function new(entryConstructor, title, ?icon, resizable = true, ?bounds, closable = false, alwaysOnTop = true)
+
+	var entriesContainer:Sprite;
+	var entriesContainerOffset:FlxPoint = FlxPoint.get(2, 15);
+	var entries:Array<WatchEntry> = [];
+
+	public function new(closable:Bool = false)
 	{
-		create = entryConstructor;
-		super(title, icon, 0, 0, resizable, bounds, closable, alwaysOnTop);
-		
-		entriesContainer = new ScrollSprite();
-		entriesContainer.x = 2;
-		entriesContainer.y = 15;
+		super("Watch", new GraphicWatch(0, 0), 0, 0, true, null, closable);
+
+		entriesContainer = new Sprite();
+		entriesContainer.x = entriesContainerOffset.x;
+		entriesContainer.y = entriesContainerOffset.y;
 		addChild(entriesContainer);
-		
-		scrollbar = entriesContainer.createScrollBar();
-		scrollbar.y = entriesContainer.y;
-		addChild(scrollbar);
-		
-		FlxG.signals.preStateSwitch.add(clear);
+
+		FlxG.signals.preStateSwitch.add(removeAll);
 	}
-	
+
 	public function add(displayName:String, data:WatchEntryData):Void
 	{
 		if (isInvalid(displayName, data))
 			return;
-		
+
 		var existing = getExistingEntry(displayName, data);
 		if (existing != null)
 		{
@@ -86,7 +67,7 @@ class WatchBase<TEntry:WatchEntry> extends Window
 		}
 	}
 
-	function getExistingEntry(displayName:String, data:WatchEntryData):TEntry
+	function getExistingEntry(displayName:String, data:WatchEntryData):WatchEntry
 	{
 		for (entry in entries)
 		{
@@ -101,92 +82,61 @@ class WatchBase<TEntry:WatchEntry> extends Window
 		return null;
 	}
 
-	function addEntry(displayName:String, data:WatchEntryData, redraw = true)
+	function addEntry(displayName:String, data:WatchEntryData):Void
 	{
-		final entry = create(displayName, data);
-		entry.onRemove.addOnce(removeEntry.bind(entry));
+		var entry = new WatchEntry(displayName, data, removeEntry);
 		entries.push(entry);
 		entriesContainer.addChild(entry);
-		if (redraw)
-			updateSize();
+		resetEntries();
 	}
 
 	public function remove(displayName:String, data:WatchEntryData):Void
 	{
-		final existing = getExistingEntry(displayName, data);
+		var existing = getExistingEntry(displayName, data);
 		if (existing != null)
 			removeEntry(existing);
 	}
 
-	function removeEntry(entry:TEntry)
+	function removeEntry(entry:WatchEntry):Void
 	{
 		entries.fastSplice(entry);
 		entriesContainer.removeChild(entry);
 		entry.destroy();
-		updateSize();
-	}
-
-	/**
-	 * internal method to remove all without calling updateSize
-	 */
-	function clear():Void
-	{
-		for (entry in entries)
-		{
-			entriesContainer.removeChild(entry);
-			entry.destroy();
-		}
-		
-		entries.resize(0);
+		resetEntries();
 	}
 
 	public function removeAll():Void
 	{
-		clear();
+		for (i in 0...entries.length)
+		{
+			var entry = entries[i];
+			entriesContainer.removeChild(entry);
+			entry.destroy();
+		}
+		entries.splice(0, entries.length);
+		resetEntries();
 	}
 
-	override function update():Void
+	override public function update():Void
 	{
 		for (entry in entries)
-		{
-			if (entriesContainer.isChildVisible(entry))
-				entry.updateValue();
-		}
+			entry.updateValue();
 	}
 
 	override function updateSize():Void
 	{
-		final oldMinSize = minSize.x;
+		minSize.setTo(getMaxMinWidth() + entriesContainerOffset.x, entriesContainer.height + entriesContainerOffset.y);
 		super.updateSize();
-		minSize.x = oldMinSize;
-		
-		scrollbar.x = _width - scrollbar.width - 2;
-		scrollbar.resize(getMarginHeight() - 10);
-		
-		entriesContainer.setScrollSize(getMarginWidth(), getMarginHeight());
 		resetEntries();
 	}
-	
-	function getMarginWidth()
-	{
-		return _width - entriesContainer.x - (_resizable ? 5 : 3) - scrollbar.width - 4;
-	}
-	
-	function getMarginHeight()
-	{
-		return _height - entriesContainer.y - 3;
-	}
-	
+
 	function resetEntries():Void
 	{
-		final width = getMarginWidth();
-		final sansNameWidth = Math.min(width * 0.8, getMaxMinWidth());
-		final nameWidth = Math.min(getMaxNameWidth(), width - sansNameWidth);
 		for (i in 0...entries.length)
 		{
-			final entry = entries[i];
+			var entry = entries[i];
 			entry.y = i * LINE_HEIGHT;
-			entry.updateSize(nameWidth, width);
+			entry.updateSize(getMaxNameWidth(), _width);
 		}
 	}
 

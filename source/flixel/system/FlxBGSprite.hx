@@ -10,7 +10,6 @@ class FlxBGSprite extends FlxSprite
 	public function new()
 	{
 		super();
-		// TODO: Use unique:false, now that we're not editing the pixels
 		makeGraphic(1, 1, FlxColor.WHITE, true, FlxG.bitmap.getUniqueKey("bg_graphic_"));
 		scrollFactor.set();
 	}
@@ -21,7 +20,7 @@ class FlxBGSprite extends FlxSprite
 	@:access(flixel.FlxCamera)
 	override public function draw():Void
 	{
-		for (camera in getCamerasLegacy())
+		for (camera in cameras)
 		{
 			if (!camera.visible || !camera.exists)
 			{
@@ -29,8 +28,7 @@ class FlxBGSprite extends FlxSprite
 			}
 
 			_matrix.identity();
-			_matrix.scale(camera.viewWidth + 1, camera.viewHeight + 1);
-			_matrix.translate(camera.viewMarginLeft, camera.viewMarginTop);
+			_matrix.scale(camera.viewWidth, camera.viewHeight);
 			camera.drawPixels(frame, _matrix, colorTransform);
 
 			#if FLX_DEBUG

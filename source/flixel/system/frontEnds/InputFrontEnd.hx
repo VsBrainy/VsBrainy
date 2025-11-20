@@ -22,77 +22,76 @@ class InputFrontEnd
 
 	/**
 	 * Add an input to the system
+	 *
+	 * @param	Input 	The input to add
+	 * @return	The input
 	 */
 	@:generic
-	@:deprecated("add is deprecated, use addUniqueType")
-	public inline function add<T:IFlxInputManager>(input:T):T
+	public function add<T:IFlxInputManager>(Input:T):T
 	{
-		return addUniqueType(input);
-	}
-	
-	/**
-	 * Add an input to the system, unless the same instance was already added
-	 */
-	@:generic
-	public function addInput<T:IFlxInputManager>(input:T):T
-	{
-		if (!list.contains(input))
-			list.push(input);
-		
-		return input;
-	}
-
-	/**
-	 * Add an input to the system, unless the same type was already added
-	 */
-	@:generic
-	public function addUniqueType<T:IFlxInputManager>(input:T):T
-	{
-		// Don't add repeat types
-		for (i in list)
+		// Don't add repeats
+		for (input in list)
 		{
-			if (FlxStringUtil.sameClassName(input, i, false))
+			if (FlxStringUtil.sameClassName(Input, input))
 			{
-				return input;
+				return Input;
 			}
 		}
-		
-		list.push(input);
-		return input;
+
+		list.push(Input);
+		return Input;
 	}
 
 	/**
 	 * Removes an input from the system
 	 *
-	 * @param   Input  The input to remove
-	 * @return  Bool indicating whether it was removed or not
+	 * @param	Input	The input to remove
+	 * @return	Bool indicating whether it was removed or not
 	 */
 	@:generic
-	public inline function remove<T:IFlxInputManager>(input:T):Bool
+	public function remove<T:IFlxInputManager>(Input:T):Bool
 	{
-		return list.remove(input);
+		var i:Int = 0;
+		for (input in list)
+		{
+			if (input == Input)
+			{
+				list.splice(i, 1);
+				return true;
+			}
+			i++;
+		}
+		return false;
 	}
 
 	/**
 	 * Replace an existing input in the system with a new one
 	 *
-	 * @param   oldInput    The old input to replace
-	 * @param   newInput    The new input to put in its place
-	 * @param   destroyOld  Whether to destroy the old input
-	 * @return  If successful returns `newInput`. Otherwise returns `null`.
+	 * @param	Old 	The old input to replace
+	 * @param	New 	The new input to put in its place
+	 * @return	If successful returns New. Otherwise returns null.
 	 */
 	@:generic
-	public function replace<T:IFlxInputManager>(oldInput:T, newInput:T, destroyOld = false):Null<T>
+	public function replace<T:IFlxInputManager>(Old:T, New:T):T
 	{
-		final index = list.indexOf(oldInput);
-		if (index == -1)
-			return null;
-		
-		if (destroyOld)
-			oldInput.destroy();
-		
-		list[index] = newInput;
-		return newInput;
+		var i:Int = 0;
+		var success:Bool = false;
+		for (input in list)
+		{
+			if (input == Old)
+			{
+				list[i] = New; // Replace Old with New
+				success = true;
+				break;
+			}
+			i++;
+		}
+
+		if (success)
+		{
+			return New;
+		}
+		return null;
 	}
 
 	public function reset():Void

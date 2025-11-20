@@ -193,7 +193,7 @@ private class FlxBaseSignal<T> implements IFlxSignal<T>
 	{
 		for (handler in handlers)
 		{
-			if (#if neko // simply comparing the functions doesn't do the trick on neko
+			if (#if (neko || hl) // simply comparing the functions doesn't do the trick on these targets
 				Reflect.compareMethods(handler.listener, listener) #else handler.listener == listener #end)
 			{
 				return handler; // Listener was already registered.
@@ -302,15 +302,12 @@ private class Macro
 
 			processingListeners = false;
 
-			if (pendingRemove != null)
+			for (handler in pendingRemove)
 			{
-				for (handler in pendingRemove)
-				{
-					removeHandler(handler);
-				}
-				if (pendingRemove.length > 0)
-					pendingRemove = [];
+				removeHandler(handler);
 			}
+			if (pendingRemove.length > 0)
+				pendingRemove = [];
 		}
 	}
 }

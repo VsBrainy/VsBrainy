@@ -40,7 +40,7 @@ class FlxGraphic implements IFlxDestroyable
 
 		if (!Cache)
 		{
-			bitmap = FlxG.assets.getBitmapData(Source);
+			bitmap = FlxAssets.getBitmapData(Source);
 			if (bitmap == null)
 				return null;
 			return createGraphic(bitmap, Key, Unique, Cache);
@@ -51,7 +51,7 @@ class FlxGraphic implements IFlxDestroyable
 		if (graphic != null)
 			return graphic;
 
-		bitmap = FlxG.assets.getBitmapData(Source);
+		bitmap = FlxAssets.getBitmapData(Source);
 		if (bitmap == null)
 			return null;
 
@@ -304,6 +304,11 @@ class FlxGraphic implements IFlxDestroyable
 	public var destroyOnNoUse(default, set):Bool = true;
 
 	/**
+	 * Whether the `BitmapData` of this graphic object has been dumped or not.
+	 */
+	public var isDumped(default, null):Bool = false;
+
+	/**
 	 * Whether the `BitmapData` of this graphic object has been loaded or not.
 	 */
 	public var isLoaded(get, never):Bool;
@@ -315,12 +320,10 @@ class FlxGraphic implements IFlxDestroyable
 	public var isDestroyed(get, never):Bool;
 
 	/**
-	 * Whether the `BitmapData` of this graphic object can be refreshed.
-	 * This is only the case for graphics with an `assetsKey` or `assetsClass`.
+	 * Whether the `BitmapData` of this graphic object can be dumped for decreased memory usage,
+	 * but may cause some issues (when you need direct access to pixels of this graphic.
+	 * If the graphic is dumped then you should call `undump()` and have total access to pixels.
 	 */
-	public var canBeRefreshed(get, never):Bool;
-	
-	@:deprecated("`canBeDumped` is deprecated, use `canBeRefreshed`")
 	public var canBeDumped(get, never):Bool;
 
 	/**
@@ -364,16 +367,7 @@ class FlxGraphic implements IFlxDestroyable
 	 * It is `false` by default, since it significantly increases memory consumption.
 	 */
 	public var unique:Bool = false;
-	
-	#if FLX_TRACK_GRAPHICS
-	/**
-	 * **Debug only**
-	 * Any info about the creation or intended usage of this graphic, for debugging purposes
-	 * @since 5.9.0
-	 */
-	public var trackingInfo:String = "";
-	#end
-	
+
 	/**
 	 * Internal var holding `FlxImageFrame` for the whole bitmap of this graphic.
 	 * Use public `imageFrame` var to access/generate it.
@@ -413,31 +407,58 @@ class FlxGraphic implements IFlxDestroyable
 	}
 
 	/**
-	 * Refreshes the `BitmapData` of this graphic.
+	 * Dumps bits of `BitmapData` to decrease memory usage, but you can't read/write pixels on it anymore
+	 * (but you can call `onContext()` (or `undump()`) method which will restore it again).
 	 */
-	public function refresh():Void
+	public function dump():Void
+	{
+		#if (lime_legacy && !flash)
+		if (FlxG.renderTile && canBeDumped)
+		{
+			bitmap.dumpBits();
+			isDumped = true;
+		}
+		#end
+	}
+
+	/**
+	 * Undumps bits of the `BitmapData` - regenerates it and regenerate tilesheet data for this object
+	 */
+	public function undump():Void
 	{
 		var newBitmap:BitmapData = getBitmapFromSystem();
 		if (newBitmap != null)
 			bitmap = newBitmap;
+		isDumped = false;
 	}
-	
-	@:deprecated("`undump` is deprecated, use `refresh`")
-	public function undump():Void
+
+	/**
+	 * Use this method to restore cached `BitmapData` (if it's possible).
+	 * It's called automatically when the RESIZE event occurs.
+	 */
+	public function onContext():Void
 	{
-		refresh();
+		// no need to restore tilesheet if it hasn't been dumped
+		if (isDumped)
+		{
+			undump(); // restore everything
+			dump(); // and dump BitmapData again
+		}
 	}
-	
+
 	/**
 	 * Asset reload callback for this graphic object.
-	 * It regenerates its bitmap data.
+	 * It regenerated its tilesheet and resets frame bitmaps.
 	 */
 	public function onAssetsReload():Void
 	{
-		if (!canBeRefreshed)
+		if (!canBeDumped)
 			return;
-			
-		refresh();
+
+		var dumped:Bool = isDumped;
+		undump();
+		if (dumped)
+			dump();
 	}
 
 	/**
@@ -449,8 +470,10 @@ class FlxGraphic implements IFlxDestroyable
 
 		shader = null;
 
+		key = null;
+		assetsKey = null;
 		assetsClass = null;
-		imageFrame = FlxDestroyUtil.destroy(imageFrame);
+		imageFrame = null; // no need to dispose _imageFrame since it exists in imageFrames
 
 		if (frameCollections == null) // no need to destroy frame collections if it's already null
 			return;
@@ -475,11 +498,8 @@ class FlxGraphic implements IFlxDestroyable
 	{
 		if (collection.type != null)
 		{
-			final collections = getFramesCollections(collection.type);
-			if (collections.contains(collection))
-				FlxG.log.warn('Attempting to add already added collection');
-			else
-				collections.push(collection);
+			var collections:Array<Dynamic> = getFramesCollections(collection.type);
+			collections.push(collection);
 		}
 	}
 
@@ -491,12 +511,6 @@ class FlxGraphic implements IFlxDestroyable
 	 */
 	public inline function getFramesCollections(type:FlxFrameCollectionType):Array<Dynamic>
 	{
-		if (this.isDestroyed)
-		{
-			FlxG.log.warn('Invalid call to getFramesCollections on a destroyed graphic');
-			return [];
-		}
-		
 		var collections:Array<Dynamic> = frameCollections.get(type);
 		if (collections == null)
 		{
@@ -524,7 +538,7 @@ class FlxGraphic implements IFlxDestroyable
 
 	/**
 	 * Gets the `BitmapData` for this graphic object from OpenFL.
-	 * This method is used for refreshing bitmaps.
+	 * This method is used for undumping graphic.
 	 */
 	function getBitmapFromSystem():BitmapData
 	{
@@ -532,14 +546,14 @@ class FlxGraphic implements IFlxDestroyable
 		if (assetsClass != null)
 			newBitmap = FlxAssets.getBitmapFromClass(assetsClass);
 		else if (assetsKey != null)
-			newBitmap = FlxG.assets.getBitmapData(assetsKey);
+			newBitmap = FlxAssets.getBitmapData(assetsKey);
 
 		if (newBitmap != null)
 			return FlxGraphic.getBitmap(newBitmap, unique);
-			
+
 		return null;
 	}
-
+	
 	inline function get_isLoaded()
 	{
 		return bitmap != null && !bitmap.rect.isEmpty();
@@ -550,14 +564,9 @@ class FlxGraphic implements IFlxDestroyable
 		return shader == null;
 	}
 
-	inline function get_canBeRefreshed():Bool
-	{
-		return assetsClass != null || assetsKey != null;
-	}
-	
 	inline function get_canBeDumped():Bool
 	{
-		return canBeRefreshed;
+		return assetsClass != null || assetsKey != null;
 	}
 	
 	public function incrementUseCount()
@@ -590,7 +599,7 @@ class FlxGraphic implements IFlxDestroyable
 	function get_imageFrame():FlxImageFrame
 	{
 		if (imageFrame == null)
-			imageFrame = FlxImageFrame.fromRectangle(this);
+			imageFrame = FlxImageFrame.fromRectangle(this, FlxRect.get(0, 0, bitmap.width, bitmap.height));
 
 		return imageFrame;
 	}
@@ -607,15 +616,6 @@ class FlxGraphic implements IFlxDestroyable
 			bitmap = value;
 			width = bitmap.width;
 			height = bitmap.height;
-
-			#if FLX_OPENGL_AVAILABLE
-			var max:Int = FlxG.bitmap.maxTextureSize;
-			if (max > 0)
-			{
-				if (width > max || height > max)
-					FlxG.log.warn('Graphic dimensions (${width}x${height}) exceed the maximum allowed size (${max}x${max}), which may cause rendering issues.');
-			}
-			#end
 		}
 
 		return value;

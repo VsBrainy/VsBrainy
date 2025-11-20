@@ -45,19 +45,17 @@ class FlxSubState extends FlxState
 	var _created:Bool = false;
 
 	/**
-	 * @param   bgColor   background color for this substate
+	 * @param   BGColor   background color for this substate
 	 */
-	public function new(bgColor = FlxColor.TRANSPARENT)
+	public function new(BGColor:FlxColor = FlxColor.TRANSPARENT)
 	{
 		super();
 		closeCallback = null;
 		openCallback = null;
 
 		if (FlxG.renderTile)
-		{
 			_bgSprite = new FlxBGSprite();
-		}
-		this.bgColor = bgColor;
+		bgColor = BGColor;
 	}
 
 	override public function draw():Void
@@ -65,18 +63,14 @@ class FlxSubState extends FlxState
 		// Draw background
 		if (FlxG.renderBlit)
 		{
-			for (camera in getCamerasLegacy())
+			for (camera in cameras)
 			{
 				camera.fill(bgColor);
 			}
 		}
-		else // FlxG.renderTile
+		else
 		{
-			if (_bgSprite != null && _bgSprite.visible)
-			{
-				_bgSprite.cameras = getCameras();
-				_bgSprite.draw();
-			}
+			_bgSprite.draw();
 		}
 
 		// Now draw all children
@@ -108,15 +102,11 @@ class FlxSubState extends FlxState
 	}
 
 	@:noCompletion
-	override function set_bgColor(value:FlxColor):FlxColor
+	override function set_bgColor(Value:FlxColor):FlxColor
 	{
 		if (FlxG.renderTile && _bgSprite != null)
-		{
-			_bgSprite.alpha = value.alphaFloat;
-			_bgSprite.visible = _bgSprite.alpha > 0;
-			_bgSprite.color = value.rgb;
-		}
+			_bgSprite.pixels.setPixel32(0, 0, Value);
 
-		return _bgColor = value;
+		return _bgColor = Value;
 	}
 }

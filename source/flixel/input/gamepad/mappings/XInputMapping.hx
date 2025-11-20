@@ -2,9 +2,8 @@ package flixel.input.gamepad.mappings;
 
 import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.gamepad.id.XInputID;
-import flixel.input.gamepad.mappings.FlxGamepadMapping;
 
-class XInputMapping extends FlxTypedGamepadMapping<XInputID>
+class XInputMapping extends FlxGamepadMapping
 {
 	#if FLX_JOYSTICK_API
 	static inline var LEFT_ANALOG_STICK_FAKE_X:Int = 15;
@@ -23,7 +22,7 @@ class XInputMapping extends FlxTypedGamepadMapping<XInputID>
 		rightStick = XInputID.RIGHT_ANALOG_STICK;
 	}
 
-	override function getID(rawID:XInputID):FlxGamepadInputID
+	override public function getID(rawID:Int):FlxGamepadInputID
 	{
 		return switch (rawID)
 		{
@@ -61,7 +60,7 @@ class XInputMapping extends FlxTypedGamepadMapping<XInputID>
 		}
 	}
 
-	override function getRawID(ID:FlxGamepadInputID):XInputID
+	override public function getRawID(ID:FlxGamepadInputID):Int
 	{
 		return switch (ID)
 		{
@@ -94,12 +93,12 @@ class XInputMapping extends FlxTypedGamepadMapping<XInputID>
 			case RIGHT_STICK_DIGITAL_DOWN: XInputID.RIGHT_ANALOG_STICK.rawDown;
 			case RIGHT_STICK_DIGITAL_LEFT: XInputID.RIGHT_ANALOG_STICK.rawLeft;
 			case RIGHT_STICK_DIGITAL_RIGHT: XInputID.RIGHT_ANALOG_STICK.rawRight;
-			default: super.getRawID(ID);
+			default: -1;
 		}
 	}
 
 	#if flash
-	override function isAxisFlipped(axisID:XInputID):Bool
+	override public function isAxisFlipped(axisID:Int):Bool
 	{
 		if (manufacturer == GooglePepper)
 			return false;
@@ -109,19 +108,14 @@ class XInputMapping extends FlxTypedGamepadMapping<XInputID>
 	#end
 
 	#if xbox1
-	override function isAxisFlipped(axisID:XInputID):Bool
+	override public function isAxisFlipped(axisID:Int):Bool
 	{
 		return axisID == XInputID.LEFT_ANALOG_STICK.y || axisID == XInputID.RIGHT_ANALOG_STICK.y;
 	}
 	#end
 
-	override function getMappedInput(id:FlxGamepadInputID)
-	{
-		return FlxGamepadMappedInput.X_INPUT(getRawID(id));
-	}
-	
 	#if FLX_JOYSTICK_API
-	override function axisIndexToRawID(axisID:XInputID):Int
+	override public function axisIndexToRawID(axisID:Int):Int
 	{
 		// Analog stick and trigger values overlap with regular buttons so we remap to "fake" button ID's
 		return if (axisID == leftStick.x) LEFT_ANALOG_STICK_FAKE_X; else if (axisID == leftStick.y) LEFT_ANALOG_STICK_FAKE_Y; else if (axisID == rightStick.x)

@@ -4,59 +4,72 @@ import openfl.display.GraphicsShader;
 
 class FlxGraphicsShader extends GraphicsShader
 {
-	@:glVertexHeader("
+	@:glVertexSource("
+		#pragma header
+		
 		attribute float alpha;
 		attribute vec4 colorMultiplier;
 		attribute vec4 colorOffset;
 		uniform bool hasColorTransform;
-	", true)
-	@:glVertexBody("
-		openfl_Alphav = openfl_Alpha * alpha;
 		
-		if (hasColorTransform)
+		void main(void)
 		{
-			if (openfl_HasColorTransform)
-			{
-				openfl_ColorOffsetv = (openfl_ColorOffsetv * colorMultiplier) + (colorOffset / 255.0);
-				openfl_ColorMultiplierv *= colorMultiplier;
-			}
-			else
+			#pragma body
+			
+			openfl_Alphav = openfl_Alpha * alpha;
+			
+			if (hasColorTransform)
 			{
 				openfl_ColorOffsetv = colorOffset / 255.0;
 				openfl_ColorMultiplierv = colorMultiplier;
 			}
-		}
-	", true)
+		}")
 	@:glFragmentHeader("
-		uniform bool hasTransform;  // TODO: Is this still needed? Apparently, yes!
+		uniform bool hasTransform;
 		uniform bool hasColorTransform;
+
 		vec4 flixel_texture2D(sampler2D bitmap, vec2 coord)
 		{
 			vec4 color = texture2D(bitmap, coord);
-			if (!(hasTransform || openfl_HasColorTransform))
-				return color;
-			
-			if (color.a == 0.0)
-				return vec4(0.0, 0.0, 0.0, 0.0);
-			
-			if (openfl_HasColorTransform || hasColorTransform)
+			if (!hasTransform)
 			{
-				color = vec4 (color.rgb / color.a, color.a);
-				vec4 mult = vec4 (openfl_ColorMultiplierv.rgb, 1.0);
-				color = clamp (openfl_ColorOffsetv + (color * mult), 0.0, 1.0);
-				
-				if (color.a == 0.0)
-					return vec4 (0.0, 0.0, 0.0, 0.0);
-				
-				return vec4 (color.rgb * color.a * openfl_Alphav, color.a * openfl_Alphav);
+				return color;
 			}
-			
-			return color * openfl_Alphav;
+
+			if (color.a == 0.0)
+			{
+				return vec4(0.0, 0.0, 0.0, 0.0);
+			}
+
+			if (!hasColorTransform)
+			{
+				return color * openfl_Alphav;
+			}
+
+			color = vec4(color.rgb / color.a, color.a);
+
+			mat4 colorMultiplier = mat4(0);
+			colorMultiplier[0][0] = openfl_ColorMultiplierv.x;
+			colorMultiplier[1][1] = openfl_ColorMultiplierv.y;
+			colorMultiplier[2][2] = openfl_ColorMultiplierv.z;
+			colorMultiplier[3][3] = openfl_ColorMultiplierv.w;
+
+			color = clamp(openfl_ColorOffsetv + (color * colorMultiplier), 0.0, 1.0);
+
+			if (color.a > 0.0)
+			{
+				return vec4(color.rgb * color.a * openfl_Alphav, color.a * openfl_Alphav);
+			}
+			return vec4(0.0, 0.0, 0.0, 0.0);
 		}
-	", true)
-	@:glFragmentBody("
-		gl_FragColor = flixel_texture2D(bitmap, openfl_TextureCoordv);
-	", true)
+	")
+	@:glFragmentSource("
+		#pragma header
+		
+		void main(void)
+		{
+			gl_FragColor = flixel_texture2D(bitmap, openfl_TextureCoordv);
+		}")
 	public function new()
 	{
 		super();

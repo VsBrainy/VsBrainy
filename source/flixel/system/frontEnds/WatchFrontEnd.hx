@@ -10,13 +10,8 @@ import flixel.system.debug.console.ConsoleUtil;
  */
 class WatchFrontEnd
 {
-	#if FLX_DEBUG
-	public var window(get, never):flixel.system.debug.watch.Watch;
-	inline function get_window() return FlxG.game.debugger.watch;
-	#end
-	
 	public function new() {}
-	
+
 	/**
 	 * Add a variable to the watch list in the debugger.
 	 * This lets you see the value of the variable all the time.
@@ -28,7 +23,7 @@ class WatchFrontEnd
 	public inline function add(object:Dynamic, field:String, ?displayName:String):Void
 	{
 		#if FLX_DEBUG
-		window.add(displayName, FIELD(object, field));
+		FlxG.game.debugger.watch.add(displayName, FIELD(object, field));
 		#end
 	}
 
@@ -41,7 +36,7 @@ class WatchFrontEnd
 	public inline function remove(object:Dynamic, field:String):Void
 	{
 		#if FLX_DEBUG
-		window.remove(null, FIELD(object, field));
+		FlxG.game.debugger.watch.remove(null, FIELD(object, field));
 		#end
 	}
 
@@ -56,7 +51,7 @@ class WatchFrontEnd
 	public inline function addQuick(displayName:String, value:Dynamic):Void
 	{
 		#if FLX_DEBUG
-		window.add(displayName, QUICK(Std.string(value)));
+		FlxG.game.debugger.watch.add(displayName, QUICK(Std.string(value)));
 		#end
 	}
 
@@ -68,7 +63,7 @@ class WatchFrontEnd
 	public inline function removeQuick(displayName:String):Void
 	{
 		#if FLX_DEBUG
-		window.remove(displayName, QUICK(null));
+		FlxG.game.debugger.watch.remove(displayName, QUICK(null));
 		#end
 	}
 
@@ -87,7 +82,7 @@ class WatchFrontEnd
 		#if hscript
 		parsedExpr = ConsoleUtil.parseCommand(expression);
 		#end
-		window.add(displayName == null ? expression : displayName, EXPRESSION(expression, parsedExpr));
+		FlxG.game.debugger.watch.add(displayName == null ? expression : displayName, EXPRESSION(expression, parsedExpr));
 		#end
 	}
 
@@ -100,21 +95,21 @@ class WatchFrontEnd
 	public function removeExpression(displayName:String):Void
 	{
 		#if FLX_DEBUG
-		window.remove(displayName, null);
+		FlxG.game.debugger.watch.remove(displayName, null);
 		#end
 	}
 	
 	public function addFunction(displayName:String, func:()->Dynamic):Void
 	{
 		#if FLX_DEBUG
-		window.add(displayName, FUNCTION(func));
+		FlxG.game.debugger.watch.add(displayName, FUNCTION(func));
 		#end
 	}
 	
 	public function removeFunction(displayName:String):Void
 	{
 		#if FLX_DEBUG
-		window.remove(displayName, null);
+		FlxG.game.debugger.watch.remove(displayName, null);
 		#end
 	}
 

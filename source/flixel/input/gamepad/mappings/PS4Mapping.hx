@@ -2,9 +2,8 @@ package flixel.input.gamepad.mappings;
 
 import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.gamepad.id.PS4ID;
-import flixel.input.gamepad.mappings.FlxGamepadMapping;
 
-class PS4Mapping extends FlxTypedGamepadMapping<PS4ID>
+class PS4Mapping extends FlxGamepadMapping
 {
 	#if FLX_JOYSTICK_API
 	static inline var LEFT_ANALOG_STICK_FAKE_X:Int = 21;
@@ -25,7 +24,7 @@ class PS4Mapping extends FlxTypedGamepadMapping<PS4ID>
 		supportsPointer = true;
 	}
 
-	override function getID(rawID:PS4ID):FlxGamepadInputID
+	override public function getID(rawID:Int):FlxGamepadInputID
 	{
 		return switch (rawID)
 		{
@@ -60,7 +59,7 @@ class PS4Mapping extends FlxTypedGamepadMapping<PS4ID>
 		}
 	}
 
-	override function getRawID(ID:FlxGamepadInputID):PS4ID
+	override public function getRawID(ID:FlxGamepadInputID):Int
 	{
 		return switch (ID)
 		{
@@ -97,7 +96,7 @@ class PS4Mapping extends FlxTypedGamepadMapping<PS4ID>
 			case LEFT_TRIGGER_FAKE: LEFT_TRIGGER_FAKE;
 			case RIGHT_TRIGGER_FAKE: RIGHT_TRIGGER_FAKE;
 			#end
-			default: super.getRawID(ID);
+			default: -1;
 		}
 	}
 	
@@ -120,13 +119,8 @@ class PS4Mapping extends FlxTypedGamepadMapping<PS4ID>
 		}
 	}
 	
-	override function getMappedInput(id:FlxGamepadInputID)
-	{
-		return FlxGamepadMappedInput.PS4(getRawID(id));
-	}
-	
 	#if FLX_JOYSTICK_API
-	override function axisIndexToRawID(axisID:PS4ID):Int
+	override public function axisIndexToRawID(axisID:Int):Int
 	{
 		// Analog stick and trigger values overlap with regular buttons so we remap to "fake" button ID's
 		return if (axisID == leftStick.x) LEFT_ANALOG_STICK_FAKE_X; else if (axisID == leftStick.y) LEFT_ANALOG_STICK_FAKE_Y; else if (axisID == rightStick.x)
