@@ -27,7 +27,7 @@ Read [here](docs/CONTRIBUTING.md).
 ### Main Credits
 - **Brainy7890** - Owner, Composer, Programmer, Charter and Animator
 - **:)** - Co-owner, Composer, Charter, Creator of MiniSynth
-- **SKiD03** - Composer, Animator, Creator of SKiD03 (obv)
+- **SKiD03** - Co-owner, Composer, Animator, Creator of SKiD03 (obv)
 - **Fuschia** - Charter, Artist
 - **radom** - Artist
 - **DeadPillow** - Artist, Animator
