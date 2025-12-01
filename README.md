@@ -41,8 +41,3 @@ Read [here](docs/CONTRIBUTING.md).
 
 ## Other info
 Feel free to clone this repo for your own mods if you'd like, just be sure to credit.
-
-### Branches
-- Stable branch - Latest stable release
-- Main Branch - Stable enough, may receive some more updates compared to Stable
-- Dev Branch - Unstable, spoilers about.
