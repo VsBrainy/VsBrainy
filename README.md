@@ -23,6 +23,9 @@ A major feature of this mod is to be able to mod it! Visit the [wiki](https://gi
 ## Contributing
 Read [here](docs/CONTRIBUTING.md).
 
+### Issues
+Read [here](docs/ISSUES.md).
+
 ## Credits
 ### Main Credits
 - **Brainy7890** - Owner, Composer, Programmer, Charter and Animator
