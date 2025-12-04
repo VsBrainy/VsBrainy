@@ -43,4 +43,4 @@ Read [here](docs/ISSUES.md).
 - You, for your interest in the project.
 
 ## Other info
-Feel free to clone this repo for your own mods if you'd like, just be sure to credit.
+Feel free to fork this repo or use this repo as a template for your own mods if you'd like, just be sure to credit.
