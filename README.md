@@ -44,3 +44,5 @@ Read [here](docs/ISSUES.md).
 
 ## Other info
 Feel free to fork this repo or use this repo as a template for your own mods if you'd like, just be sure to credit.
+
+The releases tab ONLY has source code, builds are on the GameJolt page.
